@@ -1,62 +1,14 @@
 "use client";
-import { FormEvent, useRef, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { AuthForm } from "../UI/AuthForm";
 import { AUTH_BY_TYPE } from "@/configs/auth.config";
-import { supabase } from "@/utils/cms.util";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
 // import { bindElementToRef } from "@/utils/callbackRefs.util";
 
 export const IndexPageWrapper = () => {
 	const { t, i18n } = useTranslation();
 
-	const [captchaToken, setCaptchaToken] = useState<string | undefined>(
-		undefined,
-	);
-	const [authType, setAuthType] = useState<"sign_up" | "sign_in">("sign_in");
-
-	const formRef = useRef<HTMLFormElement>();
-
-	const signUpHandler = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		if (!formRef.current) return;
-
-		const signUpCredentials: Record<string, string> = {};
-
-		for (let inputConfig of AUTH_BY_TYPE[authType]) {
-			const formInput: HTMLInputElement = formRef.current.elements.namedItem(
-				inputConfig.name,
-			) as HTMLInputElement;
-
-			if (!formInput.value.length) return;
-			signUpCredentials[inputConfig.name] = formInput.value;
-		}
-
-		// ? Connect types with Supabase types
-		// supabase.auth
-		// 	.signUp({
-		// 		email: signUpCredentials.email,
-		// 		password: signUpCredentials.password,
-		// 		options: {
-		// 			captchaToken: captchaToken,
-		// 		},
-		// 	})
-		// 	.then((response) => {
-		// 		console.log(response.data);
-		// 	});
-
-		// supabase.auth
-		// 	.signInWithPassword({
-		// 		email: signUpCredentials.email,
-		// 		password: signUpCredentials.password,
-		// 		options: {
-		// 			captchaToken,
-		// 		},
-		// 	})
-		// 	.then((response) => {
-		// 		console.log(response.data);
-		// 	});
-	};
+	const [authType, setAuthType] = useState<AuthType>("sign_in");
 
 	return (
 		<div className="bg-slate-300 min-h-[100vh] flex items-center justify-center">
@@ -87,7 +39,11 @@ export const IndexPageWrapper = () => {
 							</button>
 						</li>
 					</ul>
-					<form
+					<AuthForm
+						formInputs={AUTH_BY_TYPE[authType]}
+						formType={authType}
+					/>
+					{/* <form
 						ref={(element) => {
 							if (!element) return;
 							formRef.current = element;
@@ -114,7 +70,7 @@ export const IndexPageWrapper = () => {
 								{authType}
 							</button>
 						</div>
-					</form>
+					</form> */}
 				</div>
 			</div>
 		</div>
