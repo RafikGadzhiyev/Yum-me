@@ -7,5 +7,6 @@
 		"AUTH_FORM_TITLE": "Sign up to your app! It is very simple!"
 	},
 	"SIGN_UP": "Sign up",
-	"SIGN_IN": "Sign in"
+	"SIGN_IN": "Sign in",
+	"SIGN_OUT": "Sign out"
 }
