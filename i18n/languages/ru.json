@@ -1,6 +1,15 @@
 {
-	"NAVIGATION": {
-		"HOME": "home",
-		"SEARCH": "search"
-	}
+  "SIGN_IN": "Sign in(Translate)",
+  "SIGN_OUT": "Sign out(Translate)",
+  "SIGN_UP": "Sign up(Translate)",
+  "INDEX_PAGE": {
+    "AUTH_FORM_TITLE": "Sign up to your app! It is very simple!(Translate)"
+  },
+  "NAVIGATION": {
+    "HOME": "home",
+    "PROFILE": "Profile(Translate)",
+    "SEARCH": "search",
+    "SETTINGS": "Settings(Translate)",
+    "Saved_RECIPES": "Saved recipes(Translate)"
+  }
 }
