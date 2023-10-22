@@ -11,7 +11,7 @@ export const GET = async () => {
 				},
 				{
 					status: 403,
-				}
+				},
 			);
 		}
 		// const prompt_result = await openAI.chat.completions.create({

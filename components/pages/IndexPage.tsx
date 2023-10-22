@@ -10,7 +10,7 @@ export const IndexPageWrapper = () => {
 	const { t, i18n } = useTranslation();
 
 	const [captchaToken, setCaptchaToken] = useState<string | undefined>(
-		undefined
+		undefined,
 	);
 	const [authType, setAuthType] = useState<"sign_up" | "sign_in">("sign_in");
 
@@ -24,10 +24,9 @@ export const IndexPageWrapper = () => {
 		const signUpCredentials: Record<string, string> = {};
 
 		for (let inputConfig of AUTH_BY_TYPE[authType]) {
-			const formInput: HTMLInputElement =
-				formRef.current.elements.namedItem(
-					inputConfig.name
-				) as HTMLInputElement;
+			const formInput: HTMLInputElement = formRef.current.elements.namedItem(
+				inputConfig.name,
+			) as HTMLInputElement;
 
 			if (!formInput.value.length) return;
 			signUpCredentials[inputConfig.name] = formInput.value;
@@ -71,9 +70,7 @@ export const IndexPageWrapper = () => {
 							<button
 								onClick={() => setAuthType("sign_up")}
 								className={`p-2 font-bold w-full rounded-t-md ${
-									authType === "sign_up"
-										? "text-xl bg-slate-500"
-										: ""
+									authType === "sign_up" ? "text-xl bg-slate-500" : ""
 								}`}
 							>
 								Sign up
@@ -83,9 +80,7 @@ export const IndexPageWrapper = () => {
 							<button
 								onClick={() => setAuthType("sign_in")}
 								className={`p-2 font-bold w-full rounded-t-md ${
-									authType === "sign_in"
-										? "text-xl bg-slate-500"
-										: ""
+									authType === "sign_in" ? "text-xl bg-slate-500" : ""
 								}`}
 							>
 								Sign in
@@ -112,20 +107,14 @@ export const IndexPageWrapper = () => {
 								/>
 							))}
 							<HCaptcha
-								sitekey={
-									process.env
-										.NEXT_PUBLIC_HCAPTCHA_SITEKEY as string
-								}
-								onVerify={(token: string) =>
-									setCaptchaToken(token)
-								}
+								sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY as string}
+								onVerify={(token: string) => setCaptchaToken(token)}
 							/>
 							<button className="rounded-md p-2 bg-green-300 w-full transition hover:bg-green-200 active:bg-green-400">
 								{authType}
 							</button>
 						</div>
 					</form>
-					T
 				</div>
 			</div>
 		</div>

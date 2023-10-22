@@ -3,11 +3,12 @@ import { initReactI18next } from "react-i18next";
 import { dictionary } from "./dictionary";
 import resourcesToBackend from "i18next-resources-to-backend";
 
-i18n.use(initReactI18next)
+i18n
+	.use(initReactI18next)
 	.use(
 		resourcesToBackend(
-			(language: string) => import(`./languages/${language}.json`)
-		)
+			(language: string) => import(`./languages/${language}.json`),
+		),
 	)
 	.init({
 		lng: "en",
