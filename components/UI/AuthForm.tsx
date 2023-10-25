@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, FormEvent, PropsWithChildren, FC } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { changeStringTransform } from "@/utils/string.util";
@@ -14,6 +15,7 @@ interface IAuthForm extends PropsWithChildren {
 
 export const AuthForm: FC<IAuthForm> = ({ formInputs, formType }) => {
 	const { t } = useTranslation();
+	const router = useRouter();
 
 	const [captchaToken, setCaptchaToken] = useState<string | undefined>(
 		undefined
@@ -52,6 +54,8 @@ export const AuthForm: FC<IAuthForm> = ({ formInputs, formType }) => {
 						captchaToken,
 					},
 				});
+
+				router.refresh();
 				break;
 			case "sign_up":
 				auth = await supabaseClient.auth.signUp({
@@ -61,6 +65,22 @@ export const AuthForm: FC<IAuthForm> = ({ formInputs, formType }) => {
 						captchaToken,
 					},
 				});
+
+				const { status, error, data } = await supabaseClient
+					.from("User")
+					.insert({
+						email: auth.data.user?.email,
+					});
+
+				if (error) {
+					return handlerError(
+						"Internal server error",
+						"Something went wrong while app was creating a user instance!",
+						500
+					);
+				}
+
+				router.push("/email-confirmation");
 				break;
 			default:
 				auth = null;

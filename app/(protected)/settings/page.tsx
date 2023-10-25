@@ -30,13 +30,55 @@ export default function SettingsPage() {
 					))}
 				</div>
 			</RadioGroup>
+			<div className="flex  items-center gap-4  w-full">
+				<div className="flex flex-col items-start gap-2">
+					<label className="font-bold text-2xl">Weight</label>
+					<input
+						className="rounded-md p-2 py-1 "
+						placeholder="Your weight"
+						type="number"
+					/>
+				</div>
+				<div className="flex flex-col items-start gap-2">
+					<label className="font-bold text-2xl">Height</label>
+					<input
+						className="rounded-md p-2 py-1 "
+						placeholder="Your weight"
+						type="number"
+					/>
+				</div>
+			</div>
 			<div className="flex flex-col items-start gap-2">
-				<label className="font-bold text-2xl">Weight</label>
+				<label className="font-bold text-2xl">Age</label>
 				<input
 					className="rounded-md p-2 py-1 "
 					placeholder="Your weight"
 					type="number"
 				/>
+			</div>
+			<div className="flex flex-col items-start gap-2">
+				<label className="font-bold text-2xl">Calories per day</label>
+				<input
+					className="rounded-md p-2 py-1 "
+					placeholder="Your weight"
+					type="number"
+				/>
+			</div>
+			<div className="flex flex-col items-stretch gap-4  w-full">
+				<div className="flex flex-col items-start gap-2">
+					<label className="font-bold text-2xl">Contraindications</label>
+					<textarea
+						className="rounded-md p-2 py-1 w-full h-60 resize-none"
+						placeholder="Your weight"
+					/>
+				</div>
+				<div className="flex flex-col items-start gap-2">
+					<label className="font-bold text-2xl">Wishes</label>
+					<textarea
+						className="rounded-md p-2 py-1 w-full h-60 resize-none"
+						placeholder="Your weight"
+					/>
+				</div>
 			</div>
 		</div>
 	);

@@ -17,7 +17,7 @@ export const Accordion: FC<IAccordionProps> = ({ children, label }) => {
 	return (
 		<AccordionContainer
 			allowToggle
-			display="grid"
+			display="grid h-fit"
 			gap={10}
 		>
 			<AccordionItem className="bg-slate-300 rounded-md overflow-hidden">

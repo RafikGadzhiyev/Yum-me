@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest) {
 	if (!user && req.nextUrl.pathname !== "/") {
 		return NextResponse.redirect(new URL("/", req.url));
 	} else if (user && req.nextUrl.pathname == "/") {
-		return NextResponse.redirect(new URL("/main", req.url));
+		return NextResponse.redirect(new URL("/home", req.url));
 	}
 
 	return res;

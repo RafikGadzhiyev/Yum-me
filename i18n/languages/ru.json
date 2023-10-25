@@ -1,4 +1,5 @@
 {
+  "CONFIGURE": "Configure (Translate)",
   "SIGN_IN": "Sign in(Translate)",
   "SIGN_OUT": "Sign out(Translate)",
   "SIGN_UP": "Sign up(Translate)",
@@ -8,8 +9,8 @@
   "NAVIGATION": {
     "HOME": "home",
     "PROFILE": "Profile(Translate)",
+    "SAVED_RECIPES": "Saved recipes (Translate)",
     "SEARCH": "search",
-    "SETTINGS": "Settings(Translate)",
-    "Saved_RECIPES": "Saved recipes(Translate)"
+    "SETTINGS": "Settings(Translate)"
   }
 }
