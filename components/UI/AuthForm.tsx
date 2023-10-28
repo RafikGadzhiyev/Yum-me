@@ -66,11 +66,9 @@ export const AuthForm: FC<IAuthForm> = ({ formInputs, formType }) => {
 					},
 				});
 
-				const { status, error, data } = await supabaseClient
-					.from("User")
-					.insert({
-						email: auth.data.user?.email,
-					});
+				const { error } = await supabaseClient.from("User").insert({
+					email: auth.data.user?.email,
+				});
 
 				if (error) {
 					return handlerError(
@@ -80,7 +78,7 @@ export const AuthForm: FC<IAuthForm> = ({ formInputs, formType }) => {
 					);
 				}
 
-				router.push("/email-confirmation");
+				router.push("/confirm_email");
 				break;
 			default:
 				auth = null;
