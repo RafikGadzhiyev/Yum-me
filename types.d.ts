@@ -9,6 +9,7 @@ type Route = {
 	path: string;
 	key: string;
 	label: string;
+	Icon: () => JSX;
 };
 
 type AuthType = "sign_up" | "sign_in";

@@ -6,6 +6,8 @@ export const dictionary = {
 		translation: translationEn,
 	},
 	ru: {
-		translationEn: translationRu,
+		translation: translationRu,
 	},
 };
+
+export const LANGUAGES = Object.keys(dictionary);

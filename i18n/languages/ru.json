@@ -37,10 +37,10 @@
     "AUTH_FORM_TITLE": "Sign up to your app! It is very simple!(Translate)"
   },
   "NAVIGATION": {
-    "HOME": "home",
-    "PROFILE": "Profile(Translate)",
-    "SAVED_RECIPES": "Saved recipes (Translate)",
-    "SEARCH": "search",
-    "SETTINGS": "Settings(Translate)"
+    "HOME": "Начальная страница",
+    "PROFILE": "Профиль",
+    "SAVED_RECIPES": "Избранные рецепты",
+    "SEARCH": "Поиск",
+    "SETTINGS": "Настройки"
   }
 }

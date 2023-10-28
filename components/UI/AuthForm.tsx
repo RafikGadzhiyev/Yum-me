@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useRef, FormEvent, PropsWithChildren, FC } from "react";
+import {
+	useState,
+	useRef,
+	FormEvent,
+	PropsWithChildren,
+	FC,
+	useEffect,
+} from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
@@ -20,6 +27,8 @@ export const AuthForm: FC<IAuthForm> = ({ formInputs, formType }) => {
 	const [captchaToken, setCaptchaToken] = useState<string | undefined>(
 		undefined
 	);
+
+	useEffect(() => {}, []);
 
 	const authHandler = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
