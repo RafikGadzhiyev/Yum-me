@@ -2,7 +2,6 @@
 
 import { LANGUAGES } from "@/i18n/dictionary";
 import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { FaChevronDown } from "react-icons/fa";
 
@@ -12,8 +11,6 @@ export const LanguageSelect = () => {
 	const changeLanguage = (languageKey: string) => {
 		i18n.changeLanguage(languageKey);
 	};
-
-	useEffect(() => {}, []);
 
 	return (
 		<Menu>

@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AuthForm } from "../UI/AuthForm";
 import { AUTH_BY_TYPE } from "@/configs/auth.config";
@@ -8,8 +9,6 @@ export const IndexPageWrapper = () => {
 	const { t } = useTranslation();
 
 	const [authType, setAuthType] = useState<AuthType>("sign_in");
-
-	useEffect(() => {}, []);
 
 	return (
 		<div className="bg-slate-300 min-h-[100vh] flex items-center justify-center">

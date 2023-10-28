@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useLoading } from "@/hooks/useLoading";
 import { supabaseClient } from "@/utils/cms.util";
-import { FC, useCallback, useEffect } from "react";
+import { FC, useCallback } from "react";
 import { FaDoorOpen } from "react-icons/fa";
 interface IButtonProps extends React.PropsWithChildren {
 	dictionaryKey: string;
@@ -20,9 +20,7 @@ export const SignOutButton: FC<IButtonProps> = ({ dictionaryKey }) => {
 		await supabaseClient.auth.signOut();
 		stopLoading();
 		router.refresh();
-	}, []);
-
-	useEffect(() => {}, []);
+	}, [router, startLoading, stopLoading]);
 
 	return (
 		<button

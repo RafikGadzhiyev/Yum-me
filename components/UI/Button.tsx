@@ -1,6 +1,6 @@
 "use client";
 
-import { HTMLAttributes, FC, useEffect } from "react";
+import { HTMLAttributes, FC } from "react";
 import { useTranslation } from "react-i18next";
 
 interface IButtonProps extends HTMLAttributes<HTMLButtonElement> {
@@ -10,8 +10,6 @@ interface IButtonProps extends HTMLAttributes<HTMLButtonElement> {
 
 export const Button: FC<IButtonProps> = ({ dictionaryKey, clickHandler }) => {
 	const { t } = useTranslation();
-
-	useEffect(() => {}, []);
 
 	return (
 		<button
