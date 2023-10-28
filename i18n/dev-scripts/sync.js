@@ -8,6 +8,8 @@ const fs = require("fs/promises");
 const FILE_PATH = "../../i18n/languages";
 const FILE_EXTENSION = ".json";
 
+const IGNORE_SORT_KEYS = ["DAY_OF_WEEK"];
+
 const SYNC_BY_DICTIONARY = require(`${FILE_PATH}/${SYNC_BY}${FILE_EXTENSION}`);
 
 for (let language of LANGUAGES) {
@@ -32,7 +34,7 @@ function sortDictionaryKeysByType(dictionary) {
 
 	for (let key of Object.keys(dictionary)) {
 		let term = dictionary[key];
-		if (typeof term === "string") {
+		if (typeof term === "string" || IGNORE_SORT_KEYS.includes(key)) {
 			stringTerms[key] = term;
 		} else {
 			objectTerms[key] = sortDictionaryKeysByType(term);

@@ -1,28 +1,9 @@
 {
   "CONFIGURE": "Configure (Translate)",
-  "SIGN_IN": "Sign in(Translate)",
-  "SIGN_OUT": "Sign out(Translate)",
-  "SIGN_UP": "Sign up(Translate)",
   "DAY_OF_WEEK": {
-    "FRIDAY": {
-      "LONG": "Friday (Translate)",
-      "SHORT": "Fr (Translate)"
-    },
     "MONDAY": {
       "LONG": "Monday (Translate)",
       "SHORT": "Mn (Translate)"
-    },
-    "SATURDAY": {
-      "LONG": "Saturday (Translate)",
-      "SHORT": "St (Translate)"
-    },
-    "SUNDAY": {
-      "LONG": "Sunday (Translate)",
-      "SHORT": "Su (Translate)"
-    },
-    "THURSDAY": {
-      "LONG": "Thursday (Translate)",
-      "SHORT": "Th (Translate)"
     },
     "TUESDAY": {
       "LONG": "Tuesday (Translate)",
@@ -31,8 +12,27 @@
     "WEDNESDAY": {
       "LONG": "Wednesday (Translate)",
       "SHORT": "We (Translate)"
+    },
+    "THURSDAY": {
+      "LONG": "Thursday (Translate)",
+      "SHORT": "Th (Translate)"
+    },
+    "FRIDAY": {
+      "LONG": "Friday (Translate)",
+      "SHORT": "Fr (Translate)"
+    },
+    "SATURDAY": {
+      "LONG": "Saturday (Translate)",
+      "SHORT": "St (Translate)"
+    },
+    "SUNDAY": {
+      "LONG": "Sunday (Translate)",
+      "SHORT": "Su (Translate)"
     }
   },
+  "SIGN_IN": "Sign in(Translate)",
+  "SIGN_OUT": "Sign out(Translate)",
+  "SIGN_UP": "Sign up(Translate)",
   "INDEX_PAGE": {
     "AUTH_FORM_TITLE": "Sign up to your app! It is very simple!(Translate)"
   },
