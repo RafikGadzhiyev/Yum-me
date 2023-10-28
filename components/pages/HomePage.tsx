@@ -5,18 +5,18 @@ import { Accordion } from "../UI/Accordion";
 export const HomePage = () => {
 	const { t } = useTranslation();
 
+	const WEEK_DAYS = Object.entries(t("DAY_OF_WEEK", { returnObjects: true }));
+
 	return (
 		<div className=" flex flex-col gap-2">
-			{(t("DAY_OF_WEEK", { returnObjects: true }) as Array<string>).map(
-				(day) => (
-					<Accordion
-						key={day}
-						label={day}
-					>
-						AI GENERATED
-					</Accordion>
-				)
-			)}
+			{WEEK_DAYS.map(([key, day]) => (
+				<Accordion
+					key={key}
+					label={day.LONG}
+				>
+					AI GENERATED
+				</Accordion>
+			))}
 		</div>
 	);
 };
