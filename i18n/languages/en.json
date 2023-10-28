@@ -3,6 +3,36 @@
   "SIGN_IN": "Sign in",
   "SIGN_OUT": "Sign out",
   "SIGN_UP": "Sign up",
+  "DAY_OF_WEEK": {
+    "FRIDAY": {
+      "LONG": "Friday",
+      "SHORT": "Fr"
+    },
+    "MONDAY": {
+      "LONG": "Monday",
+      "SHORT": "Mn"
+    },
+    "SATURDAY": {
+      "LONG": "Saturday",
+      "SHORT": "St"
+    },
+    "SUNDAY": {
+      "LONG": "Sunday",
+      "SHORT": "Su"
+    },
+    "THURSDAY": {
+      "LONG": "Thursday",
+      "SHORT": "Th"
+    },
+    "TUESDAY": {
+      "LONG": "Tuesday",
+      "SHORT": "Tu"
+    },
+    "WEDNESDAY": {
+      "LONG": "Wednesday",
+      "SHORT": "We"
+    }
+  },
   "INDEX_PAGE": {
     "AUTH_FORM_TITLE": "Sign up to your app! It is very simple!"
   },
@@ -12,14 +42,5 @@
     "SAVED_RECIPES": "Saved recipes",
     "SEARCH": "Search",
     "SETTINGS": "Settings"
-  },
-  "DAY_OF_WEEK": [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
-  ]
+  }
 }

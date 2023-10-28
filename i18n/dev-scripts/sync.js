@@ -1,3 +1,5 @@
+// Run command: node i18n/dev-scripts/sync.js
+
 const LANGUAGES = ["ru", "en"];
 const SYNC_BY = "en";
 
