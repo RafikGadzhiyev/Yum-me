@@ -10,7 +10,7 @@ export default function MainPage() {
 			tabIndex={0}
 		>
 			<HomePage />
-			<div className="absolute rounded-md top-0 left-0 bg-black/50 w-full h-full text-white flex  flex-col items-center justify-center">
+			{/* <div className="absolute rounded-md top-0 left-0 bg-black/50 w-full h-full text-white flex  flex-col items-center justify-center">
 				<div className="text-5xl grid place-items-center">
 					<FaLock />
 					<span className="text-lg">
@@ -24,7 +24,7 @@ export default function MainPage() {
 				>
 					Configure
 				</Link>
-			</div>
+			</div> */}
 		</div>
 	);
 }

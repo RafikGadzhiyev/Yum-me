@@ -2,7 +2,6 @@
 
 import { FC, PropsWithChildren } from "react";
 import {
-	Accordion as AccordionContainer,
 	AccordionItem,
 	AccordionButton,
 	AccordionPanel,
@@ -15,28 +14,22 @@ interface IAccordionProps extends PropsWithChildren {
 
 export const Accordion: FC<IAccordionProps> = ({ children, label }) => {
 	return (
-		<AccordionContainer
-			allowToggle
-			display="grid h-fit"
-			gap={10}
-		>
-			<AccordionItem className="bg-slate-300 rounded-md overflow-hidden">
-				<h2>
-					<AccordionButton
-						className="transition p-2 bg-slate-300"
-						_expanded={{ bg: "#87EEAB" }}
-					>
-						<span>{label}</span>
-						<AccordionIcon />
-					</AccordionButton>
-				</h2>
-				<AccordionPanel
-					padding={10}
-					className="bg-[#81bb95] text-white"
+		<AccordionItem className="bg-slate-300 rounded-md overflow-hidden">
+			<h2>
+				<AccordionButton
+					className="transition p-2 bg-slate-300"
+					_expanded={{ bg: "#87EEAB" }}
 				>
-					{children}
-				</AccordionPanel>
-			</AccordionItem>
-		</AccordionContainer>
+					<span>{label}</span>
+					<AccordionIcon />
+				</AccordionButton>
+			</h2>
+			<AccordionPanel
+				padding={5}
+				className="bg-[#81bb95] text-white prose max-w-full"
+			>
+				{children}
+			</AccordionPanel>
+		</AccordionItem>
 	);
 };
