@@ -6,6 +6,8 @@ import { useTranslation } from "react-i18next";
 import { ROUTE_LIST } from "@/configs/routes.config";
 import { FaListUl } from "react-icons/fa";
 import clsx from "clsx";
+import { LanguageSelect } from "./UI/LanguageSelect";
+import { SignOutButton } from "./UI/Buttons";
 
 // TODO: Add transition
 
@@ -15,14 +17,20 @@ export const SideBarNavigation = () => {
 	const [isOpened, setIsOpened] = useState(false);
 
 	return (
-		<nav>
-			<div className="block md:hidden">
-				<button
-					className="rounded-md transition hover:bg-green-200 p-2 my-2"
-					onClick={() => setIsOpened(!isOpened)}
-				>
-					<FaListUl />
-				</button>
+		<nav className="flex-1 flex flex-col md:flex-col-reverse">
+			<div className="flex items-center justify-between w-full mt-auto">
+				<div className="block md:hidden">
+					<button
+						className="rounded-md transition hover:bg-green-200 p-2 my-2"
+						onClick={() => setIsOpened(!isOpened)}
+					>
+						<FaListUl />
+					</button>
+				</div>
+				<div className="flex mt-auto md:flex-col gap-3">
+					<LanguageSelect />
+					<SignOutButton dictionaryKey="SIGN_OUT" />
+				</div>
 			</div>
 			<ul
 				className={clsx(
@@ -37,6 +45,7 @@ export const SideBarNavigation = () => {
 					<li
 						key={route.key}
 						className="overflow-hidden transition rounded-md  hover:bg-green-200"
+						onClick={() => setIsOpened(false)}
 					>
 						<Link
 							href={route.path}
