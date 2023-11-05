@@ -1,3 +1,4 @@
+import { handleRequest } from "@/utils/handlers.util";
 import { openAI } from "@/utils/instances.util";
 import { isDevMode } from "@/utils/nodeEnvType.util";
 import { NextResponse } from "next/server";
@@ -5,14 +6,10 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
 	try {
 		if (!isDevMode()) {
-			return NextResponse.json(
-				{
-					message: "It is not development mode! Request restricted",
-				},
-				{
-					status: 403,
-				},
-			);
+			return handleRequest(null, {
+				title: "Bad Request",
+				message: "It is not development mode! Request restricted",
+			});
 		}
 		// const prompt_result = await openAI.chat.completions.create({
 		// 	messages: [
@@ -33,7 +30,7 @@ export const GET = async () => {
 			size: "256x256",
 		});
 
-		return NextResponse.json({ image });
+		return handleRequest(image, null, 200);
 	} catch (e) {
 		return NextResponse.json(e, { status: 403 });
 	}

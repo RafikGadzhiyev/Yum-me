@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 export const handlerError = (
 	reason: string,
 	message: string,
@@ -17,3 +19,28 @@ export const hanldeData = <T>(data: T) => ({
 	status: 200,
 	data,
 });
+
+/**
+ *
+ *
+ * V2
+ *
+ *
+ */
+
+export const handleRequest = <T = null, U = RequestError>(
+	data: T,
+	error: U,
+	status: ResponseNumericStatuses = 403
+): NextResponse<RequestResponse<T, U>> => {
+	return NextResponse.json(
+		{
+			data,
+			error,
+			status,
+		},
+		{
+			status,
+		}
+	);
+};

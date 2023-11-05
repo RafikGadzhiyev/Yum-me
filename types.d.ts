@@ -12,5 +12,28 @@ type Route = {
 	Icon: () => JSX;
 };
 
+type RequestError = {
+	title: string;
+	message: string;
+};
+
+type RequestResponse<T, U> = {
+	data: T;
+	error: U;
+	status: ResponseNumericStatuses;
+};
+
 type AuthType = "sign_up" | "sign_in";
 type StringTransformTypes = "capitalize" | "uppercase" | "lowercase";
+type ResponseNumericStatuses =
+	| 200
+	| 301
+	| 302
+	| 304
+	| 400
+	| 401
+	| 403
+	| 404
+	| 500
+	| 501
+	| 502;
