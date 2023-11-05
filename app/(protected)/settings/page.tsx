@@ -1,9 +1,22 @@
 import { SettingsPageWrapper } from "@/components/pages/SettingsPage";
+import { getUser } from "@/utils/server.utils";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+	const supabaseServerComponentsClient = createServerComponentClient({
+		cookies,
+	});
+
+	const user = await supabaseServerComponentsClient.auth.getUser();
+	const data = await getUser(user);
+
 	return (
 		<div>
-			<SettingsPageWrapper />
+			<SettingsPageWrapper
+				config={data}
+				user={user.data.user}
+			/>
 		</div>
 	);
 }

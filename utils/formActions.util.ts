@@ -1,6 +1,6 @@
 import { User } from "@supabase/supabase-js";
-import { supabase } from "./cms.util";
-import { handlerError, hanldeData } from "./handlers.util";
+import { supabase, supabaseClient } from "./cms.util";
+import { handleRequest, handlerError, hanldeData } from "./handlers.util";
 import { isEmpty } from "./validation.util";
 
 // ? Connect types with Supabase types
@@ -44,4 +44,15 @@ export const signIn = async (formData: Record<string, string>) => {
 	}
 
 	return hanldeData<User>(session.data.user as User);
+};
+
+export const getUser = async () => {
+	const { data, error } = await supabaseClient.auth.getSession();
+
+	if (error) {
+		// return handleRequest(null, { title: error.cause, message: error.message });
+		return error;
+	}
+
+	return data;
 };

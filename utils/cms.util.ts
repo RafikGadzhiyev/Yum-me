@@ -8,3 +8,9 @@ const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 export const supabase = createClient(supabaseURL, supabaseClientKey);
 
 export const supabaseClient = createClientComponentClient();
+// export const supabaseClient = createClient(supabaseURL, supabaseClientKey, {
+// 	auth: {
+// 		debug: process.env.NODE_ENV !== "production",
+// 		// persistSession: false,
+// 	},
+// });

@@ -1,23 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { FC, PropsWithChildren, useState } from "react";
 import { RadioGroup } from "@headlessui/react";
-import { UserHealthConfig } from "@/mocks/AIResponse.mock";
 import { ContentModal } from "../UI/ContentModal";
 
 const GENDERS = ["male", "female"];
 
-export const SettingsPageWrapper = () => {
-	const [gender, setGender] = useState(GENDERS[0]);
-	const [healthConfig, setHealthConfig] = useState(
-		structuredClone(UserHealthConfig)
-	);
+interface ISettingsPageProps extends PropsWithChildren {
+	config: any;
+	user: any;
+}
+
+export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
+	config,
+	user,
+}) => {
+	const [healthConfig, setHealthConfig] = useState(structuredClone(config));
 
 	const updateConfig = (key: string, value: string) => {
 		setHealthConfig({
 			...healthConfig,
 			[key]: value,
 		});
+	};
+
+	const resetConfig = () => {
+		setHealthConfig(structuredClone(config));
+	};
+
+	const updateConfigInDatabase = () => {
+		fetch(
+			process.env.NEXT_PUBLIC_BASE_URL +
+				"/api/health_data?email=" +
+				user?.email,
+			{
+				method: "POST",
+				body: JSON.stringify(healthConfig),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
 	};
 
 	return (
@@ -107,6 +130,22 @@ export const SettingsPageWrapper = () => {
 							onChange={(e) => updateConfig("wishes", e.target.value)}
 						/>
 					</div>
+				</div>
+
+				<div className="my-2 flex items-center gap-2">
+					<button
+						className="min-w-[150px] rounded-md p-2 bg-green-300 py-1 transition hover:bg-green-400"
+						onClick={updateConfigInDatabase}
+					>
+						Save
+					</button>
+
+					<button
+						onClick={resetConfig}
+						className="min-w-[150px] rounded-md p-2 bg-red-300 py-1 transition hover:bg-red-400"
+					>
+						Reset
+					</button>
 				</div>
 			</div>
 		</div>

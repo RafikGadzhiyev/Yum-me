@@ -28,6 +28,7 @@ export const hanldeData = <T>(data: T) => ({
  *
  */
 
+//?  additional options
 export const handleRequest = <T = null, U = RequestError>(
 	data: T,
 	error: U,
