@@ -3,6 +3,9 @@
 import { FC, PropsWithChildren, useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { ContentModal } from "../UI/ContentModal";
+import { Loading } from "../UI/Loading";
+import { useLoading } from "@/hooks/useLoading";
+import { useFetch } from "@/hooks/useFetch";
 
 const GENDERS = ["male", "female"];
 
@@ -15,6 +18,7 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 	config,
 	user,
 }) => {
+	const { isLoading, response, sendRequest, stopRequest } = useFetch();
 	const [healthConfig, setHealthConfig] = useState(structuredClone(config));
 
 	const updateConfig = (key: string, value: string) => {
@@ -29,18 +33,9 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 	};
 
 	const updateConfigInDatabase = () => {
-		fetch(
-			process.env.NEXT_PUBLIC_BASE_URL +
-				"/api/health_data?email=" +
-				user?.email,
-			{
-				method: "POST",
-				body: JSON.stringify(healthConfig),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			}
-		);
+		sendRequest("POST", `/api/health_data?email=${user?.email}`, healthConfig, {
+			"Content-Type": "application/json",
+		});
 	};
 
 	return (
@@ -105,8 +100,8 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 						className="rounded-md p-2 py-1 "
 						placeholder="Your weight"
 						type="number"
-						value={healthConfig.caloriesPerDay}
-						onChange={(e) => updateConfig("caloriesPerDay", e.target.value)}
+						value={healthConfig.calories_per_day}
+						onChange={(e) => updateConfig("calories_per_day", e.target.value)}
 					/>
 				</div>
 				<div className="flex flex-col items-stretch gap-4  w-full">
@@ -148,6 +143,8 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 					</button>
 				</div>
 			</div>
+
+			{isLoading && <Loading />}
 		</div>
 	);
 };
