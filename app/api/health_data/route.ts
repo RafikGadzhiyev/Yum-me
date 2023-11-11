@@ -64,8 +64,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 			});
 		}
 
-		console.log(email);
-
 		const { error } = await supabase
 			.from("User")
 			.update({
