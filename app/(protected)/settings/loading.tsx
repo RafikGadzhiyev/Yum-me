@@ -1,0 +1,117 @@
+import { Skeleton } from "@/components/UI/Skeleton";
+
+export default function SettingsPageLoading() {
+	return (
+		<div className="animate-pulse">
+			<Skeleton
+				width="100px"
+				height="30px"
+				rounded
+			/>
+			<Skeleton
+				width="75px"
+				height="30px"
+				rounded
+			/>
+			<div className="flex items-center gap-4">
+				<Skeleton
+					width="100px"
+					height="30px"
+					rounded
+				/>
+				<Skeleton
+					width="100px"
+					height="30px"
+					rounded
+				/>
+			</div>
+
+			<div className="flex items-center gap-4">
+				<div>
+					<Skeleton
+						width="100px"
+						height="30px"
+						rounded
+					/>
+					<Skeleton
+						width="250px"
+						height="30px"
+						rounded
+					/>
+				</div>
+				<div>
+					<Skeleton
+						width="100px"
+						height="30px"
+						rounded
+					/>
+					<Skeleton
+						width="250px"
+						height="30px"
+						rounded
+					/>
+				</div>
+			</div>
+			<div>
+				<Skeleton
+					width="100px"
+					height="30px"
+					rounded
+				/>
+				<Skeleton
+					width="250px"
+					height="30px"
+					rounded
+				/>
+			</div>
+			<div>
+				<Skeleton
+					width="100px"
+					height="30px"
+					rounded
+				/>
+				<Skeleton
+					width="250px"
+					height="30px"
+					rounded
+				/>
+			</div>
+			<div>
+				<Skeleton
+					width="100px"
+					height="30px"
+					rounded
+				/>
+				<Skeleton
+					width="100%"
+					height="250px"
+					rounded
+				/>
+			</div>
+			<div>
+				<Skeleton
+					width="100px"
+					height="30px"
+					rounded
+				/>
+				<Skeleton
+					width="100%"
+					height="250px"
+					rounded
+				/>
+			</div>
+			<div className="flex items-center gap-4">
+				<Skeleton
+					width="100px"
+					height="30px"
+					rounded
+				/>
+				<Skeleton
+					width="100px"
+					height="30px"
+					rounded
+				/>
+			</div>
+		</div>
+	);
+}

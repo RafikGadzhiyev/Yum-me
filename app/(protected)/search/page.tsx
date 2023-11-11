@@ -1,4 +1,4 @@
-export default function SearchPage() {
+export default async function SearchPage() {
 	return (
 		<div>
 			<form className="flex  gap-2">
