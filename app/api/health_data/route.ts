@@ -72,6 +72,10 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 				age: body.age,
 				weight: body.weight,
 				height: body.height,
+				gender: body.gender,
+				calories_per_day: body.calories_per_day,
+				contraindications: body.contraindications,
+				wishes: body.wishes,
 			})
 			.eq("email", email);
 

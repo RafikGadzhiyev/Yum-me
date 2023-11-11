@@ -40,3 +40,5 @@ export default async function MainPage() {
 		</div>
 	);
 }
+
+export const dynamic = "force-dynamic";

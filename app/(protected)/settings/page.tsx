@@ -1,3 +1,4 @@
+import { Loading } from "@/components/UI/Loading";
 import { SettingsPageWrapper } from "@/components/pages/SettingsPage";
 import { getUser } from "@/utils/server.utils";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -20,3 +21,5 @@ export default async function SettingsPage() {
 		</div>
 	);
 }
+
+export const dynamic = "force-dynamic";

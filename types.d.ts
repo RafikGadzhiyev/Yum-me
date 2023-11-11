@@ -17,10 +17,16 @@ type RequestError = {
 	message: string;
 };
 
+// Types with generic
 type RequestResponse<T, U> = {
 	data: T;
 	error: U;
 	status: ResponseNumericStatuses;
+};
+
+type useFetchResponse<T, U> = {
+	isLoading: boolean;
+	result: RequestResponse<T, U> | null;
 };
 
 type AuthType = "sign_up" | "sign_in";
