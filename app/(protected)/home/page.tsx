@@ -41,4 +41,4 @@ export default async function MainPage() {
 	);
 }
 
-export const dynamic = "force-dynamic";
+export const revalidate = 0;
