@@ -1,5 +1,10 @@
 {
+  "AGE": "Age (Translate)",
+  "CALORIES_PER_DAY": "Calories per day (Translate)",
+  "CHOOSE_LANGUAGE": "Choose language (Translate)",
+  "CLOSE": "Close (Translate)",
   "CONFIGURE": "Configure (Translate)",
+  "CONTRAINDICATIONS": "Contraindications (Translate)",
   "DAY_OF_WEEK": {
     "MONDAY": {
       "LONG": "Monday (Translate)",
@@ -30,16 +35,27 @@
       "SHORT": "Su (Translate)"
     }
   },
+  "FEMALE": "Female (Translate)",
+  "GENDER": "Gender (Translate)",
+  "HEIGHT": "Height (Translate)",
+  "MALE": "Male (Translate)",
+  "RESET": "Reset (Translate)",
+  "SAVE": "Save (Translate)",
+  "SEARCH": "Search (Translate)",
+  "SHOW_CONFIG": "Show config (Translate)",
   "SIGN_IN": "Sign in(Translate)",
   "SIGN_OUT": "Sign out(Translate)",
   "SIGN_UP": "Sign up(Translate)",
+  "USER_HEALTH_CONFIG": "User health configuration (Translate)",
+  "WEIGHT": "Weight (Translate)",
+  "WISHES": "Wishes (Translate)",
   "INDEX_PAGE": {
     "AUTH_FORM_TITLE": "Sign up to your app! It is very simple!(Translate)"
   },
   "NAVIGATION": {
     "HOME": "Начальная страница",
     "PROFILE": "Профиль",
-    "SAVED_RECIPES": "Избранные рецепты",
+    "SAVED_RECIPES": "Избранные",
     "SEARCH": "Поиск",
     "SETTINGS": "Настройки"
   }

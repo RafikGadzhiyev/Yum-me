@@ -12,12 +12,15 @@ import {
 	Button,
 	useDisclosure,
 } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 interface IContentWrapper extends PropsWithChildren {
 	config: string;
 }
 
 export const ContentModal: FC<IContentWrapper> = ({ config }) => {
+	const { t } = useTranslation();
+
 	const { isOpen, onClose, onOpen } = useDisclosure();
 
 	return (
@@ -26,7 +29,7 @@ export const ContentModal: FC<IContentWrapper> = ({ config }) => {
 				className="rounded-md p-2 bg-green-300 py-1 transition hover:bg-green-400"
 				onClick={onOpen}
 			>
-				Show config
+				{t("SHOW_CONFIG")}
 			</button>
 			<Modal
 				onClose={onClose}
@@ -36,13 +39,13 @@ export const ContentModal: FC<IContentWrapper> = ({ config }) => {
 			>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>User health config</ModalHeader>
+					<ModalHeader>{t("USER_HEALTH_CONFIG")}</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
 						<pre className="whitespace-pre-wrap">{config}</pre>
 					</ModalBody>
 					<ModalFooter>
-						<Button onClick={onClose}>Close</Button>
+						<Button onClick={onClose}>{t("CLOSE")}</Button>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>

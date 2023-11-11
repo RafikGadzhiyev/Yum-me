@@ -4,8 +4,8 @@ import { FC, PropsWithChildren, useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { ContentModal } from "../UI/ContentModal";
 import { Loading } from "../UI/Loading";
-import { useLoading } from "@/hooks/useLoading";
 import { useFetch } from "@/hooks/useFetch";
+import { useTranslation } from "react-i18next";
 
 const GENDERS = ["male", "female"];
 
@@ -18,6 +18,8 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 	config,
 	user,
 }) => {
+	const { t } = useTranslation();
+
 	const { isLoading, response, sendRequest, stopRequest } = useFetch();
 	const [healthConfig, setHealthConfig] = useState(structuredClone(config));
 
@@ -48,7 +50,7 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 					className="flex flex-col items-start"
 				>
 					<RadioGroup.Label className="font-bold text-2xl">
-						Gender
+						{t("GENDER")}
 					</RadioGroup.Label>
 					<div className="flex items-center gap-2">
 						{GENDERS.map((gender) => (
@@ -57,14 +59,14 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 								key={gender}
 								className="bg-slate-500 capitalize text-white my-3 p-2 py-1 rounded-md ui-checked:bg-green-600 cursor-pointer"
 							>
-								{gender}
+								{t(gender.toUpperCase())}
 							</RadioGroup.Option>
 						))}
 					</div>
 				</RadioGroup>
 				<div className="flex  items-center gap-4  w-full">
 					<div className="flex flex-col items-start gap-2">
-						<label className="font-bold text-2xl">Weight</label>
+						<label className="font-bold text-2xl">{t("WEIGHT")}</label>
 						<input
 							className="rounded-md p-2 py-1 "
 							placeholder="Your weight"
@@ -74,7 +76,7 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 						/>
 					</div>
 					<div className="flex flex-col items-start gap-2">
-						<label className="font-bold text-2xl">Height</label>
+						<label className="font-bold text-2xl">{t("HEIGHT")}</label>
 						<input
 							className="rounded-md p-2 py-1 "
 							placeholder="Your weight"
@@ -85,7 +87,7 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 					</div>
 				</div>
 				<div className="flex flex-col items-start gap-2">
-					<label className="font-bold text-2xl">Age</label>
+					<label className="font-bold text-2xl">{t("AGE")}</label>
 					<input
 						className="rounded-md p-2 py-1 "
 						placeholder="Your weight"
@@ -95,7 +97,7 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 					/>
 				</div>
 				<div className="flex flex-col items-start gap-2">
-					<label className="font-bold text-2xl">Calories per day</label>
+					<label className="font-bold text-2xl">{t("CALORIES_PER_DAY")}</label>
 					<input
 						className="rounded-md p-2 py-1 "
 						placeholder="Your weight"
@@ -106,7 +108,9 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 				</div>
 				<div className="flex flex-col items-stretch gap-4  w-full">
 					<div className="flex flex-col items-start gap-2">
-						<label className="font-bold text-2xl">Contraindications</label>
+						<label className="font-bold text-2xl">
+							{t("CONTRAINDICATIONS")}
+						</label>
 						<textarea
 							className="rounded-md p-2 py-1 w-full h-60 resize-none"
 							placeholder="Your weight"
@@ -117,7 +121,7 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 						/>
 					</div>
 					<div className="flex flex-col items-start gap-2">
-						<label className="font-bold text-2xl">Wishes</label>
+						<label className="font-bold text-2xl">{t("WISHES")}</label>
 						<textarea
 							className="rounded-md p-2 py-1 w-full h-60 resize-none"
 							placeholder="Your wishes"
@@ -132,14 +136,14 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 						className="min-w-[150px] rounded-md p-2 bg-green-300 py-1 transition hover:bg-green-400"
 						onClick={updateConfigInDatabase}
 					>
-						Save
+						{t("SAVE")}
 					</button>
 
 					<button
 						onClick={resetConfig}
 						className="min-w-[150px] rounded-md p-2 bg-red-300 py-1 transition hover:bg-red-400"
 					>
-						Reset
+						{t("RESET")}
 					</button>
 				</div>
 			</div>

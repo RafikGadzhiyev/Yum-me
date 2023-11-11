@@ -1,5 +1,10 @@
 {
+  "AGE": "Age",
+  "CALORIES_PER_DAY": "Calories per day",
+  "CHOOSE_LANGUAGE": "Choose language",
+  "CLOSE": "Close",
   "CONFIGURE": "Configure",
+  "CONTRAINDICATIONS": "Contraindications",
   "DAY_OF_WEEK": {
     "MONDAY": {
       "LONG": "Monday",
@@ -30,9 +35,20 @@
       "SHORT": "Su"
     }
   },
+  "FEMALE": "Female",
+  "GENDER": "Gender",
+  "HEIGHT": "Height",
+  "MALE": "Male",
+  "RESET": "Reset",
+  "SAVE": "Save",
+  "SEARCH": "Search",
+  "SHOW_CONFIG": "Show config",
   "SIGN_IN": "Sign in",
   "SIGN_OUT": "Sign out",
   "SIGN_UP": "Sign up",
+  "USER_HEALTH_CONFIG": "User health configuration",
+  "WEIGHT": "Weight",
+  "WISHES": "Wishes",
   "INDEX_PAGE": {
     "AUTH_FORM_TITLE": "Sign up to your app! It is very simple!"
   },
