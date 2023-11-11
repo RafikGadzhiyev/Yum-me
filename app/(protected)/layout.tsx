@@ -13,3 +13,5 @@ export default function ProtectedPagesLayout({ children }: PropsWithChildren) {
 		</div>
 	);
 }
+
+export const dynamic = "force-dynamic";

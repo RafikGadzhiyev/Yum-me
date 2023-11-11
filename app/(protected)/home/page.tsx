@@ -41,4 +41,4 @@ export default async function MainPage() {
 	);
 }
 
-export const revalidate = 0;
+// export const revalidate = 0;
