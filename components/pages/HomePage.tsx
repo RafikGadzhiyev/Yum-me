@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Accordion } from "../UI/Accordion";
 import { requestToAI } from "@/mocks/AIResponse.mock";
 import ReactMarkdown from "react-markdown";
-import { Accordion as AccordionContainer } from "@chakra-ui/react";
+import { Accordion as AccordionContainer, Button } from "@chakra-ui/react";
 import { FC, PropsWithChildren, useEffect } from "react";
 import { UserResponse } from "@supabase/supabase-js";
 
@@ -29,6 +29,9 @@ export const HomePage: FC<IHomePageProps> = ({ user }) => {
 						label={day.LONG}
 					>
 						<ReactMarkdown>{requestToAI.response}</ReactMarkdown>
+						<Button>Generate food</Button>
+						<Button>Generate food image</Button>
+						<Button>Save generation to Database</Button>
 					</Accordion>
 				))}
 			</AccordionContainer>
