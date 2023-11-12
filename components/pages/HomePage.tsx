@@ -7,6 +7,7 @@ import ReactMarkdown from "react-markdown";
 import { Accordion as AccordionContainer, Button } from "@chakra-ui/react";
 import { FC, PropsWithChildren, useEffect } from "react";
 import { UserResponse } from "@supabase/supabase-js";
+import { GenerateNewFoodButton } from "../UI/GenerateNewFoodButton";
 
 interface IHomePageProps extends PropsWithChildren {
 	user: UserResponse;
@@ -29,7 +30,7 @@ export const HomePage: FC<IHomePageProps> = ({ user }) => {
 						label={day.LONG}
 					>
 						<ReactMarkdown>{requestToAI.response}</ReactMarkdown>
-						<Button>Generate food</Button>
+						<GenerateNewFoodButton />
 						<Button>Generate food image</Button>
 						<Button>Save generation to Database</Button>
 					</Accordion>
