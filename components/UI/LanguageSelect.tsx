@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { FaChevronDown } from "react-icons/fa";
 
 export const LanguageSelect = () => {
-	const { i18n } = useTranslation();
+	const { t, i18n } = useTranslation();
 
 	const changeLanguage = (languageKey: string) => {
 		i18n.changeLanguage(languageKey);
@@ -19,7 +19,7 @@ export const LanguageSelect = () => {
 				className="rounded-md p-2 bg-white"
 				rightIcon={<FaChevronDown />}
 			>
-				Choose Language
+				{t("CHANGE_LANGUAGE")}
 			</MenuButton>
 			<MenuList
 				className="rounded-md bg-white p-2"

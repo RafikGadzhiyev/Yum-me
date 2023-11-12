@@ -1,54 +1,55 @@
 {
-  "AGE": "Age (Translate)",
-  "CALORIES_PER_DAY": "Calories per day (Translate)",
-  "CHOOSE_LANGUAGE": "Choose language (Translate)",
-  "CLOSE": "Close (Translate)",
-  "CONFIGURE": "Configure (Translate)",
-  "CONTRAINDICATIONS": "Contraindications (Translate)",
+  "AGE": "Возраст",
+  "CALORIES_PER_DAY": "Калорий в день",
+  "CHANGE_LANGUAGE": "Изменить язык",
+  "CHOOSE_LANGUAGE": "Выбрать язык",
+  "CLOSE": "Закрыть",
+  "CONFIGURE": "Настроить",
+  "CONTRAINDICATIONS": "Противопоказания",
   "DAY_OF_WEEK": {
     "MONDAY": {
-      "LONG": "Monday (Translate)",
-      "SHORT": "Mn (Translate)"
+      "LONG": "Понедельник",
+      "SHORT": "Пн"
     },
     "TUESDAY": {
-      "LONG": "Tuesday (Translate)",
-      "SHORT": "Tu (Translate)"
+      "LONG": "Вторник",
+      "SHORT": "Вт"
     },
     "WEDNESDAY": {
-      "LONG": "Wednesday (Translate)",
-      "SHORT": "We (Translate)"
+      "LONG": "Среда",
+      "SHORT": "Ср"
     },
     "THURSDAY": {
-      "LONG": "Thursday (Translate)",
-      "SHORT": "Th (Translate)"
+      "LONG": "Четверг",
+      "SHORT": "Чт"
     },
     "FRIDAY": {
-      "LONG": "Friday (Translate)",
-      "SHORT": "Fr (Translate)"
+      "LONG": "Пятница",
+      "SHORT": "Пт"
     },
     "SATURDAY": {
-      "LONG": "Saturday (Translate)",
-      "SHORT": "St (Translate)"
+      "LONG": "Суббота",
+      "SHORT": "Сб"
     },
     "SUNDAY": {
-      "LONG": "Sunday (Translate)",
-      "SHORT": "Su (Translate)"
+      "LONG": "Воскресенье",
+      "SHORT": "Вс"
     }
   },
   "FEMALE": "Female (Translate)",
-  "GENDER": "Gender (Translate)",
-  "HEIGHT": "Height (Translate)",
+  "GENDER": "Пол",
+  "HEIGHT": "Рост",
   "MALE": "Male (Translate)",
-  "RESET": "Reset (Translate)",
-  "SAVE": "Save (Translate)",
-  "SEARCH": "Search (Translate)",
-  "SHOW_CONFIG": "Show config (Translate)",
-  "SIGN_IN": "Sign in(Translate)",
-  "SIGN_OUT": "Sign out(Translate)",
-  "SIGN_UP": "Sign up(Translate)",
+  "RESET": "Сбросить",
+  "SAVE": "Сохранить",
+  "SEARCH": "Поиск",
+  "SHOW_CONFIG": "Показать настройку",
+  "SIGN_IN": "Вход",
+  "SIGN_OUT": "Выход",
+  "SIGN_UP": "Зарегистрироваться",
   "USER_HEALTH_CONFIG": "User health configuration (Translate)",
-  "WEIGHT": "Weight (Translate)",
-  "WISHES": "Wishes (Translate)",
+  "WEIGHT": "Вес",
+  "WISHES": "Пожелания",
   "INDEX_PAGE": {
     "AUTH_FORM_TITLE": "Sign up to your app! It is very simple!(Translate)"
   },
