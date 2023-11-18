@@ -9,7 +9,7 @@ type Route = {
 	path: string;
 	key: string;
 	label: string;
-	Icon: () => JSX;
+	Icon?: () => JSX;
 };
 
 type RequestError = {

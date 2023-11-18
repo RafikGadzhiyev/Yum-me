@@ -6,7 +6,7 @@ export default function ProtectedPagesLayout({ children }: PropsWithChildren) {
 		<div className="grid grid-rows-[auto_1fr]  md:flex ">
 			<SideBar />
 			<ScrollableLayout>
-				<div className="p-2 bg-slate-100 flex-1 md:pb-2 h-fit min-h-[100vh] relative">
+				<div className="p-2 bg-slate-100 flex-1 md:pb-2 h-fit min-h-[100dvh] relative">
 					{children}
 				</div>
 			</ScrollableLayout>

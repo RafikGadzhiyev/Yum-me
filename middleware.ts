@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
-import { ROUTES } from "./configs/routes.config";
+import { AUTH_ROUTES, ROUTES } from "./configs/routes.config";
 
 export async function middleware(req: NextRequest) {
 	const res = NextResponse.next();
@@ -10,9 +10,17 @@ export async function middleware(req: NextRequest) {
 		data: { user },
 	} = await supabase.auth.getUser();
 
-	if (!user && req.nextUrl.pathname !== "/") {
-		return NextResponse.redirect(new URL("/", req.url));
-	} else if (user && req.nextUrl.pathname == "/") {
+	const currentPath = req.nextUrl.pathname;
+	const isAuthPage =
+		currentPath.startsWith(AUTH_ROUTES.SIGN_IN.path) ||
+		currentPath.startsWith(AUTH_ROUTES.SIGN_UP.path);
+
+	// if (currentPath.startsWith(AUTH_ROUTES.EMAIL_VERIFICATION.path)) {
+	// 	return res;
+	// }
+	if (!user && !isAuthPage) {
+		return NextResponse.redirect(new URL(AUTH_ROUTES.SIGN_IN.path, req.url));
+	} else if (user && isAuthPage) {
 		return NextResponse.redirect(new URL(ROUTES.HOME.path, req.url));
 	}
 

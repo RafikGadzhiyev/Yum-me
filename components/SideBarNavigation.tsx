@@ -51,7 +51,7 @@ export const SideBarNavigation = () => {
 							href={route.path}
 							className="w-full p-2 flex items-center gap-4"
 						>
-							<route.Icon />
+							{route.Icon && <route.Icon />}
 							{t(`NAVIGATION.${route.key.toUpperCase()}`)}
 						</Link>
 					</li>

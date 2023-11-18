@@ -34,4 +34,23 @@ export const ROUTES: Record<string, Route> = {
 	},
 };
 
+// ? ВОзможно, это не нужно, но пусть стоит, чтобы ориентироваться по какому роуту авторизация идет
+export const AUTH_ROUTES: Record<string, Route> = {
+	SIGN_IN: {
+		path: "/sign_in",
+		key: "sign_in",
+		label: "Sign in",
+	},
+	SIGN_UP: {
+		path: "/sign_up",
+		key: "sign_up",
+		label: "Sign up",
+	},
+	EMAIL_VERIFICATION: {
+		path: "/email_verification",
+		key: "email_verification",
+		label: "Email verification",
+	},
+};
+
 export const ROUTE_LIST: Route[] = Object.values(ROUTES);

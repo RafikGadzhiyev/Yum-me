@@ -9,7 +9,7 @@ import { CacheProvider } from "@chakra-ui/next-js";
 export const Provider: FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<CacheProvider>
-			<ChakraProvider>{children}</ChakraProvider>;
+			<ChakraProvider>{children}</ChakraProvider>
 		</CacheProvider>
 	);
 };
