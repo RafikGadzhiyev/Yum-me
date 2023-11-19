@@ -12,13 +12,14 @@ export const useFetch = <T>() => {
 		result: null,
 	});
 
-	// Collection of abort controllers that need for aborting repeatings request on the same endpoint
+	// TODO: realtime requests will not aborted
+	// Collection of abort controllers that need for aborting repeatings request on the same endpoint (if it real time request, it will not)
 	const abortControllers = useRef<Record<string, AbortController>>({});
 
 	const sendRequest = (
 		method: string,
 		url: string,
-		body: null | BodyInit = null,
+		body: null | Record<string, any> = null,
 		headers: null | Record<string, string> = null //? Something bad here
 	) => {
 		const requestAbortController = new AbortController();
@@ -46,9 +47,9 @@ export const useFetch = <T>() => {
 			}
 		}
 
-		fetch(BASE_URL + url, request)
+		return fetch(BASE_URL + url, request)
 			.then((response) => {
-				response.json().then((data) => {
+				return response.json().then((data) => {
 					setResponse((prev) => ({
 						...prev,
 						result: data,

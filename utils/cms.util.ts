@@ -7,10 +7,8 @@ const supabaseURL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 
 export const supabase = createClient(supabaseURL, supabaseClientKey);
 
-export const supabaseClient = createClientComponentClient();
-// export const supabaseClient = createClient(supabaseURL, supabaseClientKey, {
-// 	auth: {
-// 		debug: process.env.NODE_ENV !== "production",
-// 		// persistSession: false,
-// 	},
-// });
+export const supabaseClient = createClientComponentClient({
+	supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+	supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+	isSingleton: true,
+});

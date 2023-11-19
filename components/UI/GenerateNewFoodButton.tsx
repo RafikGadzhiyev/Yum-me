@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FC } from "react";
+import ReactMarkdown from "react-markdown";
+import { useRouter } from "next/navigation";
+
 import { useFetch } from "@/hooks/useFetch";
 import {
 	Button,
-	Input,
 	Text,
 	Modal,
 	ModalBody,
@@ -13,32 +15,53 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	useDisclosure,
-	WrapItem,
 	Card,
 	Collapse,
 } from "@chakra-ui/react";
 import { Loading } from "./Loading";
 
-export const GenerateNewFoodButton = () => {
-	const [AIMessage, setAIMessage] = useState("");
+interface IGenerateNewFoodButtonProps {
+	email: string;
+	updateGeneratedFoodList: (generatedFood: Record<string, any>) => void;
+}
+
+export const GenerateNewFoodButton: FC<IGenerateNewFoodButtonProps> = ({
+	email,
+	updateGeneratedFoodList,
+}) => {
+	const router = useRouter();
+
 	const { isLoading, sendRequest, response } = useFetch();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const generateNewAIResponse = () => {
-		if (!AIMessage.length) return;
-
-		sendRequest("GET", `/api/AI/generate_text?message=${AIMessage}`);
+		sendRequest("GET", `/api/AI/generate_text?email=${email}`);
 	};
 
-	useEffect(() => {
-		if (isLoading) {
-			console.log(response.result);
-		}
-	}, [isLoading, response]);
+	const addNewFood = () => {
+		const generatedDate = new Date();
+		const request = {
+			email,
+			generatedDate,
+			food: (response.result?.data as any)?.result || "",
+		};
+		sendRequest("POST", "/api/storage/text_generation", request, {
+			"Content-Type": "application/json",
+		})
+			.then(() => {
+				updateGeneratedFoodList(request);
+			})
+			.finally(onClose);
+	};
 
 	return (
 		<>
-			<Button onClick={onOpen}>Generate food</Button>
+			<Button
+				onClick={onOpen}
+				isLoading={isLoading}
+			>
+				Regenerate
+			</Button>
 			<Modal
 				isOpen={isOpen}
 				onClose={onClose}
@@ -50,20 +73,6 @@ export const GenerateNewFoodButton = () => {
 
 					<ModalHeader>Generation message prompt</ModalHeader>
 					<ModalBody>
-						<Input
-							placeholder="Write you message"
-							required
-							value={AIMessage}
-							onChange={(e) => setAIMessage(e.target.value)}
-						/>
-
-						<Text
-							size="xs"
-							className="text-red-400"
-						>
-							Generation may take a while ~ 1-2 minutes
-						</Text>
-
 						<Collapse
 							in={!isLoading && !!response.result}
 							animateOpacity
@@ -74,43 +83,30 @@ export const GenerateNewFoodButton = () => {
 									p={3}
 									my={2}
 								>
-									<Text>{(response.result?.data as any)?.result || ""}</Text>
+									<ReactMarkdown>
+										{(response.result?.data as any)?.result || ""}
+									</ReactMarkdown>
 								</Card>
-
-								<div className="flex items-center gap-3 justify-end">
-									<Button
-										onClick={onClose}
-										variant="ghost"
-										colorScheme="green"
-									>
-										Save
-									</Button>
-									<Button
-										onClick={generateNewAIResponse}
-										variant="ghost"
-										colorScheme="red"
-									>
-										Regenerate
-									</Button>
-								</div>
 							</div>
 						</Collapse>
 					</ModalBody>
 					<ModalFooter gap={2}>
-						<Button
-							onClick={onClose}
-							variant="ghost"
-							colorScheme="red"
-						>
-							Close
-						</Button>
-						<Button
-							onClick={generateNewAIResponse}
-							variant="ghost"
-							colorScheme="green"
-						>
-							Generate
-						</Button>
+						<div className="flex items-center gap-3 justify-end">
+							<Button
+								onClick={addNewFood}
+								variant="ghost"
+								colorScheme="green"
+							>
+								Save
+							</Button>
+							<Button
+								onClick={generateNewAIResponse}
+								variant="ghost"
+								colorScheme="red"
+							>
+								Regenerate
+							</Button>
+						</div>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>

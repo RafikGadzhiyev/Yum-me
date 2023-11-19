@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { Accordion } from "../UI/Accordion";
 import { requestToAI } from "@/mocks/AIResponse.mock";
@@ -8,6 +10,7 @@ import { Accordion as AccordionContainer, Button } from "@chakra-ui/react";
 import { FC, PropsWithChildren, useEffect } from "react";
 import { UserResponse } from "@supabase/supabase-js";
 import { GenerateNewFoodButton } from "../UI/GenerateNewFoodButton";
+import { useFetch } from "@/hooks/useFetch";
 
 interface IHomePageProps extends PropsWithChildren {
 	user: UserResponse;
@@ -15,6 +18,36 @@ interface IHomePageProps extends PropsWithChildren {
 
 export const HomePage: FC<IHomePageProps> = ({ user }) => {
 	const { t } = useTranslation();
+	const { sendRequest, response } = useFetch();
+
+	const [generatedFoods, setGeneratedFoods] = useState<Record<string, any>[]>(
+		[]
+	);
+
+	const updateGeneratedFoodList = (generatedFood: Record<string, any>) => {
+		setGeneratedFoods((prevGeneratedFoods) => [
+			...prevGeneratedFoods,
+			generatedFood,
+		]);
+	};
+
+	useEffect(() => {
+		sendRequest(
+			"GET",
+			`/api/storage/text_generation?email=${user.data.user?.email}`
+		);
+	}, []);
+
+	// useEffect(() => {
+	// 	if (!(response.result?.data as any)?.result) return;
+
+	// 	setGeneratedFoods((pregGeneratedFoods) => [
+	// 		...pregGeneratedFoods,
+	// 		(response.result?.data as any)?.result,
+	// 	]);
+	// }, [response.result?.data]);
+
+	console.log(generatedFoods);
 
 	const WEEK_DAYS = Object.entries(t("DAY_OF_WEEK", { returnObjects: true }));
 	return (
@@ -24,18 +57,26 @@ export const HomePage: FC<IHomePageProps> = ({ user }) => {
 				display={"grid"}
 				gap={3}
 			>
-				{WEEK_DAYS.map(([key, day]) => (
+				{(generatedFoods as Array<Record<string, string>>).map((item) => (
 					<Accordion
-						key={key}
-						label={day.LONG}
+						key={item.generatedDate} // TODO: Need to fix
+						label={format(
+							new Date(item.generatedDate),
+							"dd MMMM yyyy HH:MM:SS"
+						)}
 					>
-						<ReactMarkdown>{requestToAI.response}</ReactMarkdown>
-						<GenerateNewFoodButton />
-						<Button>Generate food image</Button>
-						<Button>Save generation to Database</Button>
+						<ReactMarkdown>{item.food}</ReactMarkdown>
 					</Accordion>
 				))}
 			</AccordionContainer>
+			<div>
+				<GenerateNewFoodButton
+					email={user.data.user?.email || ""}
+					updateGeneratedFoodList={updateGeneratedFoodList}
+				/>
+				<Button>Generate food image</Button>
+				<Button>Save generation to Database</Button>
+			</div>
 		</div>
 	);
 };

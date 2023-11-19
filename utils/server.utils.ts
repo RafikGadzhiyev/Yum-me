@@ -9,5 +9,5 @@ export const getUser = async (user: any) => {
 
 	const { data } = await response.json();
 
-	return data || [];
+	return data || {};
 };

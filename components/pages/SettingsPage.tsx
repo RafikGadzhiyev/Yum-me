@@ -1,9 +1,11 @@
 "use client";
 
 import { FC, PropsWithChildren, useState } from "react";
+
 import { RadioGroup } from "@headlessui/react";
 import { ContentModal } from "../UI/ContentModal";
 import { Loading } from "../UI/Loading";
+
 import { useFetch } from "@/hooks/useFetch";
 import { useTranslation } from "react-i18next";
 
@@ -20,7 +22,7 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({
 }) => {
 	const { t } = useTranslation();
 
-	const { isLoading, response, sendRequest, stopRequest } = useFetch();
+	const { isLoading, sendRequest } = useFetch();
 	const [healthConfig, setHealthConfig] = useState(structuredClone(config));
 
 	const updateConfig = (key: string, value: string) => {
