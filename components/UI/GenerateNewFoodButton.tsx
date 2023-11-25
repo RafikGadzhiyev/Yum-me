@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/navigation";
 
@@ -29,13 +29,39 @@ export const GenerateNewFoodButton: FC<IGenerateNewFoodButtonProps> = ({
 	email,
 	updateGeneratedFoodList,
 }) => {
+	const [AIResponse, setAIResponse] = useState("");
+	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);
 	const router = useRouter();
 
 	const { isLoading, sendRequest, response } = useFetch();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const generateNewAIResponse = () => {
-		sendRequest("GET", `/api/AI/generate_text?email=${email}`);
+	const generateNewAIResponse = async () => {
+		const response = await fetch(
+			`http://localhost:3000/api/AI/generate_text?email=${email}`
+		);
+		// const response = await sendRequest("GET", `/api/AI/generate_text?email=${email}`);
+
+		// console.log(response.body)
+		const data = response.body;
+
+		if (!data) {
+			return;
+		}
+
+		const reader = data.getReader();
+		const decoder = new TextDecoder();
+
+		let done = false;
+
+		while (!done) {
+			const { value, done: doneReading } = await reader.read();
+			done = doneReading;
+
+			const chunkValue = decoder.decode(value);
+			// console.log(chunkValue)
+			setAIResponse((prevAIResponse) => prevAIResponse + chunkValue);
+		}
 	};
 
 	const addNewFood = () => {
@@ -53,6 +79,13 @@ export const GenerateNewFoodButton: FC<IGenerateNewFoodButtonProps> = ({
 			})
 			.finally(onClose);
 	};
+
+	useEffect(() => {
+		AIResponseContainerRef.current?.scrollIntoView({
+			block: "end",
+			behavior: "smooth",
+		});
+	}, [AIResponse]);
 
 	return (
 		<>
@@ -73,18 +106,21 @@ export const GenerateNewFoodButton: FC<IGenerateNewFoodButtonProps> = ({
 
 					<ModalHeader>Generation message prompt</ModalHeader>
 					<ModalBody>
+						{/* in={!isLoading && !!response.result} */}
 						<Collapse
-							in={!isLoading && !!response.result}
+							in={!!AIResponse}
 							animateOpacity
 						>
 							<div className="max-h-[400px] overflow-y-auto rounded-md">
 								<Card
+									ref={AIResponseContainerRef}
 									backgroundColor="green.300"
 									p={3}
 									my={2}
 								>
 									<ReactMarkdown>
-										{(response.result?.data as any)?.result || ""}
+										{/* {(response.result?.data as any)?.result || ""} */}
+										{AIResponse}
 									</ReactMarkdown>
 								</Card>
 							</div>

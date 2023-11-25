@@ -47,7 +47,7 @@ export const HomePage: FC<IHomePageProps> = ({ user }) => {
 	// 	]);
 	// }, [response.result?.data]);
 
-	console.log(generatedFoods);
+	// console.log(generatedFoods);
 
 	const WEEK_DAYS = Object.entries(t("DAY_OF_WEEK", { returnObjects: true }));
 	return (

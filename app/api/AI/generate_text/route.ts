@@ -3,6 +3,12 @@ import { openAI } from "@/utils/instances.util";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { ChatCompletionCreateParams } from "openai/resources/index.mjs";
+import { OpenAIStream, StreamingTextResponse } from "ai";
+
+export const config = {
+	runtime: "edge",
+};
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
 	try {
@@ -35,7 +41,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 			data
 		)}\n\nНапиши без лишнего вступления, ни с чем не связывай, так как я это буду отправлять человеку, он должен понять, что ему это адресованно. Язык, на котором нужно написать - Markdown`;
 
-		const textGenerationResult = await openAI.chat.completions.create({
+		const requestPayload: ChatCompletionCreateParams = {
 			messages: [
 				{
 					role: "system",
@@ -48,15 +54,20 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 				},
 			],
 			model: "gpt-3.5-turbo",
-		});
+			temperature: 0.7,
+			stream: true,
+			n: 1,
+		};
 
-		return handleRequest(
-			{
-				result: textGenerationResult.choices[0].message.content,
-			},
-			null,
-			200
+		const encoder = new TextEncoder();
+
+		const textGenerationResult = await openAI.chat.completions.create(
+			requestPayload
 		);
+
+		const stream = OpenAIStream(textGenerationResult);
+
+		return new StreamingTextResponse(stream);
 	} catch (e) {
 		return NextResponse.json(e, { status: 403 });
 	}

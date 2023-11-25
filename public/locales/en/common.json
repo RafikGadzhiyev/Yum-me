@@ -1,46 +1,46 @@
 {
-    "CONFIGURE": "Configure",
-    "DAY_OF_WEEK": {
-        "MONDAY": {
-            "LONG": "Monday",
-            "SHORT": "Mn"
-        },
-        "TUESDAY": {
-            "LONG": "Tuesday",
-            "SHORT": "Tu"
-        },
-        "WEDNESDAY": {
-            "LONG": "Wednesday",
-            "SHORT": "We"
-        },
-        "THURSDAY": {
-            "LONG": "Thursday",
-            "SHORT": "Th"
-        },
-        "FRIDAY": {
-            "LONG": "Friday",
-            "SHORT": "Fr"
-        },
-        "SATURDAY": {
-            "LONG": "Saturday",
-            "SHORT": "St"
-        },
-        "SUNDAY": {
-            "LONG": "Sunday",
-            "SHORT": "Su"
-        }
-    },
-    "SIGN_IN": "Sign in",
-    "SIGN_OUT": "Sign out",
-    "SIGN_UP": "Sign up",
-    "INDEX_PAGE": {
-        "AUTH_FORM_TITLE": "Sign up to your app! It is very simple!"
-    },
-    "NAVIGATION": {
-        "HOME": "Home",
-        "PROFILE": "Profile",
-        "SAVED_RECIPES": "Saved recipes",
-        "SEARCH": "Search",
-        "SETTINGS": "Settings"
-    }
+	"CONFIGURE": "Configure",
+	"DAY_OF_WEEK": {
+		"MONDAY": {
+			"LONG": "Monday",
+			"SHORT": "Mn"
+		},
+		"TUESDAY": {
+			"LONG": "Tuesday",
+			"SHORT": "Tu"
+		},
+		"WEDNESDAY": {
+			"LONG": "Wednesday",
+			"SHORT": "We"
+		},
+		"THURSDAY": {
+			"LONG": "Thursday",
+			"SHORT": "Th"
+		},
+		"FRIDAY": {
+			"LONG": "Friday",
+			"SHORT": "Fr"
+		},
+		"SATURDAY": {
+			"LONG": "Saturday",
+			"SHORT": "St"
+		},
+		"SUNDAY": {
+			"LONG": "Sunday",
+			"SHORT": "Su"
+		}
+	},
+	"SIGN_IN": "Sign in",
+	"SIGN_OUT": "Sign out",
+	"SIGN_UP": "Sign up",
+	"INDEX_PAGE": {
+		"AUTH_FORM_TITLE": "Sign up to your app! It is very simple!"
+	},
+	"NAVIGATION": {
+		"HOME": "Home",
+		"PROFILE": "Profile",
+		"SAVED_RECIPES": "Saved recipes",
+		"SEARCH": "Search",
+		"SETTINGS": "Settings"
+	}
 }
