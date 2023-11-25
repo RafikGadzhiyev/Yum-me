@@ -1,7 +1,7 @@
 "use client"; // TODO: REMOVE THAT SHIT
 
 import { ROUTES } from "@/configs/routes.config";
-import { supabaseClient } from "@/utils/supabase.util";
+import { supabaseClient } from "@/lib/supabase";
 import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 
