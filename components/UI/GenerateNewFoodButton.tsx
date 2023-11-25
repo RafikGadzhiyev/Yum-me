@@ -33,17 +33,16 @@ export const GenerateNewFoodButton: FC<IGenerateNewFoodButtonProps> = ({
 	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);
 	const router = useRouter();
 
-	const { isLoading, sendRequest, response } = useFetch();
+	const { isLoading, sendRequest, sendStreamRequest, response } = useFetch();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const generateNewAIResponse = async () => {
-		const response = await fetch(
-			`http://localhost:3000/api/AI/generate_text?email=${email}`
-		);
-		// const response = await sendRequest("GET", `/api/AI/generate_text?email=${email}`);
+		setAIResponse("");
 
-		// console.log(response.body)
-		const data = response.body;
+		const data = await sendStreamRequest(
+			"GET",
+			`/api/AI/generate_text?email=${email}`
+		);
 
 		if (!data) {
 			return;

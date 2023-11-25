@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useLoading } from "./useLoading";
 
-// TODO: Implement
+// TODO: Try to create one function for all fetch types
 export const useFetch = <T>() => {
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
@@ -67,6 +67,44 @@ export const useFetch = <T>() => {
 			.finally(stopLoading);
 	};
 
+	const sendStreamRequest = async (
+		method: string,
+		url: string,
+		body: null | Record<string, any> = null,
+		headers: null | Record<string, string> = null //? Something bad here
+	): Promise<ReadableStream<Uint8Array> | null> => {
+		const requestAbortController = new AbortController();
+
+		if (abortControllers.current[url]) {
+			abortControllers.current[url].abort();
+
+			// console.log("Previous request has aborted"); //? Maybe only for dev mode
+		}
+
+		abortControllers.current[url] = requestAbortController;
+
+		startLoading();
+
+		const request: RequestInit = {
+			method,
+			signal: requestAbortController.signal,
+		};
+
+		if (headers) {
+			request.headers = headers;
+
+			if (headers["Content-Type"] === "application/json" && body) {
+				request.body = JSON.stringify(body);
+			}
+		}
+
+		const response = await fetch(BASE_URL + url, request);
+
+		stopLoading();
+
+		return response.body;
+	};
+
 	const stopRequest = (url: string) => {
 		if (abortControllers.current[url]) {
 			abortControllers.current[url].abort();
@@ -87,6 +125,7 @@ export const useFetch = <T>() => {
 		isLoading,
 		response,
 		sendRequest,
+		sendStreamRequest,
 		stopRequest,
 	};
 };
