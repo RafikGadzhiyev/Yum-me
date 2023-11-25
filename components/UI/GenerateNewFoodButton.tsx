@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useFetch } from "@/hooks/useFetch";
 import {
 	Button,
-	Text,
 	Modal,
 	ModalBody,
 	ModalContent,
@@ -23,11 +22,13 @@ import { Loading } from "./Loading";
 interface IGenerateNewFoodButtonProps {
 	email: string;
 	updateGeneratedFoodList: (generatedFood: Record<string, any>) => void;
+	data: any;
 }
 
 export const GenerateNewFoodButton: FC<IGenerateNewFoodButtonProps> = ({
 	email,
 	updateGeneratedFoodList,
+	data,
 }) => {
 	const [AIResponse, setAIResponse] = useState("");
 	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);
@@ -39,16 +40,20 @@ export const GenerateNewFoodButton: FC<IGenerateNewFoodButtonProps> = ({
 	const generateNewAIResponse = async () => {
 		setAIResponse("");
 
-		const data = await sendStreamRequest(
-			"GET",
-			`/api/AI/generate_text?email=${email}`
+		const streamedData = await sendStreamRequest(
+			"POST",
+			`/api/AI/generate_text?email=${email}`,
+			data,
+			{
+				"Content-Type": "application/json",
+			}
 		);
 
-		if (!data) {
+		if (!streamedData) {
 			return;
 		}
 
-		const reader = data.getReader();
+		const reader = streamedData.getReader();
 		const decoder = new TextDecoder();
 
 		let done = false;
@@ -58,7 +63,6 @@ export const GenerateNewFoodButton: FC<IGenerateNewFoodButtonProps> = ({
 			done = doneReading;
 
 			const chunkValue = decoder.decode(value);
-			// console.log(chunkValue)
 			setAIResponse((prevAIResponse) => prevAIResponse + chunkValue);
 		}
 	};

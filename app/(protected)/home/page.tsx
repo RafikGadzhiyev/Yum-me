@@ -14,12 +14,17 @@ export default async function MainPage() {
 	const user = await supabaseServerComponentsClient.auth.getUser();
 	const data = await getUser(user);
 
+	console.log(data);
+
 	return (
 		<div
 			className="grid gap-4 relative w-full min-h-full"
 			tabIndex={0}
 		>
-			<HomePage user={user} />
+			<HomePage
+				user={user}
+				data={data}
+			/>
 			{!isConfigured(data) && (
 				<div className="absolute rounded-md top-0 left-0 bg-black/50 w-full h-full text-white flex  flex-col items-center justify-center">
 					<div className="text-5xl grid place-items-center">

@@ -19,8 +19,12 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 
 		let { data, error } = await supabase
 			.from("User")
-			.select()
-			.eq("email", email);
+			.select(
+				"age, weight, height, contraindications, wishes, gender, calories_per_day"
+			)
+			.eq("email", email)
+			.limit(1)
+			.single();
 
 		if (error) {
 			return handleRequest(
@@ -33,7 +37,15 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 			);
 		}
 
-		data = data ? data[0] : {};
+		data = data || {
+			age: 0,
+			weight: 0,
+			height: 0,
+			wishes: "",
+			contraindications: "",
+			gender: null,
+			calories_per_day: 0,
+		};
 
 		return handleRequest(data, null, 200);
 	} catch (e: any) {
