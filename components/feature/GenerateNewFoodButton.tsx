@@ -2,7 +2,6 @@
 
 import { FC, useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { useRouter } from "next/navigation";
 
 import { useFetch } from "@/hooks/useFetch";
 import {
@@ -17,7 +16,7 @@ import {
 	Card,
 	Collapse,
 } from "@chakra-ui/react";
-import { Loading } from "./Loading";
+import { Loading } from "../UI/Loading";
 
 interface IGenerateNewFoodButtonProps {
 	email: string;
@@ -32,7 +31,6 @@ export const GenerateNewFoodButton: FC<IGenerateNewFoodButtonProps> = ({
 }) => {
 	const [AIResponse, setAIResponse] = useState("");
 	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);
-	const router = useRouter();
 
 	const { isLoading, sendRequest, sendStreamRequest, response } = useFetch();
 	const { isOpen, onOpen, onClose } = useDisclosure();

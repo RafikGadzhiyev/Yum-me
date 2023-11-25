@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { AUTH_ROUTES } from "@/configs/routes.config";
 

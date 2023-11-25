@@ -1,9 +1,9 @@
 // Run command: node i18n/dev-scripts/sync.js
 
+const fs = require("fs/promises");
+
 const LANGUAGES = ["ru", "en"];
 const SYNC_BY = "en";
-
-const fs = require("fs/promises");
 
 const FILE_PATH = "../../i18n/languages";
 const FILE_EXTENSION = ".json";
@@ -34,6 +34,7 @@ function sortDictionaryKeysByType(dictionary) {
 
 	for (let key of Object.keys(dictionary)) {
 		let term = dictionary[key];
+
 		if (typeof term === "string" || IGNORE_SORT_KEYS.includes(key)) {
 			stringTerms[key] = term;
 		} else {
@@ -67,6 +68,7 @@ function syncTranslate(syncBy, syncFor) {
 				dict[key] = syncFor[key];
 				continue;
 			}
+
 			dict[key] = term + " (Translate)";
 		} else if (typeof term === "object") {
 			dict[key] = syncTranslate(term, syncFor[key] || {});

@@ -17,7 +17,12 @@ export const useShowToast = () => {
 	const toast = useToast();
 
 	const show = (props: IShowToastProps) => {
-		toast(props);
+		const paramsWithDefaultValues = {
+			...DEFAULT_PARAMS,
+			...props,
+		};
+
+		toast(paramsWithDefaultValues);
 	};
 
 	return {

@@ -3,7 +3,7 @@
 import { FC, PropsWithChildren, useState } from "react";
 
 import { RadioGroup } from "@headlessui/react";
-import { ContentModal } from "../UI/ContentModal";
+import { ContentModal } from "../modals/ContentModal";
 import { Loading } from "../UI/Loading";
 
 import { useFetch } from "@/hooks/useFetch";

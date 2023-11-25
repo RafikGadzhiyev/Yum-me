@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation";
 import { PASSWORD_RESTRICTION } from "@/configs/auth.config";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { supabaseClient } from "@/utils/cms.util";
+import { supabaseClient } from "@/lib/supabase";
 
 const EYE_ICON_SIZE = 20;
 

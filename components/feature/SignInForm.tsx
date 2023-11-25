@@ -16,7 +16,7 @@ import { Form, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useLoading } from "@/hooks/useLoading";
 import { useEffect } from "react";
-import { supabaseClient } from "@/utils/cms.util";
+import { supabaseClient } from "@/lib/supabase";
 import { useShowToast } from "@/hooks/useShowToast";
 import { useRouter } from "next/navigation";
 

@@ -1,12 +1,10 @@
 import { User } from "@supabase/supabase-js";
-import { supabase, supabaseClient } from "./cms.util";
-import { handleRequest, handlerError, hanldeData } from "./handlers.util";
+import { supabase, supabaseClient } from "@/lib/supabase";
+import { handleRequest } from "./handlers.util";
 import { isEmpty } from "./validation.util";
 
 // ? Connect types with Supabase types
-
 export const signUp = async (formData: Record<string, string>) => {
-	// checking data
 	const { email, password, captchaToken } = formData;
 
 	const newUser = await supabase.auth.signUp({
@@ -18,17 +16,28 @@ export const signUp = async (formData: Record<string, string>) => {
 	});
 
 	if (newUser.error) {
-		return handlerError(newUser.error.name, newUser.error.message, 400);
+		return handleRequest(
+			null,
+			{
+				title: newUser.error.name,
+				message: newUser.error.message,
+			},
+			400
+		);
 	}
 
-	return hanldeData<User>(newUser.data.user as User);
+	return handleRequest<User>(newUser.data.user as User, null, 200);
 };
 
 export const signIn = async (formData: Record<string, string>) => {
 	const { email, password, captchaToken } = formData;
 
 	if (isEmpty(email) || isEmpty(password)) {
-		return handlerError("Invalid data", "Please, fill fields", 400);
+		return handleRequest(
+			null,
+			{ title: "Invalid data", message: "Please, fill fields" },
+			400
+		);
 	}
 
 	const session = await supabase.auth.signInWithPassword({
@@ -40,19 +49,28 @@ export const signIn = async (formData: Record<string, string>) => {
 	});
 
 	if (session.error) {
-		return handlerError(session.error.name, session.error.message, 400);
+		return handleRequest(
+			null,
+			{ title: session.error.name, message: session.error.message },
+			400
+		);
 	}
 
-	return hanldeData<User>(session.data.user as User);
+	return handleRequest<User>(session.data.user as User, null, 200);
 };
 
 export const getUser = async () => {
 	const { data, error } = await supabaseClient.auth.getSession();
 
 	if (error) {
-		// return handleRequest(null, { title: error.cause, message: error.message });
-		return error;
+		return null;
 	}
 
-	return data;
+	if (!data.session) {
+		return null;
+	}
+
+	let user = data.session.user;
+
+	return user;
 };

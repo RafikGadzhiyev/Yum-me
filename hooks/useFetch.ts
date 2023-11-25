@@ -1,7 +1,6 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useLoading } from "./useLoading";
 
-// TODO: Try to create one function for all fetch types
 export const useFetch = <T>() => {
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
@@ -13,59 +12,65 @@ export const useFetch = <T>() => {
 	});
 
 	// TODO: realtime requests will not aborted
-	// Collection of abort controllers that need for aborting repeatings request on the same endpoint (if it real time request, it will not)
 	const abortControllers = useRef<Record<string, AbortController>>({});
 
-	const sendRequest = (
-		method: string,
-		url: string,
-		body: null | Record<string, any> = null,
-		headers: null | Record<string, string> = null //? Something bad here
-	) => {
+	const abortPreviousRequestAndSaveNew = (url: string) => {
 		const requestAbortController = new AbortController();
 
 		if (abortControllers.current[url]) {
 			abortControllers.current[url].abort();
-
-			// console.log("Previous request has aborted"); //? Maybe only for dev mode
 		}
 
 		abortControllers.current[url] = requestAbortController;
 
-		startLoading();
+		return abortControllers.current[url];
+	};
 
-		const request: RequestInit = {
-			method,
-			signal: requestAbortController.signal,
-		};
+	const sendRequest = useCallback(
+		(
+			method: string,
+			url: string,
+			body: null | Record<string, any> = null,
+			headers: null | Record<string, string> = null //? Something bad here
+		) => {
+			const requestController = abortPreviousRequestAndSaveNew(url);
 
-		if (headers) {
-			request.headers = headers;
+			startLoading();
 
-			if (headers["Content-Type"] === "application/json" && body) {
-				request.body = JSON.stringify(body);
+			const request: RequestInit = {
+				method,
+				signal: requestController.signal,
+			};
+
+			if (headers) {
+				request.headers = headers;
+
+				if (headers["Content-Type"] === "application/json" && body) {
+					request.body = JSON.stringify(body);
+				}
 			}
-		}
 
-		return fetch(BASE_URL + url, request)
-			.then((response) => {
-				return response.json().then((data) => {
+			return fetch(BASE_URL + url, request)
+				.then((response) => {
+					return response.json().then((data) => {
+						setResponse((prev) => ({
+							...prev,
+							result: data,
+						}));
+					});
+				})
+				.catch((error) => {
 					setResponse((prev) => ({
 						...prev,
-						result: data,
+						result: error,
 					}));
-				});
-			})
-			.catch((error) => {
-				setResponse((prev) => ({
-					...prev,
-					result: error,
-				}));
 
-				console.log(error);
-			})
-			.finally(stopLoading);
-	};
+					console.log(error);
+				})
+				.finally(stopLoading);
+		},
+		[BASE_URL, startLoading, stopLoading]
+	);
 
 	const sendStreamRequest = async (
 		method: string,
@@ -73,21 +78,13 @@ export const useFetch = <T>() => {
 		body: null | Record<string, any> = null,
 		headers: null | Record<string, string> = null //? Something bad here
 	): Promise<ReadableStream<Uint8Array> | null> => {
-		const requestAbortController = new AbortController();
-
-		if (abortControllers.current[url]) {
-			abortControllers.current[url].abort();
-
-			// console.log("Previous request has aborted"); //? Maybe only for dev mode
-		}
-
-		abortControllers.current[url] = requestAbortController;
+		const requestController = abortPreviousRequestAndSaveNew(url);
 
 		startLoading();
 
 		const request: RequestInit = {
 			method,
-			signal: requestAbortController.signal,
+			signal: requestController.signal,
 		};
 
 		if (headers) {

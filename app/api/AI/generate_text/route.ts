@@ -1,5 +1,5 @@
 import { handleRequest } from "@/utils/handlers.util";
-import { openAI } from "@/utils/instances.util";
+import { openAI } from "@/lib/AI";
 import { NextRequest, NextResponse } from "next/server";
 import { ChatCompletionCreateParams } from "openai/resources/index.mjs";
 import { OpenAIStream, StreamingTextResponse } from "ai";
@@ -59,11 +59,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
 		const stream = OpenAIStream(textGenerationResult);
 
-		return new StreamingTextResponse(stream, {
-			headers: {
-				"X-RATE-LIMIT": "lol",
-			},
-		});
+		return new StreamingTextResponse(stream);
 	} catch (e) {
 		return NextResponse.json(e, { status: 403 });
 	}

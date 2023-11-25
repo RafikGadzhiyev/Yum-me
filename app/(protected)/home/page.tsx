@@ -4,7 +4,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { isConfigured } from "@/utils/validation.util";
-import { getUser } from "@/utils/server.utils";
+import { getUserHealthData } from "@/utils/server.utils";
 
 export default async function MainPage() {
 	const supabaseServerComponentsClient = createServerComponentClient({
@@ -12,7 +12,7 @@ export default async function MainPage() {
 	});
 
 	const user = await supabaseServerComponentsClient.auth.getUser();
-	const data = await getUser(user);
+	const data = await getUserHealthData(user);
 
 	console.log(data);
 

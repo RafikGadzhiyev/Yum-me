@@ -1,6 +1,8 @@
 "use client";
 
 import { FC, PropsWithChildren } from "react";
+import { useTranslation } from "react-i18next";
+
 import {
 	Modal,
 	ModalOverlay,
@@ -12,7 +14,6 @@ import {
 	Button,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { useTranslation } from "react-i18next";
 
 interface IContentWrapper extends PropsWithChildren {
 	config: string;
@@ -35,7 +36,7 @@ export const ContentModal: FC<IContentWrapper> = ({ config }) => {
 				onClose={onClose}
 				isOpen={isOpen}
 				isCentered
-				size={"3xl"}
+				size="3xl"
 			>
 				<ModalOverlay />
 				<ModalContent>

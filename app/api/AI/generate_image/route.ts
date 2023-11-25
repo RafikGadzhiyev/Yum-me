@@ -1,5 +1,5 @@
 import { handleRequest } from "@/utils/handlers.util";
-import { openAI } from "@/utils/instances.util";
+import { openAI } from "@/lib/AI";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest, res: NextResponse) => {

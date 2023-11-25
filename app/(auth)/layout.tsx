@@ -1,4 +1,4 @@
-import { LanguageSelect } from "@/components/UI/LanguageSelect";
+import { LanguageSelect } from "@/components/feature/LanguageSelect";
 import { PropsWithChildren } from "react";
 
 export default function AuthLayout({ children }: PropsWithChildren) {

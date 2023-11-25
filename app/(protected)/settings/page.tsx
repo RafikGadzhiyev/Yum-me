@@ -1,5 +1,5 @@
 import { SettingsPageWrapper } from "@/components/pages/SettingsPage";
-import { getUser } from "@/utils/server.utils";
+import { getUserHealthData } from "@/utils/server.utils";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
@@ -9,7 +9,7 @@ export default async function SettingsPage() {
 	});
 
 	const user = await supabaseServerComponentsClient.auth.getUser();
-	const data = await getUser(user);
+	const data = await getUserHealthData(user);
 
 	return (
 		<div>

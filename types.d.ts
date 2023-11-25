@@ -12,7 +12,7 @@ type Route = {
 	Icon?: () => JSX;
 };
 
-type RequestError = {
+type RequestError = null | {
 	title: string;
 	message: string;
 };

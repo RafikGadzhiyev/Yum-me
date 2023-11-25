@@ -1,11 +1,11 @@
 import { handleRequest } from "@/utils/handlers.util";
-import { openAI } from "@/utils/instances.util";
-import { isDevMode } from "@/utils/nodeEnvType.util";
+import { openAI } from "@/lib/AI";
+import { isDev } from "@/utils/nodeEnvType.util";
 import { NextResponse } from "next/server";
 
 export const GET = async () => {
 	try {
-		if (!isDevMode()) {
+		if (!isDev) {
 			return handleRequest(null, {
 				title: "Bad Request",
 				message: "It is not development mode! Request restricted",

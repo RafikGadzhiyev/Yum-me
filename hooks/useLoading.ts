@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export const useLoading = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const startLoading = () => {
+	const startLoading = useCallback(() => {
 		setIsLoading(true);
-	};
+	}, []);
 
-	const stopLoading = () => {
+	const stopLoading = useCallback(() => {
 		setIsLoading(false);
-	};
+	}, []);
 
 	return {
 		isLoading,

@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { format } from "date-fns";
-import { Accordion } from "../UI/Accordion";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Accordion as AccordionContainer, Button } from "@chakra-ui/react";
-import { FC, PropsWithChildren, useEffect } from "react";
+import { format } from "date-fns";
 import { UserResponse } from "@supabase/supabase-js";
-import { GenerateNewFoodButton } from "../UI/GenerateNewFoodButton";
+
 import { useFetch } from "@/hooks/useFetch";
+
+import { Accordion as AccordionContainer, Button } from "@chakra-ui/react";
+import { Accordion } from "../UI/Accordion";
+import { GenerateNewFoodButton } from "../feature/GenerateNewFoodButton";
 
 // TODO: REFACTOR
 interface IHomePageProps extends PropsWithChildren {
@@ -35,16 +36,7 @@ export const HomePage: FC<IHomePageProps> = ({ user, data }) => {
 			"GET",
 			`/api/storage/text_generation?email=${user.data.user?.email}`
 		);
-	}, []);
-
-	// useEffect(() => {
-	// 	if (!(response.result?.data as any)?.result) return;
-
-	// 	setGeneratedFoods((pregGeneratedFoods) => [
-	// 		...pregGeneratedFoods,
-	// 		(response.result?.data as any)?.result,
-	// 	]);
-	// }, [response.result?.data]);
+	}, [user.data.user?.email, sendRequest]);
 
 	// console.log(generatedFoods);
 

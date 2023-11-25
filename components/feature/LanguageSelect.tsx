@@ -1,9 +1,11 @@
 "use client";
 
-import { LANGUAGES } from "@/i18n/dictionary";
-import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { FaChevronDown } from "react-icons/fa";
+
+import { LANGUAGES } from "@/i18n/dictionary";
+
+import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 
 export const LanguageSelect = () => {
 	const { t, i18n } = useTranslation();

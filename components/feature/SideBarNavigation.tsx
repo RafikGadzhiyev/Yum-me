@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { ROUTE_LIST } from "@/configs/routes.config";
 import { FaListUl } from "react-icons/fa";
+import Link from "next/link";
 import clsx from "clsx";
-import { LanguageSelect } from "./UI/LanguageSelect";
-import { SignOutButton } from "./UI/Buttons";
 
-// TODO: Add transition
+import { ROUTE_LIST } from "@/configs/routes.config";
+
+import { LanguageSelect } from "./LanguageSelect";
+import { SignOutButton } from "../UI/Buttons";
 
 export const SideBarNavigation = () => {
 	const { t } = useTranslation();
