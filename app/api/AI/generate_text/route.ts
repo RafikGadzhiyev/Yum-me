@@ -6,9 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ChatCompletionCreateParams } from "openai/resources/index.mjs";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
-export const config = {
-	runtime: "edge",
-};
+export const runtime= "edge";
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
 	try {
