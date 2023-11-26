@@ -24,7 +24,6 @@ import { isConfigured } from "@/utils/validation.util";
 interface IGenerateNewFoodButtonProps {
 	email: string;
 	updateGeneratedFoodList: (generatedFood: Record<string, any>) => void;
-	// data: any;
 }
 
 export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({

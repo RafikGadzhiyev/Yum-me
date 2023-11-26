@@ -3,8 +3,10 @@
 import { FC, PropsWithChildren, useEffect, useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { AppDispatch } from "@/redux/store";
-import { format } from "date-fns";
 import { User } from "@supabase/supabase-js";
+
+import { format } from "date-fns";
+import {ru, enUS} from 'date-fns/locale'
 
 import { useFetch } from "@/hooks/useFetch";
 import { useDispatch } from "react-redux";
@@ -15,8 +17,9 @@ import { Accordion as AccordionContainer } from "@chakra-ui/react";
 import { Accordion } from "../UI/Accordion";
 import { GenerateNewFoodModal } from "../feature/GenerateNewFoodModal";
 import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
+import { useTranslation } from "react-i18next";
+import { LOCALE_BY_LANGUAGE } from "@/i18n/dictionary";
 
-// TODO: REFACTOR
 interface IHomePageProps extends PropsWithChildren {
 	user: User | null;
 	healthData: any;
@@ -25,6 +28,8 @@ interface IHomePageProps extends PropsWithChildren {
 export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 	const memoizedHealthData = useMemo(() => healthData, [healthData]);
 	const memoizedUser = useMemo(() => user, [user]);
+
+	const {i18n} = useTranslation()
 
 	const { sendRequest } = useFetch();
 	const dispatch = useDispatch<AppDispatch>();
@@ -35,8 +40,8 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 
 	const updateGeneratedFoodList = (generatedFood: Record<string, any>) => {
 		setGeneratedFoods((prevGeneratedFoods) => [
-			...prevGeneratedFoods,
 			generatedFood,
+			...prevGeneratedFoods,
 		]);
 	};
 
@@ -49,7 +54,7 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 				`/api/storage/text_generation?email=${memoizedUser.email}`
 			).then((data) => {
 				if (data) {
-					setGeneratedFoods(data);
+					setGeneratedFoods(data.reverse());
 				}
 			});
 		}
@@ -61,6 +66,12 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 
 	return (
 		<div className=" flex flex-col gap-2">
+			<div>
+				<GenerateNewFoodModal
+					email={user?.email || ""}
+					updateGeneratedFoodList={updateGeneratedFoodList}
+				/>
+			</div>
 			<AccordionContainer
 				allowToggle
 				display={"grid"}
@@ -68,22 +79,19 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 			>
 				{(generatedFoods as Array<Record<string, string>>).map((item) => (
 					<Accordion
-						key={item._id} // TODO: Need to fix
+						key={item._id}
 						label={format(
 							new Date(item.generatedDate),
-							"dd MMMM yyyy HH:MM:SS"
+							"dd MMMM yyyy HH:mm:ss",
+							{
+								locale: LOCALE_BY_LANGUAGE[i18n.language],
+							}
 						)}
 					>
 						<ReactMarkdown>{item.food}</ReactMarkdown>
 					</Accordion>
 				))}
 			</AccordionContainer>
-			<div>
-				<GenerateNewFoodModal
-					email={user?.email || ""}
-					updateGeneratedFoodList={updateGeneratedFoodList}
-				/>
-			</div>
 		</div>
 	);
 };
