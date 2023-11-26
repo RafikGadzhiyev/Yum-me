@@ -35,6 +35,8 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	);
 
 	const [AIResponse, setAIResponse] = useState("");
+	const [isStreamed, setIsStreamed] = useState(false);
+
 	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);
 
 	const { isLoading, sendRequest, sendStreamRequest } = useFetch();
@@ -61,6 +63,8 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 
 		let done = false;
 
+		setIsStreamed(true);
+
 		while (!done) {
 			const { value, done: doneReading } = await reader.read();
 			done = doneReading;
@@ -68,6 +72,8 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 			const chunkValue = decoder.decode(value);
 			setAIResponse((prevAIResponse) => prevAIResponse + chunkValue);
 		}
+
+		setIsStreamed(false)
 	};
 
 	const addNewFood = () => {
@@ -137,7 +143,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 								onClick={addNewFood}
 								variant="ghost"
 								colorScheme="green"
-								isDisabled={!AIResponse}
+								isDisabled={!AIResponse || isStreamed}
 							>
 								Save
 							</Button>
@@ -145,7 +151,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 								onClick={generateNewAIResponse}
 								variant="ghost"
 								colorScheme="red"
-								isDisabled={!isConfigured(healthData)}
+								isDisabled={!isConfigured(healthData) || isStreamed}
 							>
 								Regenerate
 							</Button>
