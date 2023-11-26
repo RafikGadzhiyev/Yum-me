@@ -1,18 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { User } from "@supabase/supabase-js";
 
-// type UserClientSessionData = Omit<
-// 	User,
-// 	| "id"
-// 	| "app_metadata"
-// 	| "user_metadata"
-// 	| "aud"
-// 	| "confirmation_send_at"
-// 	| "recovery_sent_at"
-// 	| "factors"
-// 	| "identities"
-// >;
-
 interface IState {
 	user: User | null;
 }

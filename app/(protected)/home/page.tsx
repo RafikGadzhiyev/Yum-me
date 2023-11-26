@@ -12,9 +12,7 @@ export default async function MainPage() {
 	});
 
 	const user = await supabaseServerComponentsClient.auth.getUser();
-	const data = await getUserHealthData(user);
-
-	// console.log(data, user);
+	const healthdata = await getUserHealthData(user);
 
 	return (
 		<div
@@ -23,9 +21,9 @@ export default async function MainPage() {
 		>
 			<HomePage
 				user={user.data.user}
-				data={data}
+				healthData={healthdata}
 			/>
-			{!isConfigured(data) && (
+			{!isConfigured(healthdata) && (
 				<div className="absolute rounded-md top-0 left-0 bg-black/50 w-full h-full text-white flex  flex-col items-center justify-center">
 					<div className="text-5xl grid place-items-center">
 						<FaLock />

@@ -57,6 +57,8 @@ export const useFetch = <T>() => {
 							...prev,
 							result: data,
 						}));
+
+						return data.data;
 					});
 				})
 				.catch((error) => {

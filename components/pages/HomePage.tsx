@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, PropsWithChildren, useEffect, useState } from "react";
+import { FC, PropsWithChildren, useEffect, useMemo, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { AppDispatch } from "@/redux/store";
 import { format } from "date-fns";
@@ -11,17 +11,21 @@ import { useDispatch } from "react-redux";
 
 import { readUser } from "@/redux/slices/user.slice";
 
-import { Accordion as AccordionContainer, Button } from "@chakra-ui/react";
+import { Accordion as AccordionContainer } from "@chakra-ui/react";
 import { Accordion } from "../UI/Accordion";
 import { GenerateNewFoodModal } from "../feature/GenerateNewFoodModal";
+import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
 
 // TODO: REFACTOR
 interface IHomePageProps extends PropsWithChildren {
 	user: User | null;
-	data: any;
+	healthData: any;
 }
 
-export const HomePage: FC<IHomePageProps> = ({ user, data }) => {
+export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
+	const memoizedHealthData = useMemo(() => healthData, [healthData]);
+	const memoizedUser = useMemo(() => user, [user]);
+
 	const { sendRequest } = useFetch();
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -37,10 +41,23 @@ export const HomePage: FC<IHomePageProps> = ({ user, data }) => {
 	};
 
 	useEffect(() => {
-		dispatch(readUser(user));
+		dispatch(readUser(memoizedUser));
 
-		sendRequest("GET", `/api/storage/text_generation?email=${user?.email}`);
-	}, [user?.email, sendRequest, dispatch]);
+		if (memoizedUser?.email) {
+			sendRequest(
+				"GET",
+				`/api/storage/text_generation?email=${memoizedUser.email}`
+			).then((data) => {
+				if (data) {
+					setGeneratedFoods(data);
+				}
+			});
+		}
+	}, [memoizedUser, sendRequest, dispatch]);
+
+	useEffect(() => {
+		dispatch(readUserHealthData(memoizedHealthData));
+	}, [memoizedHealthData, dispatch]);
 
 	return (
 		<div className=" flex flex-col gap-2">
@@ -51,7 +68,7 @@ export const HomePage: FC<IHomePageProps> = ({ user, data }) => {
 			>
 				{(generatedFoods as Array<Record<string, string>>).map((item) => (
 					<Accordion
-						key={item.generatedDate} // TODO: Need to fix
+						key={item._id} // TODO: Need to fix
 						label={format(
 							new Date(item.generatedDate),
 							"dd MMMM yyyy HH:MM:SS"
@@ -65,10 +82,7 @@ export const HomePage: FC<IHomePageProps> = ({ user, data }) => {
 				<GenerateNewFoodModal
 					email={user?.email || ""}
 					updateGeneratedFoodList={updateGeneratedFoodList}
-					data={data}
 				/>
-				<Button>Generate food image</Button>
-				<Button>Save generation to Database</Button>
 			</div>
 		</div>
 	);
