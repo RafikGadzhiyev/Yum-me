@@ -1,5 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -8,32 +11,20 @@ import {
 	Wrap,
 	FormControl,
 	FormLabel,
-	FormHelperText,
 	FormErrorMessage,
 } from "@chakra-ui/react";
 
-import { Form, SubmitHandler, useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
 import { useLoading } from "@/hooks/useLoading";
-import { useEffect } from "react";
 import { supabaseClient } from "@/lib/supabase";
 import { useShowToast } from "@/hooks/useShowToast";
-import { useRouter } from "next/navigation";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { useState } from "react";
 
 const SignInSchema = z.object({
 	email: z.string().email("Enter email"),
 	password: z
 		.string()
 		.refine((password) => password.length > 0, "Fill the input"),
-	// .min(
-	// 	PASSWORD_RESTRICTION.LENGTH.MIN,
-	// 	"Minimum password length must be at least 6 characters"
-	// )
-	// .max(
-	// 	PASSWORD_RESTRICTION.LENGTH.MAX,
-	// 	"Maximum password length must be at most 18 characters"
-	// )
-	// .regex(new RegExp(`[${PASSWORD_RESTRICTION.SYMBOLS}]`, "g")),
 });
 
 type SignInSchemaType = z.infer<typeof SignInSchema>;
@@ -49,12 +40,24 @@ export const SignInForm = () => {
 
 	const { t } = useTranslation();
 	const { show: showToast } = useShowToast();
+
 	const { isLoading, startLoading, stopLoading } = useLoading();
+
+	const [captcha, setCaptcha] = useState<string | null>(null);
+
 	const router = useRouter();
 
 	const signIn: SubmitHandler<SignInSchemaType> = async (data) => {
-		startLoading();
+		if (!captcha) {
+			showToast({
+				title: "Captcha is required",
+				description: "Please, complete captcha",
+				status: "error",
+			});
+			return;
+		}
 
+		startLoading();
 		const signInResponse = await supabaseClient.auth.signInWithPassword({
 			email: data.email,
 			password: data.password,
@@ -74,7 +77,10 @@ export const SignInForm = () => {
 
 	return (
 		<form onSubmit={handleSubmit(signIn)}>
-			<Wrap spacingY={1}>
+			<Wrap
+				spacingY={1}
+				marginBottom={5}
+			>
 				<FormControl isInvalid={!!errors.email}>
 					<FormLabel>Email</FormLabel>
 					<Input
@@ -104,9 +110,13 @@ export const SignInForm = () => {
 					)}
 				</FormControl>
 			</Wrap>
+			<HCaptcha
+				sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY!}
+				onVerify={(token: string) => setCaptcha(token)}
+			/>
 			<Button
 				type="submit"
-				className="rounded-md p-2 mt-8 bg-green-300 w-full transition hover:bg-green-200 active:bg-green-400"
+				className="rounded-md p-2 mt-2 bg-green-300 w-full transition hover:bg-green-200 active:bg-green-400"
 				isLoading={isLoading}
 			>
 				{t("SIGN_IN")}
