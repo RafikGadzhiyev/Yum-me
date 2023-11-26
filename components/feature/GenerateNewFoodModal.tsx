@@ -24,7 +24,7 @@ interface IGenerateNewFoodButtonProps {
 	data: any;
 }
 
-export const GenerateNewFoodButton: FC<IGenerateNewFoodButtonProps> = ({
+export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	email,
 	updateGeneratedFoodList,
 	data,

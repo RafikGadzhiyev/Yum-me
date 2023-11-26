@@ -2,23 +2,28 @@
 
 import { FC, PropsWithChildren, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import { AppDispatch } from "@/redux/store";
 import { format } from "date-fns";
-import { UserResponse } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 
 import { useFetch } from "@/hooks/useFetch";
+import { useDispatch } from "react-redux";
+
+import { readUser } from "@/redux/slices/user.slice";
 
 import { Accordion as AccordionContainer, Button } from "@chakra-ui/react";
 import { Accordion } from "../UI/Accordion";
-import { GenerateNewFoodButton } from "../feature/GenerateNewFoodButton";
+import { GenerateNewFoodModal } from "../feature/GenerateNewFoodModal";
 
 // TODO: REFACTOR
 interface IHomePageProps extends PropsWithChildren {
-	user: UserResponse;
+	user: User | null;
 	data: any;
 }
 
 export const HomePage: FC<IHomePageProps> = ({ user, data }) => {
-	const { sendRequest, response } = useFetch();
+	const { sendRequest } = useFetch();
+	const dispatch = useDispatch<AppDispatch>();
 
 	const [generatedFoods, setGeneratedFoods] = useState<Record<string, any>[]>(
 		[]
@@ -32,13 +37,10 @@ export const HomePage: FC<IHomePageProps> = ({ user, data }) => {
 	};
 
 	useEffect(() => {
-		sendRequest(
-			"GET",
-			`/api/storage/text_generation?email=${user.data.user?.email}`
-		);
-	}, [user.data.user?.email, sendRequest]);
+		dispatch(readUser(user));
 
-	// console.log(generatedFoods);
+		sendRequest("GET", `/api/storage/text_generation?email=${user?.email}`);
+	}, [user?.email, sendRequest, dispatch]);
 
 	return (
 		<div className=" flex flex-col gap-2">
@@ -60,8 +62,8 @@ export const HomePage: FC<IHomePageProps> = ({ user, data }) => {
 				))}
 			</AccordionContainer>
 			<div>
-				<GenerateNewFoodButton
-					email={user.data.user?.email || ""}
+				<GenerateNewFoodModal
+					email={user?.email || ""}
 					updateGeneratedFoodList={updateGeneratedFoodList}
 					data={data}
 				/>

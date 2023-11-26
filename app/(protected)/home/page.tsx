@@ -14,7 +14,7 @@ export default async function MainPage() {
 	const user = await supabaseServerComponentsClient.auth.getUser();
 	const data = await getUserHealthData(user);
 
-	console.log(data);
+	// console.log(data, user);
 
 	return (
 		<div
@@ -22,7 +22,7 @@ export default async function MainPage() {
 			tabIndex={0}
 		>
 			<HomePage
-				user={user}
+				user={user.data.user}
 				data={data}
 			/>
 			{!isConfigured(data) && (
