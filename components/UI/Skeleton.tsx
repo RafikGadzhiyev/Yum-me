@@ -1,6 +1,7 @@
 import { FC } from "react";
 import clsx from "clsx";
 
+// TODO: in progress, not finished
 interface ISkeletonProps {
 	width: string;
 	height: string;

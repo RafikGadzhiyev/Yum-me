@@ -22,9 +22,7 @@ import { useState } from "react";
 
 const SignInSchema = z.object({
 	email: z.string().email("Enter email"),
-	password: z
-		.string()
-		.refine((password) => password.length > 0, "Fill the input"),
+	password: z.string().refine((password) => password.length > 0, "Fill the input"),
 });
 
 type SignInSchemaType = z.infer<typeof SignInSchema>;

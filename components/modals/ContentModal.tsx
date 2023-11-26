@@ -26,12 +26,14 @@ export const ContentModal: FC<IContentWrapper> = ({ config }) => {
 
 	return (
 		<>
-			<button
-				className="rounded-md p-2 bg-green-300 py-1 transition hover:bg-green-400"
+			<Button
+				variant="ghost"
+				colorScheme="green"
+				// className="rounded-md p-2 bg-green-300 py-1 transition hover:bg-green-400"
 				onClick={onOpen}
 			>
 				{t("SHOW_CONFIG")}
-			</button>
+			</Button>
 			<Modal
 				onClose={onClose}
 				isOpen={isOpen}

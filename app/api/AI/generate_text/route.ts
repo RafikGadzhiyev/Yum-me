@@ -33,8 +33,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 			messages: [
 				{
 					role: "system",
-					content:
-						"Act as professional nutritionist and answer the user queries",
+					content: "Act as professional nutritionist and answer the user queries",
 				},
 				{
 					role: "user",

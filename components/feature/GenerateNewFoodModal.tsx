@@ -73,7 +73,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 			setAIResponse((prevAIResponse) => prevAIResponse + chunkValue);
 		}
 
-		setIsStreamed(false)
+		setIsStreamed(false);
 	};
 
 	const addNewFood = () => {

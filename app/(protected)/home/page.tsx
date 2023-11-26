@@ -28,8 +28,8 @@ export default async function MainPage() {
 					<div className="text-5xl grid place-items-center">
 						<FaLock />
 						<span className="text-lg">
-							To get access You need fully configure your food wishes and
-							additional info
+							To get access You need fully configure your food wishes and additional
+							info
 						</span>
 					</div>
 					<Link

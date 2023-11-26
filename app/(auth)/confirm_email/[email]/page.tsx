@@ -24,15 +24,13 @@ export default function EmailConfirmationPage({
 				verification letter.
 			</h1>
 			<h2 className="font-bold text-lg">
-				Please, check it out and confirm yourself. If you do not confirm your
-				email, You will not able to log in to our application
+				Please, check it out and confirm yourself. If you do not confirm your email,
+				You will not able to log in to our application
 			</h2>
 
 			<Button onClick={resend}>Resend verification email</Button>
 
-			<Link href={ROUTES.HOME.path}>
-				Continue (If you confirmed your email)
-			</Link>
+			<Link href={ROUTES.HOME.path}>Continue (If you confirmed your email)</Link>
 		</div>
 	);
 }

@@ -1,10 +1,8 @@
 import { PropsWithChildren } from "react";
-import { SideBar } from "@/components/SideBar";
+import { SideBar } from "@/components/UI/SideBar";
 import { ScrollableLayout } from "@/components/layouts/ScrollableLayout";
 
-export default async function ProtectedPagesLayout({
-	children,
-}: PropsWithChildren) {
+export default async function ProtectedPagesLayout({ children }: PropsWithChildren) {
 	return (
 		<div className="grid grid-rows-[auto_1fr]  md:flex ">
 			<SideBar />

@@ -1,4 +1,4 @@
-import { SideBarNavigation } from "./feature/SideBarNavigation";
+import { SideBarNavigation } from "../feature/SideBarNavigation";
 
 export const SideBar = () => {
 	return (

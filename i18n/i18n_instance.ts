@@ -8,9 +8,7 @@ i18n
 	.use(detect)
 	.use(initReactI18next)
 	.use(
-		resourcesToBackend(
-			(language: string) => import(`./languages/${language}.json`)
-		)
+		resourcesToBackend((language: string) => import(`./languages/${language}.json`))
 	)
 	.init({
 		lng: "en",

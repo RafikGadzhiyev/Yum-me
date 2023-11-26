@@ -151,9 +151,7 @@ export const SignUpForm = () => {
 							<Button
 								padding={0}
 								onClick={() =>
-									setIsPasswordShown(
-										(prevIsPasswordShowm) => !prevIsPasswordShowm
-									)
+									setIsPasswordShown((prevIsPasswordShowm) => !prevIsPasswordShowm)
 								}
 								tabIndex={-1}
 							>
@@ -185,9 +183,7 @@ export const SignUpForm = () => {
 							<Button
 								padding={0}
 								onClick={() =>
-									setIsPasswordShown(
-										(prevIsPasswordShowm) => !prevIsPasswordShowm
-									)
+									setIsPasswordShown((prevIsPasswordShowm) => !prevIsPasswordShowm)
 								}
 								tabIndex={-1}
 							>
@@ -203,8 +199,7 @@ export const SignUpForm = () => {
 						<div>
 							<FormHelperText>
 								Password length must be in the range{" "}
-								{PASSWORD_RESTRICTION.LENGTH.MIN}-
-								{PASSWORD_RESTRICTION.LENGTH.MAX}
+								{PASSWORD_RESTRICTION.LENGTH.MIN}-{PASSWORD_RESTRICTION.LENGTH.MAX}
 							</FormHelperText>
 							<FormHelperText>
 								Password shoul contain one or more special characters{" "}
@@ -212,9 +207,7 @@ export const SignUpForm = () => {
 							</FormHelperText>
 						</div>
 					) : (
-						<FormErrorMessage>
-							{errors.confirm_password.message}
-						</FormErrorMessage>
+						<FormErrorMessage>{errors.confirm_password.message}</FormErrorMessage>
 					)}
 				</FormControl>
 			</Wrap>
