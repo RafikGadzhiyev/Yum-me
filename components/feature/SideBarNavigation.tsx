@@ -37,7 +37,7 @@ export const SideBarNavigation = () => {
 					"font-semibold text-lg block items-center justify-between mb-3 md:block",
 					{
 						hidden: !isOpened,
-						block: isOpened,
+						block: isOpened
 					}
 				)}
 			>
