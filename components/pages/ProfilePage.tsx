@@ -40,13 +40,13 @@ export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
 					<TabList>
 						<Tab _selected={{ borderBottomColor: "green.500" }}>Posts</Tab>
 						<Tab _selected={{ borderBottomColor: "green.500" }}>Generated foods</Tab>
-						<Tab _selected={{ borderBottomColor: "green.500" }}>Liked</Tab>
+						<Tab _selected={{ borderBottomColor: "green.500" }}>Likes</Tab>
 					</TabList>
 
 					<TabPanels>
 						<TabPanel></TabPanel>
 						<TabPanel>
-							<GeneratedFoodsTab />
+							<GeneratedFoodsTab generatedFoods={user.generated_foods as any[]} />
 						</TabPanel>
 						<TabPanel></TabPanel>
 					</TabPanels>
