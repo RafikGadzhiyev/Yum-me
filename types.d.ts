@@ -9,6 +9,9 @@ type Route = {
 	path: string;
 	key: string;
 	label: string;
+	withSearchParams: boolean;
+	isDynamic: boolean;
+	getDynamicPath: (...args) => string ;
 	Icon?: () => JSX;
 };
 
