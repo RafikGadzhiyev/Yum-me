@@ -8,7 +8,7 @@ import { getUserHealthData } from "@/utils/server.utils";
 
 export default async function MainPage() {
 	const supabaseServerComponentsClient = createServerComponentClient({
-		cookies,
+		cookies
 	});
 
 	const user = await supabaseServerComponentsClient.auth.getUser();

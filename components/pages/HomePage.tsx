@@ -3,8 +3,8 @@
 import { FC, PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { AppDispatch } from "@/redux/store";
 import { User } from "@supabase/supabase-js";
-import ReactMarkdown from "react-markdown";
 import { format } from "date-fns";
+import ReactMarkdown from "react-markdown";
 
 import { LOCALE_BY_LANGUAGE } from "@/i18n/dictionary";
 
@@ -38,7 +38,7 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 	const updateGeneratedFoodList = (generatedFood: Record<string, any>) => {
 		setGeneratedFoods((prevGeneratedFoods) => [
 			generatedFood,
-			...prevGeneratedFoods,
+			...prevGeneratedFoods
 		]);
 	};
 
@@ -79,7 +79,7 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 					<Accordion
 						key={item._id}
 						label={format(new Date(item.generatedDate), "dd MMMM yyyy HH:mm:ss", {
-							locale: LOCALE_BY_LANGUAGE[i18n.language],
+							locale: LOCALE_BY_LANGUAGE[i18n.language]
 						})}
 					>
 						<ReactMarkdown>{item.food}</ReactMarkdown>
