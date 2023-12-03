@@ -59,18 +59,4 @@ export const signIn = async (formData: Record<string, string>) => {
 	return handleRequest<User>(session.data.user as User, null, 200);
 };
 
-export const getUser = async () => {
-	const { data, error } = await supabaseClient.auth.getSession();
 
-	if (error) {
-		return null;
-	}
-
-	if (!data.session) {
-		return null;
-	}
-
-	let user = data.session.user;
-
-	return user;
-};
