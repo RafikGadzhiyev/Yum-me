@@ -1,3 +1,5 @@
+import { BREAKING_ITEM_IDENTIFIER } from "@/consts/pagination.const";
+
 export const getPagination = (totalPages: number, currentPage: number) => {
 	if (totalPages <= 1) return [];
 
@@ -7,7 +9,7 @@ export const getPagination = (totalPages: number, currentPage: number) => {
 	let afterCurrentPage = currentPage + 1;
 
 	if (beforeCurrentPage > 2) {
-		pagination.push(-1);
+		pagination.push(BREAKING_ITEM_IDENTIFIER);
 	}
 
 	if (beforeCurrentPage > 1) {
@@ -23,7 +25,7 @@ export const getPagination = (totalPages: number, currentPage: number) => {
 	}
 
 	if (afterCurrentPage < totalPages - 1) {
-		pagination.push(-1);
+		pagination.push(BREAKING_ITEM_IDENTIFIER);
 	}
 
 	if (totalPages > 1) {

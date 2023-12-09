@@ -48,6 +48,7 @@ export const ListWithPagination: FC<PropsWithChildren> = ({ children }) => {
 			<ItemPerPageSelect
 				options={ITEMS_PER_PAGE}
 				currentOption={itemsPerPage}
+				horizontalAlign="center"
 				changeOptions={updateCurrentItemsPerPage}
 			/>
 
@@ -58,6 +59,8 @@ export const ListWithPagination: FC<PropsWithChildren> = ({ children }) => {
 				currentPage={page}
 				totalPages={pageCount}
 				changePage={updateCurrentPage}
+				horizontalAlign="center"
+				withArrows={true}
 			/>
 		</>
 	);

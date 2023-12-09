@@ -1,7 +1,7 @@
 import { FC } from "react";
 import clsx from "clsx";
 
-interface IITemPerPageSelectProps {
+interface IITemPerPageSelectProps extends Alignment {
 	options: ItemSelectOption[];
 	currentOption: ItemSelectOption;
 
@@ -11,10 +11,19 @@ interface IITemPerPageSelectProps {
 export const ItemPerPageSelect: FC<IITemPerPageSelectProps> = ({
 	options,
 	currentOption,
+	horizontalAlign,
+	verticalAlign,
 	changeOptions,
 }) => {
 	return (
-		<div>
+		<div
+			className={clsx("flex gap-1 items-center", {
+				"justify-center": horizontalAlign === "center",
+				"justify-right": horizontalAlign === "right",
+				"items-start": verticalAlign === "top",
+				"items-end": verticalAlign === "bottom",
+			})}
+		>
 			{options.map((option) => (
 				<button
 					key={`per-page-${option.value}`}

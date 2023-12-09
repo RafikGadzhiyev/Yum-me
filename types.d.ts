@@ -20,6 +20,12 @@ type RequestError = null | {
 	message: string;
 };
 
+// Style types
+type Alignment = {
+	verticalAlign?: "top" | "middle" | "bottom";
+	horizontalAlign?: "left" | "center" | "right";
+};
+
 // JS extendable types
 type StringTransformTypes = "capitalize" | "uppercase" | "lowercase";
 
@@ -42,6 +48,7 @@ type ItemSelectOption = {
 
 // API Types
 type AuthType = "sign_up" | "sign_in";
+// TODO: Change
 type ResponseNumericStatuses =
 	| 200
 	| 301
