@@ -1,9 +1,11 @@
-"use client";
-
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
+import { useSelector } from "react-redux";
+import { RootStore } from "@/redux/store";
 
 import { useFetch } from "@/hooks/useFetch";
+import { useStreamResponse } from "@/hooks/useStreamResponse";
+
 import {
 	Button,
 	Modal,
@@ -17,8 +19,7 @@ import {
 	Collapse,
 } from "@chakra-ui/react";
 import { Loading } from "../UI/Loading";
-import { useSelector } from "react-redux";
-import { RootStore } from "@/redux/store";
+
 import { isConfigured } from "@/utils/validation.util";
 
 interface IGenerateNewFoodButtonProps {
@@ -34,17 +35,13 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 		(store: RootStore) => store.userHealthDataReducer.userHealthData
 	);
 
-	const [AIResponse, setAIResponse] = useState("");
-	const [isStreamed, setIsStreamed] = useState(false);
-
 	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);
 
 	const { isLoading, sendRequest, sendStreamRequest } = useFetch();
+	const { data, isReading, readData } = useStreamResponse();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const generateNewAIResponse = async () => {
-		setAIResponse("");
-
 		const streamedData = await sendStreamRequest(
 			"POST",
 			`/api/AI/generate_text?email=${email}`,
@@ -54,26 +51,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 			}
 		);
 
-		if (!streamedData) {
-			return;
-		}
-
-		const reader = streamedData.getReader();
-		const decoder = new TextDecoder();
-
-		let done = false;
-
-		setIsStreamed(true);
-
-		while (!done) {
-			const { value, done: doneReading } = await reader.read();
-			done = doneReading;
-
-			const chunkValue = decoder.decode(value);
-			setAIResponse((prevAIResponse) => prevAIResponse + chunkValue);
-		}
-
-		setIsStreamed(false);
+		await readData(streamedData);
 	};
 
 	const addNewFood = () => {
@@ -81,8 +59,9 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 		const request = {
 			email,
 			generatedDate,
-			food: AIResponse,
+			food: data,
 		};
+
 		sendRequest("POST", "/api/storage/text_generation", request, {
 			"Content-Type": "application/json",
 		})
@@ -97,7 +76,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 			block: "end",
 			behavior: "smooth",
 		});
-	}, [AIResponse]);
+	}, [data]);
 
 	return (
 		<>
@@ -122,7 +101,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 							{JSON.stringify(healthData, null, 2)}
 						</pre>
 						<Collapse
-							in={!!AIResponse}
+							in={!!data}
 							animateOpacity
 						>
 							<div className="max-h-[400px] overflow-y-auto rounded-md">
@@ -132,7 +111,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 									p={3}
 									my={2}
 								>
-									<ReactMarkdown>{AIResponse}</ReactMarkdown>
+									<ReactMarkdown>{data}</ReactMarkdown>
 								</Card>
 							</div>
 						</Collapse>
@@ -143,7 +122,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 								onClick={addNewFood}
 								variant="ghost"
 								colorScheme="green"
-								isDisabled={!AIResponse || isStreamed}
+								isDisabled={!data || isReading}
 							>
 								Save
 							</Button>
@@ -151,7 +130,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 								onClick={generateNewAIResponse}
 								variant="ghost"
 								colorScheme="red"
-								isDisabled={!isConfigured(healthData) || isStreamed}
+								isDisabled={!isConfigured(healthData) || isReading}
 							>
 								Regenerate
 							</Button>

@@ -18,6 +18,7 @@ import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
 import { Accordion as AccordionContainer } from "@chakra-ui/react";
 import { Accordion } from "../UI/Accordion";
 import { GenerateNewFoodModal } from "../feature/GenerateNewFoodModal";
+import { ListWithPagination } from "@/components/feature/ListWithPagination";
 
 interface IHomePageProps extends PropsWithChildren {
 	user: User | null;
@@ -38,7 +39,7 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 	const updateGeneratedFoodList = (generatedFood: Record<string, any>) => {
 		setGeneratedFoods((prevGeneratedFoods) => [
 			generatedFood,
-			...prevGeneratedFoods
+			...prevGeneratedFoods,
 		]);
 	};
 
@@ -75,16 +76,24 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 				display={"grid"}
 				gap={3}
 			>
-				{(generatedFoods as Array<Record<string, string>>).map((item) => (
-					<Accordion
-						key={item._id}
-						label={format(new Date(item.generatedDate), "dd MMMM yyyy HH:mm:ss", {
-							locale: LOCALE_BY_LANGUAGE[i18n.language]
-						})}
-					>
-						<ReactMarkdown>{item.food}</ReactMarkdown>
-					</Accordion>
-				))}
+				{!!generatedFoods.length && (
+					<ListWithPagination>
+						{(generatedFoods as Array<Record<string, string>>).map((item) => (
+							<Accordion
+								key={item._id}
+								label={format(
+									new Date(item.generatedDate),
+									"dd MMMM yyyy HH:mm:ss",
+									{
+										locale: LOCALE_BY_LANGUAGE[i18n.language],
+									}
+								)}
+							>
+								<ReactMarkdown>{item.food}</ReactMarkdown>
+							</Accordion>
+						))}
+					</ListWithPagination>
+				)}
 			</AccordionContainer>
 		</div>
 	);

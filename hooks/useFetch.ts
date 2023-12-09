@@ -11,7 +11,7 @@ export const useFetch = <T>() => {
 		result: null,
 	});
 
-	// TODO: realtime requests will not aborted
+	// FIXME: trouble with realtime requests
 	const abortControllers = useRef<Record<string, AbortController>>({});
 
 	const abortPreviousRequestAndSaveNew = (url: string) => {
@@ -31,7 +31,7 @@ export const useFetch = <T>() => {
 			method: string,
 			url: string,
 			body: null | Record<string, any> = null,
-			headers: null | Record<string, string> = null //? Something bad here
+			headers: null | Record<string, string> = null
 		) => {
 			const requestController = abortPreviousRequestAndSaveNew(url);
 
@@ -78,7 +78,7 @@ export const useFetch = <T>() => {
 		method: string,
 		url: string,
 		body: null | Record<string, any> = null,
-		headers: null | Record<string, string> = null //? Something bad here
+		headers: null | Record<string, string> = null
 	): Promise<ReadableStream<Uint8Array> | null> => {
 		const requestController = abortPreviousRequestAndSaveNew(url);
 
