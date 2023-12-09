@@ -2,7 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
-import { AUTH_ROUTES } from "@/configs/routes.config";
+import { AUTH_ROUTES } from "@/consts/routes.const";
 
 export const IndexPageWrapper = () => {
 	const { t } = useTranslation();

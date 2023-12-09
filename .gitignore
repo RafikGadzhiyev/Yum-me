@@ -2,6 +2,9 @@
 
 TODO.md
 
+#IDE
+.idea
+
 # dependencies
 /node_modules
 /.pnp

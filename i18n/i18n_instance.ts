@@ -1,8 +1,15 @@
 import i18n from "i18next";
+
 import detect from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 import { dictionary } from "./dictionary";
 import resourcesToBackend from "i18next-resources-to-backend";
+
+declare module 'i18next' {
+	interface CustomTypeOptions {
+		returnNull: false
+	}
+}
 
 i18n
 	.use(detect)
@@ -11,6 +18,7 @@ i18n
 		resourcesToBackend((language: string) => import(`./languages/${language}.json`))
 	)
 	.init({
+		returnNull: false,
 		lng: "en",
 		load: "languageOnly",
 		saveMissing: true,

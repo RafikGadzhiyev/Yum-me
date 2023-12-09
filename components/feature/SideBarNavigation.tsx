@@ -6,7 +6,7 @@ import { FaListUl } from "react-icons/fa";
 import Link from "next/link";
 import clsx from "clsx";
 
-import { ROUTE_LIST } from "@/configs/routes.config";
+import { ROUTE_LIST } from "@/consts/routes.const";
 
 import { LanguageSelect } from "./LanguageSelect";
 import { SignOutButton } from "../UI/Buttons";
@@ -37,7 +37,7 @@ export const SideBarNavigation = () => {
 					"font-semibold text-lg block items-center justify-between mb-3 md:block",
 					{
 						hidden: !isOpened,
-						block: isOpened
+						block: isOpened,
 					}
 				)}
 			>

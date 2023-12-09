@@ -11,7 +11,7 @@ type Route = {
 	label: string;
 	withSearchParams: boolean;
 	isDynamic: boolean;
-	getDynamicPath: (...args) => string ;
+	getDynamicPath: (...args) => string;
 	Icon?: () => JSX;
 };
 
@@ -19,6 +19,9 @@ type RequestError = null | {
 	title: string;
 	message: string;
 };
+
+// JS extendable types
+type StringTransformTypes = "capitalize" | "uppercase" | "lowercase";
 
 // Types with generic
 type RequestResponse<T, U> = {
@@ -32,8 +35,13 @@ type useFetchResponse<T, U> = {
 	result: RequestResponse<T, U> | null;
 };
 
+// UI Types
+type ItemSelectOption = {
+	value: number;
+};
+
+// API Types
 type AuthType = "sign_up" | "sign_in";
-type StringTransformTypes = "capitalize" | "uppercase" | "lowercase";
 type ResponseNumericStatuses =
 	| 200
 	| 301
