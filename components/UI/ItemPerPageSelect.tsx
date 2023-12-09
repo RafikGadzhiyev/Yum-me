@@ -26,7 +26,7 @@ export const ItemPerPageSelect: FC<IITemPerPageSelectProps> = ({
 	return (
 		<div
 			ref={perPageSelectContainerRef}
-			className={clsx("flex gap-1 mx-auto items-center relative", {
+			className={clsx("flex gap-1 mx-auto items-center relative ml-auto", {
 				"justify-center": horizontalAlign === "center",
 				"justify-right": horizontalAlign === "right",
 				"items-start": verticalAlign === "top",

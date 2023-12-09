@@ -21,12 +21,21 @@ export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
 
 	return (
 		<div>
-			<header className="flex flex-col items-center py-2 h-[400px]">
+			<header className="flex flex-col items-center py-2 h-[350px]">
 				<div className="w-[100px] h-[100px] mb-3 rounded-full bg-gray-400"></div>
-				<span className="font-bold text-2xl">{fullname}</span>
+				<span className="font-bold text-3xl">{fullname}</span>
+				{/*TODO: Add styles*/}
 				<div>
-					<h1>User&apos;s health config:</h1>
-					<pre>{user.age}</pre>
+					<h1 className="text-center font-bold text-xl mb-2">User info</h1>
+					<div className="flex items-center gap-3">
+						<span>Age: {user.age}</span>
+						<span>Gender: {user.gender}</span>
+					</div>
+
+					<div className="flex items-center gap-3">
+						<span>Weight: {user.weight}</span>
+						<span>Height: {user.height}</span>
+					</div>
 				</div>
 			</header>
 			<main>
@@ -39,7 +48,9 @@ export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
 				>
 					<TabList>
 						<Tab _selected={{ borderBottomColor: "green.500" }}>Posts</Tab>
-						<Tab _selected={{ borderBottomColor: "green.500" }}>Generated foods</Tab>
+						<Tab _selected={{ borderBottomColor: "green.500" }}>
+							Generated foods ({user.generated_foods?.length})
+						</Tab>
 						<Tab _selected={{ borderBottomColor: "green.500" }}>Likes</Tab>
 					</TabList>
 

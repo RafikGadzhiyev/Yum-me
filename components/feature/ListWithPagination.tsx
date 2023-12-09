@@ -45,23 +45,25 @@ export const ListWithPagination: FC<PropsWithChildren> = ({ children }) => {
 
 	return (
 		<>
-			<ItemPerPageSelect
-				options={ITEMS_PER_PAGE}
-				currentOption={itemsPerPage}
-				horizontalAlign="center"
-				changeOptions={updateCurrentItemsPerPage}
-			/>
-
 			{/* TODO: More flexible*/}
 			<ul className="grid gap-3">{pageElems}</ul>
 
-			<Pagination
-				currentPage={page}
-				totalPages={pageCount}
-				changePage={updateCurrentPage}
-				horizontalAlign="center"
-				withArrows={true}
-			/>
+			<div className="grid grid-cols-[1fr_auto]">
+				<Pagination
+					currentPage={page}
+					totalPages={pageCount}
+					changePage={updateCurrentPage}
+					horizontalAlign="center"
+					withArrows={true}
+				/>
+
+				<ItemPerPageSelect
+					options={ITEMS_PER_PAGE}
+					currentOption={itemsPerPage}
+					horizontalAlign="center"
+					changeOptions={updateCurrentItemsPerPage}
+				/>
+			</div>
 		</>
 	);
 };
