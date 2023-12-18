@@ -11,10 +11,14 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 		const email = searchParams.get("email");
 
 		if (!email) {
-			return handleRequest(null, {
-				title: "Invalid user ID",
-				message: "Provided user ID is not valid",
-			});
+			return handleRequest(
+				null,
+				{
+					title: "Invalid user ID",
+					message: "Provided user ID is not valid",
+				},
+				403
+			);
 		}
 
 		let { data, error } = await supabase
@@ -70,10 +74,14 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 		const body = await req.json();
 
 		if (!email) {
-			return handleRequest(null, {
-				title: "Invalid user ID",
-				message: "Provided user ID is not valid",
-			});
+			return handleRequest(
+				null,
+				{
+					title: "Invalid user ID",
+					message: "Provided user ID is not valid",
+				},
+				403
+			);
 		}
 
 		const { error } = await supabase
@@ -90,7 +98,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 			.eq("email", email);
 
 		if (error) {
-			return handleRequest(null, { title: error.message });
+			return handleRequest(null, { title: error.message }, 403);
 		}
 
 		return handleRequest("Ok", error, 200);

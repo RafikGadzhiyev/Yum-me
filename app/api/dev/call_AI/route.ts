@@ -6,10 +6,14 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
 	try {
 		if (!isDev) {
-			return handleRequest(null, {
-				title: "Bad Request",
-				message: "It is not development mode! Request restricted",
-			});
+			return handleRequest(
+				null,
+				{
+					title: "Bad Request",
+					message: "It is not development mode! Request restricted",
+				},
+				403
+			);
 		}
 		// const prompt_result = await openAI.chat.completions.create({
 		// 	messages: [

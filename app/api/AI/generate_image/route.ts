@@ -8,10 +8,14 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 		const prompt = searchParams.get("prompt");
 
 		if (!prompt) {
-			return handleRequest(null, {
-				title: "Bad Request",
-				message: "You did not provide prompt!",
-			});
+			return handleRequest(
+				null,
+				{
+					title: "Bad Request",
+					message: "You did not provide prompt!",
+				},
+				403
+			);
 		}
 
 		const generatedImage = await openAI.images.generate({
