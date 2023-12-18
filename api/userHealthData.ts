@@ -1,4 +1,4 @@
-import "server-only";
+import "server-only"; // It is okay, but actually we can use without it. Need to think
 
 export const getUserHealthData = async (user: any) => {
 	const response = await fetch(

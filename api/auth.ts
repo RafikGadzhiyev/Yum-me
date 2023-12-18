@@ -1,9 +1,10 @@
 import { User } from "@supabase/supabase-js";
-import { supabase, supabaseClient } from "@/lib/supabase";
-import { handleRequest } from "./handlers.util";
-import { isEmpty } from "./validation.util";
 
-// ? Connect types with Supabase types
+import { supabase } from "@/lib/supabase";
+
+import { handleRequest } from "@/utils/handlers.util";
+import { isEmpty } from "@/utils/validation.util";
+
 export const signUp = async (formData: Record<string, string>) => {
 	const { email, password, captchaToken } = formData;
 
@@ -58,5 +59,3 @@ export const signIn = async (formData: Record<string, string>) => {
 
 	return handleRequest<User>(session.data.user as User, null, 200);
 };
-
-

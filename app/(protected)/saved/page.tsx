@@ -1,3 +1,3 @@
-export default function SavedRecipedPage() {
+export default function SavedRecipesPage() {
 	return <div>Saved recipes page</div>;
 }

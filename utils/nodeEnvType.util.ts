@@ -1,4 +1,4 @@
-// import "server-only"; // ? Do weed actualy need this ?
+// import "server-only"; // ? Do we actualy need this ?
 
 export const isDev = process.env.NODE_ENV === "development";
 export const isProd = process.env.NODE_ENV === "production";

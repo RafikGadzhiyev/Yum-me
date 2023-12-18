@@ -1,5 +1,5 @@
 import { SettingsPageWrapper } from "@/components/pages/SettingsPage";
-import { getUserHealthData } from "@/utils/server.utils";
+import { getUserHealthData } from "@/api/userHealthData";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 

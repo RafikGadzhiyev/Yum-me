@@ -1,19 +1,20 @@
 // ! TMP SOLUTION
+// TODO: Add method vie *.d.types
 String.prototype.toCapitalize = function () {
 	return this[0].toUpperCase() + this.slice(1);
 };
 
 export const convertKeyToValue = (
 	key: string,
-	keyDelimeter: string,
-	valueDelimeter: string,
+	keyDelimiter: string,
+	valueDelimiter: string,
 	transform: StringTransformTypes
 ): string => {
-	const keyParts = key.split(keyDelimeter);
+	const keyParts = key.split(keyDelimiter);
 	let result = "";
 
 	for (let part of keyParts) {
-		result += part + valueDelimeter;
+		result += part + valueDelimiter;
 	}
 
 	return changeStringTransform(result, transform);
@@ -36,7 +37,8 @@ export const changeStringTransform = (
 			result = string.toUpperCase();
 			break;
 		default:
-			result = "";
+			// return initial string state
+			result = string;
 	}
 
 	return result;
