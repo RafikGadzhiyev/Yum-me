@@ -15,10 +15,9 @@ export async function middleware(req: NextRequest) {
 		currentPath.startsWith(AUTH_ROUTES.SIGN_IN.path) ||
 		currentPath.startsWith(AUTH_ROUTES.SIGN_UP.path);
 
-	// if (currentPath.startsWith(AUTH_ROUTES.EMAIL_VERIFICATION.path)) {
-	// 	return res;
-	// }
-	if (!user && !isAuthPage) {
+	if (currentPath.startsWith(AUTH_ROUTES.EMAIL_VERIFICATION.path)) {
+		return res;
+	} else if (!user && !isAuthPage) {
 		return NextResponse.redirect(new URL(AUTH_ROUTES.SIGN_IN.path, req.url));
 	} else if (user && isAuthPage) {
 		return NextResponse.redirect(new URL(ROUTES.HOME.path, req.url));
