@@ -1,63 +1,67 @@
 {
-	"AGE": "Возраст",
-	"CALORIES_PER_DAY": "Калорий в день",
-	"CHANGE_LANGUAGE": "Изменить язык",
-	"CHOOSE_LANGUAGE": "Выбрать язык",
-	"CLOSE": "Закрыть",
-	"CONFIGURE": "Настроить",
-	"CONTRAINDICATIONS": "Противопоказания",
-	"DAY_OF_WEEK": {
-		"MONDAY": {
-			"LONG": "Понедельник",
-			"SHORT": "Пн"
-		},
-		"TUESDAY": {
-			"LONG": "Вторник",
-			"SHORT": "Вт"
-		},
-		"WEDNESDAY": {
-			"LONG": "Среда",
-			"SHORT": "Ср"
-		},
-		"THURSDAY": {
-			"LONG": "Четверг",
-			"SHORT": "Чт"
-		},
-		"FRIDAY": {
-			"LONG": "Пятница",
-			"SHORT": "Пт"
-		},
-		"SATURDAY": {
-			"LONG": "Суббота",
-			"SHORT": "Сб"
-		},
-		"SUNDAY": {
-			"LONG": "Воскресенье",
-			"SHORT": "Вс"
-		}
-	},
-	"FEMALE": "Female (Translate)",
-	"GENDER": "Пол",
-	"HEIGHT": "Рост",
-	"MALE": "Male (Translate)",
-	"RESET": "Сбросить",
-	"SAVE": "Сохранить",
-	"SEARCH": "Поиск",
-	"SHOW_CONFIG": "Показать настройку",
-	"SIGN_IN": "Вход",
-	"SIGN_OUT": "Выход",
-	"SIGN_UP": "Зарегистрироваться",
-	"USER_HEALTH_CONFIG": "User health configuration (Translate)",
-	"WEIGHT": "Вес",
-	"WISHES": "Пожелания",
-	"INDEX_PAGE": {
-		"AUTH_FORM_TITLE": "Sign up to your app! It is very simple!(Translate)"
-	},
-	"NAVIGATION": {
-		"HOME": "Начальная страница",
-		"PROFILE": "Профиль",
-		"SAVED_RECIPES": "Избранные",
-		"SEARCH": "Поиск",
-		"SETTINGS": "Настройки"
-	}
+  "AGE": "Возраст",
+  "CALORIES_PER_DAY": "Калорий в день",
+  "CHANGE_LANGUAGE": "Изменить язык",
+  "CHOOSE_LANGUAGE": "Выбрать язык",
+  "CLOSE": "Закрыть",
+  "CONFIGURE": "Настроить",
+  "CONTRAINDICATIONS": "Противопоказания",
+  "DAY_OF_WEEK": {
+    "MONDAY": {
+      "LONG": "Понедельник",
+      "SHORT": "Пн"
+    },
+    "TUESDAY": {
+      "LONG": "Вторник",
+      "SHORT": "Вт"
+    },
+    "WEDNESDAY": {
+      "LONG": "Среда",
+      "SHORT": "Ср"
+    },
+    "THURSDAY": {
+      "LONG": "Четверг",
+      "SHORT": "Чт"
+    },
+    "FRIDAY": {
+      "LONG": "Пятница",
+      "SHORT": "Пт"
+    },
+    "SATURDAY": {
+      "LONG": "Суббота",
+      "SHORT": "Сб"
+    },
+    "SUNDAY": {
+      "LONG": "Воскресенье",
+      "SHORT": "Вс"
+    }
+  },
+  "FEMALE": "Female (Translate)",
+  "GENDER": "Пол",
+  "GENERATED_FOOD": "Generated food (Translate)",
+  "GENERATED_FOODS": "Generated foods (Translate)",
+  "HEIGHT": "Рост",
+  "MALE": "Male (Translate)",
+  "POST": "Post (Translate)",
+  "POSTS": "Posts (Translate)",
+  "RESET": "Сбросить",
+  "SAVE": "Сохранить",
+  "SEARCH": "Поиск",
+  "SHOW_CONFIG": "Показать настройку",
+  "SIGN_IN": "Вход",
+  "SIGN_OUT": "Выход",
+  "SIGN_UP": "Зарегистрироваться",
+  "USER_HEALTH_CONFIG": "User health configuration (Translate)",
+  "WEIGHT": "Вес",
+  "WISHES": "Пожелания",
+  "INDEX_PAGE": {
+    "AUTH_FORM_TITLE": "Sign up to your app! It is very simple!(Translate)"
+  },
+  "NAVIGATION": {
+    "HOME": "Начальная страница",
+    "PROFILE": "Профиль",
+    "SAVED_RECIPES": "Избранные",
+    "SEARCH": "Поиск",
+    "SETTINGS": "Настройки"
+  }
 }

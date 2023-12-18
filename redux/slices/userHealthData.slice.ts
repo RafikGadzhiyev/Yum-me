@@ -22,7 +22,14 @@ const userHealthData = createSlice({
 			//  do some stuff
 		},
 		readUserHealthData(state, action: PayloadAction<any | null>) {
-			//  do some stuff
+			const KEYS_FOR_REMOVE = ["generated_foods", "created_at", "updated_at", "id"];
+
+			for (let keyForRemove of KEYS_FOR_REMOVE) {
+				if (action.payload[keyForRemove]) {
+					delete action.payload[keyForRemove];
+				}
+			}
+
 			state.userHealthData = action.payload;
 
 			return state;

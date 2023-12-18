@@ -1,3 +1,10 @@
+interface IHomePageTabProps {
+	list: any[]; //? Maybe we can improve using generics?
+	state: ResponseStatus;
+
+	updateList: (newValue: any) => void;
+}
+
 type IInputConfig = {
 	name: string;
 	label: string;
@@ -16,6 +23,8 @@ type Route = {
 	getDynamicPath?: (...args) => string;
 	Icon?: () => JSX;
 };
+
+type ResponseStatus = "success" | "error" | "loading";
 
 type RequestError = null | {
 	title: string;

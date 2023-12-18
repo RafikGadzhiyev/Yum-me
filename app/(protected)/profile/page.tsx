@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { ProfilePageWrapper } from "@/components/pages/ProfilePage";
 import { getUserRecord } from "@/api/userInfoFromDatabase";
-import { UserResponse } from "@supabase/supabase-js";
 import { Database } from "@/table-types";
 
 export default async function ProfilePage() {
@@ -11,7 +10,6 @@ export default async function ProfilePage() {
 	});
 
 	const user = (await supabaseServerComponentsClient.auth.getUser()).data.user;
-
 	const userData: Database["public"]["Tables"]["User"]["Row"] = (
 		await getUserRecord(supabaseServerComponentsClient, user?.email)
 	).data;

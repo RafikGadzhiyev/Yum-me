@@ -5,14 +5,19 @@ import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { isConfigured } from "@/utils/validation.util";
 import { getUserHealthData } from "@/api/userHealthData";
+import { Database } from "@/table-types";
+import { getUserRecord } from "@/api/userInfoFromDatabase";
 
 export default async function MainPage() {
 	const supabaseServerComponentsClient = createServerComponentClient({
 		cookies,
 	});
 
-	const user = await supabaseServerComponentsClient.auth.getUser();
-	const healthdata = await getUserHealthData(user);
+	const user = (await supabaseServerComponentsClient.auth.getUser()).data.user;
+	// const healthdata = await getUserHealthData(user);
+	const userData: Database["public"]["Tables"]["User"]["Row"] = (
+		await getUserRecord(supabaseServerComponentsClient, user?.email)
+	).data;
 
 	return (
 		<div
@@ -20,10 +25,10 @@ export default async function MainPage() {
 			tabIndex={0}
 		>
 			<HomePage
-				user={user.data.user}
-				healthData={healthdata}
+				user={user}
+				healthData={userData}
 			/>
-			{!isConfigured(healthdata) && (
+			{!isConfigured(userData) && (
 				<div className="absolute rounded-md top-0 left-0 bg-black/50 w-full h-full text-white flex  flex-col items-center justify-center">
 					<div className="text-5xl grid place-items-center">
 						<FaLock />

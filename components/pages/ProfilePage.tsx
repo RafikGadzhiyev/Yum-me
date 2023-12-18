@@ -1,10 +1,12 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { GeneratedFoodsTab } from "../feature/GeneratedFoodsTab";
 import { Database } from "@/table-types";
+import { useDispatch } from "react-redux";
+import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
 
 interface IProfilePageWrapper {
 	user: Database["public"]["Tables"]["User"]["Row"];
@@ -13,11 +15,17 @@ interface IProfilePageWrapper {
 export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
 	const router = useRouter();
 	const pathname = usePathname();
+	const dispatch = useDispatch();
 	const searchParams = useSearchParams();
 
 	const activeTab = +(searchParams.get("tab") as string) || 0;
 
 	let fullname = user.name + user.last_name;
+
+	useEffect(() => {
+		console.log(user);
+		dispatch(readUserHealthData(user));
+	}, [user, dispatch]);
 
 	return (
 		<div>
@@ -57,7 +65,12 @@ export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
 					<TabPanels>
 						<TabPanel></TabPanel>
 						<TabPanel>
-							<GeneratedFoodsTab generatedFoods={user.generated_foods as any[]} />
+							{/*TODO: update in database*/}
+							<GeneratedFoodsTab
+								list={(user.generated_foods || []) as any[]}
+								state="success"
+								updateList={() => {}}
+							/>
 						</TabPanel>
 						<TabPanel></TabPanel>
 					</TabPanels>

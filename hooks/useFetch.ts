@@ -10,6 +10,7 @@ export const useFetch = <T>() => {
 		isLoading,
 		result: null,
 	});
+	const [responseStatus, setResponseStatus] = useState<ResponseStatus>("success");
 
 	// FIXME: trouble with realtime requests
 	const abortControllers = useRef<Record<string, AbortController>>({});
@@ -36,6 +37,7 @@ export const useFetch = <T>() => {
 			const requestController = abortPreviousRequestAndSaveNew(url);
 
 			startLoading();
+			setResponseStatus("loading");
 
 			const request: RequestInit = {
 				method,
@@ -58,6 +60,8 @@ export const useFetch = <T>() => {
 							result: data,
 						}));
 
+						setResponseStatus("success");
+
 						return data.data;
 					});
 				})
@@ -66,6 +70,8 @@ export const useFetch = <T>() => {
 						...prev,
 						result: error,
 					}));
+
+					setResponseStatus("error");
 
 					console.log(error);
 				})
@@ -83,6 +89,7 @@ export const useFetch = <T>() => {
 		const requestController = abortPreviousRequestAndSaveNew(url);
 
 		startLoading();
+		setResponseStatus("loading");
 
 		const request: RequestInit = {
 			method,
@@ -98,6 +105,14 @@ export const useFetch = <T>() => {
 		}
 
 		const response = await fetch(BASE_URL + url, request);
+
+		setResponseStatus("success");
+
+		if (!response.ok) {
+			setResponseStatus("error");
+
+			return null;
+		}
 
 		stopLoading();
 
@@ -124,6 +139,8 @@ export const useFetch = <T>() => {
 		isLoading,
 		response,
 		sendRequest,
+		responseStatus,
+
 		sendStreamRequest,
 		stopRequest,
 	};

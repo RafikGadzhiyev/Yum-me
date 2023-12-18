@@ -23,12 +23,10 @@ import { Loading } from "../UI/Loading";
 import { isConfigured } from "@/utils/validation.util";
 
 interface IGenerateNewFoodButtonProps {
-	email: string;
 	updateGeneratedFoodList: (generatedFood: Record<string, any>) => void;
 }
 
 export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
-	email,
 	updateGeneratedFoodList,
 }) => {
 	const healthData = useSelector(
@@ -44,7 +42,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	const generateNewAIResponse = async () => {
 		const streamedData = await sendStreamRequest(
 			"POST",
-			`/api/AI/generate_text?email=${email}`,
+			`/api/AI/generate_text?email=${healthData.email}`,
 			healthData,
 			{
 				"Content-Type": "application/json",
@@ -57,7 +55,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	const addNewFood = () => {
 		const generatedDate = new Date();
 		const request = {
-			email,
+			email: healthData.email,
 			generatedDate,
 			food: data,
 		};
@@ -81,6 +79,8 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	return (
 		<>
 			<Button
+				mb={5}
+				variant="outline"
 				onClick={onOpen}
 				isLoading={isLoading}
 			>
@@ -132,7 +132,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 								colorScheme="red"
 								isDisabled={!isConfigured(healthData) || isReading}
 							>
-								Regenerate
+								Generate
 							</Button>
 						</div>
 					</ModalFooter>

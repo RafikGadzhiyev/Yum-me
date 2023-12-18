@@ -1,3 +1,4 @@
+// Run from the root folder
 // Run command: node i18n/dev-scripts/sync.js
 
 const fs = require("fs/promises");

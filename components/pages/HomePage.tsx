@@ -1,24 +1,18 @@
 "use client";
 
-import { FC, PropsWithChildren, useEffect, useMemo, useState } from "react";
+import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { AppDispatch } from "@/redux/store";
 import { User } from "@supabase/supabase-js";
-import { format } from "date-fns";
-import ReactMarkdown from "react-markdown";
 
-import { LOCALE_BY_LANGUAGE } from "@/i18n/dictionary";
-
-import { useFetch } from "@/hooks/useFetch";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useFetch } from "@/hooks/useFetch";
 
 import { readUser } from "@/redux/slices/user.slice";
 import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
 
-import { Accordion as AccordionContainer } from "@chakra-ui/react";
-import { Accordion } from "../UI/Accordion";
-import { GenerateNewFoodModal } from "../feature/GenerateNewFoodModal";
-import { ListWithPagination } from "@/components/feature/ListWithPagination";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { HOME_PAGE_TABS } from "@/consts/tabs.const";
 
 interface IHomePageProps extends PropsWithChildren {
 	user: User | null;
@@ -26,75 +20,88 @@ interface IHomePageProps extends PropsWithChildren {
 }
 
 export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
-	const memoizedHealthData = useMemo(() => healthData, [healthData]);
-	const memoizedUser = useMemo(() => user, [user]);
-
 	const dispatch = useDispatch<AppDispatch>();
 
-	const { i18n } = useTranslation();
-	const { sendRequest } = useFetch();
+	const { t } = useTranslation();
+	const { sendRequest, responseStatus } = useFetch();
 
-	const [generatedFoods, setGeneratedFoods] = useState<Record<string, any>[]>([]);
+	const [list, setList] = useState<any[]>([]);
 
-	const updateGeneratedFoodList = (generatedFood: Record<string, any>) => {
-		setGeneratedFoods((prevGeneratedFoods) => [
-			generatedFood,
-			...prevGeneratedFoods,
-		]);
+	const getCurrentTabDataList = async (tabIndex: number) => {
+		const tab = HOME_PAGE_TABS[tabIndex];
+
+		switch (tab.key) {
+			case "POSTS":
+				// getPosts()
+				setList([]);
+				break;
+			case "GENERATED_FOODS":
+				const generatedFoodList = await getGeneratedFoods();
+
+				setList(generatedFoodList);
+				break;
+			default:
+				setList([]);
+		}
 	};
 
-	useEffect(() => {
-		dispatch(readUser(memoizedUser));
-
-		if (memoizedUser?.email) {
-			sendRequest(
+	const getGeneratedFoods = async () => {
+		if (user?.email) {
+			return await sendRequest(
 				"GET",
-				`/api/storage/text_generation?email=${memoizedUser.email}`
+				`/api/storage/text_generation?email=${user.email}`
 			).then((data) => {
 				if (data) {
-					setGeneratedFoods(data.reverse());
+					return data.reverse();
 				}
 			});
 		}
-	}, [memoizedUser, sendRequest, dispatch]);
+
+		return Promise.resolve([]);
+	};
+
+	const updateList = (newValue: any) => {
+		setList((prevValue) => [newValue, ...prevValue]);
+	};
 
 	useEffect(() => {
-		dispatch(readUserHealthData(memoizedHealthData));
-	}, [memoizedHealthData, dispatch]);
+		dispatch(readUser(user));
+	}, [user, sendRequest, dispatch]);
+
+	useEffect(() => {
+		dispatch(readUserHealthData(healthData));
+	}, [healthData, dispatch]);
 
 	return (
 		<div className=" flex flex-col gap-2">
 			<div>
-				<GenerateNewFoodModal
-					email={user?.email || ""}
-					updateGeneratedFoodList={updateGeneratedFoodList}
-				/>
-			</div>
-
-			<AccordionContainer
-				allowToggle
-				display={"grid"}
-				gap={3}
-			>
-				{!!generatedFoods.length && (
-					<ListWithPagination>
-						{(generatedFoods as Array<Record<string, string>>).map((item) => (
-							<Accordion
-								key={item._id}
-								label={format(
-									new Date(item.generatedDate),
-									"dd MMMM yyyy HH:mm:ss",
-									{
-										locale: LOCALE_BY_LANGUAGE[i18n.language],
-									}
-								)}
-							>
-								<ReactMarkdown>{item.food}</ReactMarkdown>
-							</Accordion>
+				<Tabs
+					onChange={getCurrentTabDataList}
+					isManual
+					isFitted
+					isLazy
+				>
+					<TabList>
+						{HOME_PAGE_TABS.map((tab) => (
+							<Tab key={tab.key}>{t(tab.key)}</Tab>
 						))}
-					</ListWithPagination>
-				)}
-			</AccordionContainer>
+					</TabList>
+
+					<TabPanels>
+						{HOME_PAGE_TABS.map((tab) => (
+							<TabPanel key={tab.key}>
+								{
+									<tab.Component
+										list={list}
+										state={responseStatus}
+										updateList={updateList}
+									/>
+								}
+							</TabPanel>
+						))}
+					</TabPanels>
+				</Tabs>
+			</div>
 		</div>
 	);
 };
