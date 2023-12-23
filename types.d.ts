@@ -1,6 +1,7 @@
-interface IHomePageTabProps {
+interface ITabProps {
 	list: any[]; //? Maybe we can improve using generics?
 	state: ResponseStatus;
+	isEditable: boolean;
 
 	updateList: (newValue: any) => void;
 }
@@ -58,7 +59,6 @@ type ItemSelectOption = {
 };
 
 // API Types
-type AuthType = "sign_up" | "sign_in";
 // TODO: Change
 type ResponseNumericStatuses =
 	| 200
