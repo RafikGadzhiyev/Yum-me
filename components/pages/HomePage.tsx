@@ -90,13 +90,12 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 					<TabPanels>
 						{HOME_PAGE_TABS.map((tab) => (
 							<TabPanel key={tab.key}>
-								{
-									<tab.Component
-										list={list}
-										state={responseStatus}
-										updateList={updateList}
-									/>
-								}
+								<tab.Component
+									list={list}
+									state={responseStatus}
+									updateList={updateList}
+									isEditable={true}
+								/>
 							</TabPanel>
 						))}
 					</TabPanels>
