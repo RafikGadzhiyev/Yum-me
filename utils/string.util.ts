@@ -8,12 +8,12 @@ export const convertKeyToValue = (
 	key: string,
 	keyDelimiter: string,
 	valueDelimiter: string,
-	transform: StringTransformTypes
+	transform: StringTransformTypes,
 ): string => {
 	const keyParts = key.split(keyDelimiter);
 	let result = "";
 
-	for (let part of keyParts) {
+	for (const part of keyParts) {
 		result += part + valueDelimiter;
 	}
 
@@ -22,7 +22,7 @@ export const convertKeyToValue = (
 
 export const changeStringTransform = (
 	string: string,
-	newTransform: StringTransformTypes
+	newTransform: StringTransformTypes,
 ): string => {
 	let result = "";
 

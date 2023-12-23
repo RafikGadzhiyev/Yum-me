@@ -2,7 +2,7 @@
 
 import { FC, PropsWithChildren, useEffect, useState } from "react";
 import { AppDispatch } from "@/redux/store";
-import { User } from "@supabase/supabase-js";
+import { User as UserSession } from "@supabase/supabase-js";
 
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -15,8 +15,8 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { HOME_PAGE_TABS } from "@/consts/tabs.const";
 
 interface IHomePageProps extends PropsWithChildren {
-	user: User | null;
-	healthData: any;
+	user: UserSession | null;
+	healthData: User;
 }
 
 export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
@@ -25,10 +25,11 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 	const { t } = useTranslation();
 	const { sendRequest, responseStatus } = useFetch();
 
-	const [list, setList] = useState<any[]>([]);
+	const [list, setList] = useState<any[]>([]); // eslint-disable-line
 
 	const getCurrentTabDataList = async (tabIndex: number) => {
 		const tab = HOME_PAGE_TABS[tabIndex];
+		let generatedFoodList;
 
 		switch (tab.key) {
 			case "POSTS":
@@ -36,7 +37,7 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 				setList([]);
 				break;
 			case "GENERATED_FOODS":
-				const generatedFoodList = await getGeneratedFoods();
+				generatedFoodList = await getGeneratedFoods();
 
 				setList(generatedFoodList);
 				break;
@@ -49,7 +50,7 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 		if (user?.email) {
 			return await sendRequest(
 				"GET",
-				`/api/storage/text_generation?email=${user.email}`
+				`/api/storage/text_generation?email=${user.email}`,
 			).then((data) => {
 				if (data) {
 					return data.reverse();
@@ -60,7 +61,13 @@ export const HomePage: FC<IHomePageProps> = ({ user, healthData }) => {
 		return Promise.resolve([]);
 	};
 
-	const updateList = (newValue: any) => {
+	const updateList = (newValue: unknown) => {
+		if (Array.isArray(newValue)) {
+			setList(newValue);
+
+			return;
+		}
+
 		setList((prevValue) => [newValue, ...prevValue]);
 	};
 

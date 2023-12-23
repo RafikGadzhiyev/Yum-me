@@ -1,9 +1,9 @@
 import { handleRequest } from "@/utils/handlers.util";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-export const GET = async (req: NextRequest, res: NextResponse) => {
+export const GET = async (req: NextRequest) => {
 	try {
 		const cookiesStore = cookies();
 		const supabase = createRouteHandlerClient({ cookies: () => cookiesStore });
@@ -17,14 +17,14 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 					title: "Invalid user ID",
 					message: "Provided user ID is not valid",
 				},
-				403
+				403,
 			);
 		}
 
-		let { data, error } = await supabase
+		const { data, error } = await supabase
 			.from("User")
 			.select(
-				"age, weight, height, contraindications, wishes, gender, calories_per_day"
+				"age, weight, height, contraindications, wishes, gender, calories_per_day",
 			)
 			.eq("email", email)
 			.limit(1)
@@ -37,11 +37,11 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 					title: error.code,
 					message: error.message,
 				},
-				404
+				404,
 			);
 		}
 
-		data = data || {
+		const preparedData = data || {
 			age: 0,
 			weight: 0,
 			height: 0,
@@ -51,20 +51,20 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 			calories_per_day: 0,
 		};
 
-		return handleRequest(data, null, 200);
-	} catch (e: any) {
+		return handleRequest(preparedData, null, 200);
+	} catch (e: unknown) {
 		return handleRequest(
 			null,
 			{
 				title: "Internal Server Error",
-				message: e.message,
+				message: (e as Error).message,
 			},
-			501
+			501,
 		);
 	}
 };
 
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export const POST = async (req: NextRequest) => {
 	try {
 		const cookiesStore = cookies();
 		const supabase = createRouteHandlerClient({ cookies: () => cookiesStore });
@@ -80,7 +80,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 					title: "Invalid user ID",
 					message: "Provided user ID is not valid",
 				},
-				403
+				403,
 			);
 		}
 
@@ -102,14 +102,14 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 		}
 
 		return handleRequest("Ok", error, 200);
-	} catch (e: any) {
+	} catch (e: unknown) {
 		return handleRequest(
 			null,
 			{
 				title: "Internal Server Error",
-				message: e.message,
+				message: (e as Error).message,
 			},
-			501
+			501,
 		);
 	}
 };

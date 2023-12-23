@@ -16,7 +16,7 @@ const config: Config = {
 		},
 	},
 	plugins: [
-		require("@headlessui/tailwindcss")({ prefix: "ui" }),
+		require("@headlessui/tailwindcss")({ prefix: "ui" }), // eslint-disable-line
 		require("@tailwindcss/typography"),
 	],
 };

@@ -5,8 +5,8 @@ export const getPagination = (totalPages: number, currentPage: number) => {
 
 	const pagination = [1];
 
-	let beforeCurrentPage = currentPage - 1;
-	let afterCurrentPage = currentPage + 1;
+	const beforeCurrentPage = currentPage - 1;
+	const afterCurrentPage = currentPage + 1;
 
 	if (beforeCurrentPage > 2) {
 		pagination.push(BREAKING_ITEM_IDENTIFIER);

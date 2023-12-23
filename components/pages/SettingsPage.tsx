@@ -11,10 +11,11 @@ import { GenderRadioGroup } from "../UI/GenderRadioGroup";
 import { FormInput } from "../UI/FormInput";
 import { FormTextarea } from "../UI/FormTextarea";
 import { ContentModal } from "../modals/ContentModal";
+import { User as UserSession } from "@supabase/auth-helpers-nextjs";
 
 interface ISettingsPageProps extends PropsWithChildren {
-	config: any;
-	user: any;
+	config: User;
+	user: UserSession;
 }
 
 export const SettingsPageWrapper: FC<ISettingsPageProps> = ({ config, user }) => {
@@ -51,7 +52,7 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({ config, user }) =>
 				/>
 				<Wrap mb={4}>
 					<FormInput<number, "number">
-						initialValue={parseFloat(healthConfig.weight)}
+						initialValue={healthConfig.weight}
 						field="weight"
 						labelValueKey="WEIGHT"
 						placeholder="Your weight"
@@ -60,7 +61,7 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({ config, user }) =>
 					/>
 
 					<FormInput<number, "number">
-						initialValue={parseFloat(healthConfig.height)}
+						initialValue={healthConfig.height}
 						field="height"
 						labelValueKey="HEIGHT"
 						placeholder="Your height"
@@ -74,7 +75,7 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({ config, user }) =>
 					mb={4}
 				>
 					<FormInput<number, "number">
-						initialValue={parseInt(healthConfig.age)}
+						initialValue={healthConfig.age}
 						field="age"
 						labelValueKey="AGE"
 						placeholder="Your age"
@@ -83,7 +84,7 @@ export const SettingsPageWrapper: FC<ISettingsPageProps> = ({ config, user }) =>
 					/>
 
 					<FormInput<number, "number">
-						initialValue={parseFloat(healthConfig.calories_per_day)}
+						initialValue={healthConfig.calories_per_day}
 						field="calories_per_day"
 						labelValueKey="CALORIES_PER_DAY"
 						placeholder="Your calories per day"

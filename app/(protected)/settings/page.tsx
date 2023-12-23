@@ -1,6 +1,9 @@
 import { SettingsPageWrapper } from "@/components/pages/SettingsPage";
 import { getUserHealthData } from "@/api/userHealthData";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import {
+	createServerComponentClient,
+	User as UserSession,
+} from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
 export default async function SettingsPage() {
@@ -15,7 +18,7 @@ export default async function SettingsPage() {
 		<div>
 			<SettingsPageWrapper
 				config={data}
-				user={user.data.user}
+				user={user.data.user as UserSession}
 			/>
 		</div>
 	);

@@ -3,9 +3,6 @@
 import { FC, useEffect, useState } from "react";
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-// import { GeneratedFoodsTab } from "../feature/GeneratedFoodsTab";
-
-import { Database } from "@/table-types";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
@@ -14,14 +11,13 @@ import { useDispatch } from "react-redux";
 
 import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
 
-// import { PostsTab } from "@/components/feature/PostsTab";
 import { PROFILE_PAGE_TABS } from "@/consts/tabs.const";
 import { Roles } from "@/enums/roles.enum";
 
 // TODO: refactor, duplicated code
 
 interface IProfilePageWrapper {
-	user: Database["public"]["Tables"]["User"]["Row"] & { role: Roles }; // TODO: I do not know why but supabase types did not update
+	user: User;
 }
 
 export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
@@ -33,7 +29,7 @@ export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
 	const { sendRequest, responseStatus } = useFetch();
 	const { t } = useTranslation();
 
-	const [list, setList] = useState<any[]>([]);
+	const [list, setList] = useState<any[]>([]); // eslint-disable-line
 
 	const activeTab = +(searchParams.get("tab") as string) || 0;
 
@@ -73,7 +69,7 @@ export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
 		return Promise.resolve([]);
 	};
 
-	const updateList = (newValue: any) => {
+	const updateList = function <T>(newValue: T) {
 		setList((prevValue) => [newValue, ...prevValue]);
 	};
 
@@ -115,7 +111,7 @@ export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
 				>
 					<TabList>
 						{PROFILE_PAGE_TABS.map((tab) =>
-							!tab.roles || tab.roles.includes(user.role) ? (
+							!tab.roles || tab.roles.includes(user.role as Roles) ? (
 								<Tab key={tab.key}>{t(tab.key)}</Tab>
 							) : null,
 						)}
@@ -123,7 +119,7 @@ export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
 
 					<TabPanels>
 						{PROFILE_PAGE_TABS.map((tab) =>
-							!tab.roles || tab.roles.includes(user.role) ? (
+							!tab.roles || tab.roles.includes(user.role as Roles) ? (
 								<TabPanel key={tab.key}>
 									<tab.Component
 										list={list}

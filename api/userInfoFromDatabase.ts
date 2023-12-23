@@ -1,8 +1,8 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 
 export const getUserRecord = async (
-	supabaseServerClient: SupabaseClient<any, "public", any>,
-	email: string | null | undefined
+	supabaseServerClient: SupabaseClient<any, "public", any>, // eslint-disable-line
+	email: string | null | undefined,
 ) => {
 	return supabaseServerClient
 		.from("User")

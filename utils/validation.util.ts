@@ -1,6 +1,6 @@
 export const isEmpty = (str: string) => str.length === 0;
 
-export const isConfigured = (userData: any) => {
+export const isConfigured = (userData: User | null) => {
 	return (
 		userData &&
 		userData.age > 0 &&

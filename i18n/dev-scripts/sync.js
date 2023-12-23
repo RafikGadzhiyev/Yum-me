@@ -1,7 +1,7 @@
 // Run from the root folder
 // Run command: node i18n/dev-scripts/sync.js
 
-const fs = require("fs/promises");
+const fs = require("fs/promises"); // eslint-disable-line
 
 const LANGUAGES = ["ru", "en"];
 const SYNC_BY = "en";
@@ -11,10 +11,10 @@ const FILE_EXTENSION = ".json";
 
 const IGNORE_SORT_KEYS = ["DAY_OF_WEEK"];
 
-const SYNC_BY_DICTIONARY = require(`${FILE_PATH}/${SYNC_BY}${FILE_EXTENSION}`);
+const SYNC_BY_DICTIONARY = require(`${FILE_PATH}/${SYNC_BY}${FILE_EXTENSION}`); // eslint-disable-line
 
 for (let language of LANGUAGES) {
-	const SYNC_FOR_DICTIONARY = require(`${FILE_PATH}/${language}${FILE_EXTENSION}`);
+	const SYNC_FOR_DICTIONARY = require(`${FILE_PATH}/${language}${FILE_EXTENSION}`); // eslint-disable-line
 
 	const syncedDictionary =
 		language !== SYNC_BY
@@ -25,7 +25,7 @@ for (let language of LANGUAGES) {
 
 	fs.writeFile(
 		`i18n/languages/${language}${FILE_EXTENSION}`,
-		JSON.stringify(sortDictionaryKeys, null, 2)
+		JSON.stringify(sortDictionaryKeys, null, 2),
 	);
 }
 
@@ -54,7 +54,7 @@ function sortDictionaryKeysByType(dictionary) {
 
 function sortDictionaryKeysAlphabetically(dictionary) {
 	return Object.fromEntries(
-		Object.entries(dictionary).sort((a, b) => (a[0] <= b[0] ? -1 : 1))
+		Object.entries(dictionary).sort((a, b) => (a[0] <= b[0] ? -1 : 1)),
 	);
 }
 

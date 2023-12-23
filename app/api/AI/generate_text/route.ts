@@ -8,14 +8,13 @@ export const runtime = "edge";
 
 const MAX_MESSAGE_TOKEN_LENGTH = 4097;
 
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export const POST = async (req: NextRequest) => {
 	try {
 		const data = await req.json();
 
-		console.log(data);
-
+		// TODO: Create message with i18n
 		const message = `Нужен рацион питания для следующего случая:\n\n${JSON.stringify(
-			data
+			data,
 		)}\n\nНапиши без лишнего вступления, ни с чем не связывай, так как я это буду отправлять человеку, он должен понять, что ему это адресованно. Язык, на котором нужно написать - Markdown`;
 
 		if (message.length > MAX_MESSAGE_TOKEN_LENGTH) {
@@ -25,7 +24,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 					title: "Bad Request",
 					message: "Message is too long",
 				},
-				403
+				403,
 			);
 		}
 
@@ -45,16 +44,13 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 			top_p: 1,
 			frequency_penalty: 0,
 			presence_penalty: 0,
-			// max_tokens: 500,  // Если хотим урезать сообщение, коммент удаляем, и меняем число
+			// max_tokens: 500,  // Generated message length constraint
 			stream: true,
 			n: 1,
 		};
 
-		const encoder = new TextEncoder();
-
-		const textGenerationResult = await openAI.chat.completions.create(
-			requestPayload
-		);
+		const textGenerationResult =
+			await openAI.chat.completions.create(requestPayload);
 
 		const stream = OpenAIStream(textGenerationResult);
 

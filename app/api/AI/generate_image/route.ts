@@ -2,7 +2,7 @@ import { handleRequest } from "@/utils/handlers.util";
 import { openAI } from "@/lib/AI";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest, res: NextResponse) => {
+export const GET = async (req: NextRequest) => {
 	try {
 		const searchParams = req.nextUrl.searchParams;
 		const prompt = searchParams.get("prompt");
@@ -14,7 +14,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 					title: "Bad Request",
 					message: "You did not provide prompt!",
 				},
-				403
+				403,
 			);
 		}
 
@@ -28,7 +28,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 				image: generatedImage,
 			},
 			null,
-			200
+			200,
 		);
 	} catch (e) {
 		return NextResponse.json(e, { status: 403 });

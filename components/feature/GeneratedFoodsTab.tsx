@@ -12,7 +12,7 @@ import { Accordion } from "../UI/Accordion";
 import { ListWithPagination } from "./ListWithPagination";
 import { GenerateNewFoodModal } from "@/components/feature/GenerateNewFoodModal";
 
-export const GeneratedFoodsTab: FC<ITabProps> = ({
+export const GeneratedFoodsTab: FC<ITabProps<GeneratedFood>> = ({
 	list,
 	state,
 	isEditable,
@@ -31,7 +31,7 @@ export const GeneratedFoodsTab: FC<ITabProps> = ({
 		<div>
 			{isEditable && <GenerateNewFoodModal updateGeneratedFoodList={updateList} />}
 
-			{!!list.length ? (
+			{list.length ? (
 				<AccordionContainer
 					allowToggle
 					display={"grid"}
@@ -46,7 +46,7 @@ export const GeneratedFoodsTab: FC<ITabProps> = ({
 									"dd MMMM yyyy HH:mm:ss",
 									{
 										locale: LOCALE_BY_LANGUAGE[i18n.language],
-									}
+									},
 								)}
 							>
 								<ReactMarkdown>{foodData.food}</ReactMarkdown>

@@ -34,27 +34,27 @@ const SignUpSchema = z
 			.string()
 			.min(
 				PASSWORD_RESTRICTION.LENGTH.MIN,
-				"Minimum password length must be at least 6 characters"
+				"Minimum password length must be at least 6 characters",
 			)
 			.max(
 				PASSWORD_RESTRICTION.LENGTH.MAX,
-				"Maximum password length must be at most 18 characters"
+				"Maximum password length must be at most 18 characters",
 			)
 			.regex(
 				new RegExp(`[${PASSWORD_RESTRICTION.SYMBOLS}]`, "g"),
 				`Should conaint at leat one character ${PASSWORD_RESTRICTION.SYMBOLS.join(
-					", "
-				)}`
+					", ",
+				)}`,
 			),
 		confirm_password: z
 			.string()
 			.min(
 				PASSWORD_RESTRICTION.LENGTH.MIN,
-				"Minimum password length must be at least 6 characters"
+				"Minimum password length must be at least 6 characters",
 			)
 			.max(
 				PASSWORD_RESTRICTION.LENGTH.MAX,
-				"Maximum password length must be at most 18 characters"
+				"Maximum password length must be at most 18 characters",
 			),
 	})
 	.superRefine(({ confirm_password, password }, ctx) => {
@@ -85,7 +85,7 @@ export const SignUpForm = () => {
 	const signUp: SubmitHandler<SignUpSchemaType> = async (data) => {
 		startLoading();
 
-		let signUpResponse = await supabaseClient.auth.signUp({
+		const signUpResponse = await supabaseClient.auth.signUp({
 			email: data.email,
 			password: data.password,
 		});
@@ -118,7 +118,7 @@ export const SignUpForm = () => {
 	return (
 		<form
 			onSubmit={handleSubmit(signUp)}
-			className="p-2 w-2xl max-w-2xl"
+			className="w-2xl max-w-2xl p-2"
 		>
 			<Wrap>
 				<FormControl isInvalid={!!errors.email}>
@@ -126,7 +126,7 @@ export const SignUpForm = () => {
 					<Input
 						type="email"
 						placeholder="Email"
-						className="rounded-md p-1 w-full "
+						className="w-full rounded-md p-1 "
 						aria-label="Email"
 						aria-hidden={false}
 						{...register("email")}
@@ -142,7 +142,7 @@ export const SignUpForm = () => {
 						<Input
 							type={isPasswordShown ? "text" : "password"}
 							placeholder="Password"
-							className="rounded-md p-1 w-full "
+							className="w-full rounded-md p-1 "
 							aria-label="Password"
 							aria-hidden={false}
 							{...register("password")}
@@ -174,7 +174,7 @@ export const SignUpForm = () => {
 						<Input
 							type={isPasswordShown ? "text" : "password"}
 							placeholder="Confirm password"
-							className="rounded-md p-1 w-full "
+							className="w-full rounded-md p-1 "
 							aria-label="Confirm password"
 							aria-hidden={false}
 							{...register("confirm_password")}
@@ -213,7 +213,7 @@ export const SignUpForm = () => {
 			</Wrap>
 			<Button
 				type="submit"
-				className="rounded-md p-2 mt-8 bg-green-300 w-full transition hover:bg-green-200 active:bg-green-400"
+				className="mt-8 w-full rounded-md bg-green-300 p-2 transition hover:bg-green-200 active:bg-green-400"
 				isLoading={isLoading}
 			>
 				{t("SIGN_UP")}

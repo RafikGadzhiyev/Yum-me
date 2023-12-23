@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
-export const GET = async (req: NextRequest, res: NextResponse) => {
+export const GET = async (req: NextRequest) => {
 	try {
 		const cookiesStore = cookies();
 		const supabase = createRouteHandlerClient({ cookies: () => cookiesStore });
@@ -29,7 +29,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 					title: error.message,
 					message: error.details,
 				},
-				502
+				502,
 			);
 		}
 
@@ -39,7 +39,7 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
 	}
 };
 
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export const POST = async (req: NextRequest) => {
 	try {
 		const cookiesStore = cookies();
 		const supabase = createRouteHandlerClient({ cookies: () => cookiesStore });
@@ -53,13 +53,26 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 			.limit(1)
 			.single();
 
+		if (error) {
+			return handleRequest(
+				null,
+				{
+					title: error.message,
+					message: error.details,
+				},
+				403,
+			);
+		}
+
 		const generatedFoods = userData?.generated_foods || [];
 
-		generatedFoods.push({
+		const savedGeneratedFoods = {
 			_id: uuidv4(),
 			generatedDate,
 			food: food,
-		});
+		};
+
+		generatedFoods.push(savedGeneratedFoods);
 
 		const { data, error: updateError } = await supabase
 			.from("User")
@@ -74,7 +87,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 					title: updateError?.message,
 					message: updateError?.details,
 				},
-				400
+				400,
 			);
 		}
 

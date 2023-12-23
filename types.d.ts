@@ -1,17 +1,59 @@
-interface ITabProps {
-	list: any[]; //? Maybe we can improve using generics?
-	state: ResponseStatus;
-	isEditable: boolean;
-
-	updateList: (newValue: any) => void;
-}
-
-type IInputConfig = {
+// Supabase types
+type User = {
+	id: string;
+	created_at: number;
+	updated_at: number;
 	name: string;
-	label: string;
-	type: string;
-	placeholder: string;
+	last_name: string;
+	email: string;
+	age: number;
+	weight: number;
+	height: number;
+	contraindications: text;
+	wishes: string;
+	gender: string;
+	calories_per_day: number;
+	generated_foods: GeneratedFood[];
+	role: string;
 };
+
+type GeneratedFood = {
+	_id: string;
+	generatedDate: number;
+	food: string;
+};
+
+type Post = {
+	_id: string;
+	author: string;
+	role: string;
+	created_at: number;
+	showLikes: boolean;
+	coverage: {
+		likes: number;
+		comments: Comment[];
+		saved: number;
+	};
+	content: string;
+};
+
+type Comment = {
+	author: string;
+	created_at: number;
+	likes: number;
+	content: string;
+};
+
+type TabsDataVariants = Post | GeneratedFood;
+type TabsDataListVariants = Post[] | GeneratedFood[];
+
+//? Should I save this?
+// type IInputConfig = {
+// 	name: string;
+// 	label: string;
+// 	type: string;
+// 	placeholder: string;
+// };
 
 type Route = {
 	path: string;
@@ -48,6 +90,14 @@ type RequestResponse<T, U> = {
 	status: ResponseNumericStatuses;
 };
 
+interface ITabProps<T extends TabsDataVariants> {
+	list: T[];
+	state: ResponseStatus;
+	isEditable: boolean;
+
+	updateList: (newValue: T | T[]) => void;
+}
+
 type useFetchResponse<T, U> = {
 	isLoading: boolean;
 	result: RequestResponse<T, U> | null;
@@ -59,6 +109,12 @@ type ItemSelectOption = {
 };
 
 // API Types
+type GeneratedFoodRequestBody = {
+	email: string;
+	generatedDate: number;
+	food: string;
+};
+
 // TODO: Change
 type ResponseNumericStatuses =
 	| 200

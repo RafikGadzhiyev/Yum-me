@@ -4,8 +4,6 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { isConfigured } from "@/utils/validation.util";
-import { getUserHealthData } from "@/api/userHealthData";
-import { Database } from "@/table-types";
 import { getUserRecord } from "@/api/userInfoFromDatabase";
 
 export default async function MainPage() {
@@ -14,14 +12,13 @@ export default async function MainPage() {
 	});
 
 	const user = (await supabaseServerComponentsClient.auth.getUser()).data.user;
-	// const healthdata = await getUserHealthData(user);
-	const userData: Database["public"]["Tables"]["User"]["Row"] = (
+	const userData: User = (
 		await getUserRecord(supabaseServerComponentsClient, user?.email)
 	).data;
 
 	return (
 		<div
-			className="grid gap-4 relative w-full min-h-full"
+			className="relative grid min-h-full w-full gap-4"
 			tabIndex={0}
 		>
 			<HomePage
@@ -29,8 +26,8 @@ export default async function MainPage() {
 				healthData={userData}
 			/>
 			{!isConfigured(userData) && (
-				<div className="absolute rounded-md top-0 left-0 bg-black/50 w-full h-full text-white flex  flex-col items-center justify-center">
-					<div className="text-5xl grid place-items-center">
+				<div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center  rounded-md bg-black/50 text-white">
+					<div className="grid place-items-center text-5xl">
 						<FaLock />
 						<span className="text-lg">
 							To get access You need fully configure your food wishes and additional
@@ -39,7 +36,7 @@ export default async function MainPage() {
 					</div>
 					<Link
 						href="/settings"
-						className="rounded-md p-2 my-3 bg-orange-400 transition hover:bg-orange-500 active:bg-orange-600"
+						className="my-3 rounded-md bg-orange-400 p-2 transition hover:bg-orange-500 active:bg-orange-600"
 					>
 						Configure
 					</Link>

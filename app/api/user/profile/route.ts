@@ -16,7 +16,7 @@ export const GET = async () => {
 			const headerList = headers();
 			const authorization = headerList.get("authorization");
 			console.log(authorization, headerList);
-			const [_, token] = authorization?.split(" ") as string[];
+			const [, token] = authorization?.split(" ") as string[];
 
 			const { data: userData } = await supabase.auth.getUser(token);
 			currentUser = userData.user as User;
@@ -29,7 +29,7 @@ export const GET = async () => {
 					title: "Unauthorized",
 					message: "You are not authorized",
 				},
-				401
+				401,
 			);
 		}
 
@@ -43,14 +43,14 @@ export const GET = async () => {
 		};
 
 		return handleRequest(userClientSessionData, null, 200);
-	} catch (err: any) {
+	} catch (err: unknown) {
 		return handleRequest(
 			null,
 			{
 				title: "Server error",
-				message: err.message,
+				message: (err as Error).message,
 			},
-			500
+			500,
 		);
 	}
 };

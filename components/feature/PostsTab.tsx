@@ -2,10 +2,10 @@
 //! Important: this component is on test mode. Need refactor and more
 
 import {
-	FaThumbsUp,
-	FaThumbsDown,
-	FaComment,
-	FaBookmark,
+	// FaThumbsUp,
+	// FaThumbsDown,
+	// FaComment,
+	// FaBookmark,
 	FaRegBookmark,
 	FaRegComment,
 	FaRegThumbsUp,
@@ -76,27 +76,31 @@ const TEST_DATA = [
 	},
 ];
 
-export const PostsTab: FC<ITabProps> = ({ isEditable }) => {
-	const [posts, setPosts] = useState(TEST_DATA);
-	const [newPosts, setNewPosts] = useState<any[]>([]);
+export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
+	// const [posts, setPosts] = useState(TEST_DATA);
+	const [newPosts, setNewPosts] = useState<Post[]>([]);
 
 	const { i18n } = useTranslation();
 
 	const user = useSelector(
-		(store: RootStore) => store.userHealthDataReducer.userHealthData
+		(store: RootStore) => store.userHealthDataReducer.userHealthData,
 	);
 
 	const createNewPost = () => {
+		if (!user) {
+			return;
+		}
+
 		setNewPosts((prevNewPosts) => [
 			{
-				id: Math.random(),
+				_id: Math.random() + "",
 				author: user.name + user.last_name,
 				role: user.role,
-				created_at: new Date(), // Here will be actual date
+				created_at: Date.now(), // Here will be actual date
 				showLikes: true,
 				coverage: {
 					likes: 0,
-					dislikes: 0,
+					saved: 0,
 					comments: [],
 				},
 				content: "",
@@ -105,11 +109,15 @@ export const PostsTab: FC<ITabProps> = ({ isEditable }) => {
 		]);
 	};
 
-	const updateNewPostField = (newPostIndex: number, field: string, value: any) => {
+	const updateNewPostField = function <T>(
+		newPostIndex: number,
+		field: string,
+		value: T,
+	) {
 		setNewPosts((prevPosts) =>
 			prevPosts.map((prevPost, i) =>
-				i !== newPostIndex ? prevPost : { ...prevPost, [field]: value }
-			)
+				i !== newPostIndex ? prevPost : { ...prevPost, [field]: value },
+			),
 		);
 	};
 
@@ -119,13 +127,13 @@ export const PostsTab: FC<ITabProps> = ({ isEditable }) => {
 
 			{newPosts.map((newPost, newPostIndex) => (
 				<div
-					key={newPost.id}
-					className="bg-white p-4 rounded-md"
+					key={newPost._id}
+					className="rounded-md bg-white p-4"
 				>
-					<div className="flex items center justify-start shadow-gray-400">
+					<div className="items center flex justify-start shadow-gray-400">
 						<div className="flex flex-col">
 							<span>{newPost.author}</span>
-							<div className="text-gray-500 text-sm -translate-y-1/4">
+							<div className="-translate-y-1/4 text-sm text-gray-500">
 								<span>{newPost.role}</span>
 								<span>
 									{" "}
@@ -144,14 +152,9 @@ export const PostsTab: FC<ITabProps> = ({ isEditable }) => {
 								{newPost.showLikes && <span>{newPost.coverage.likes}</span>}
 								{/*<FaThumbsUp />*/}
 							</button>
-							<button className="flex items-center gap-1">
-								<FaRegThumbsDown />
-								{newPost.showLikes && <span>{newPost.coverage.dislikes}</span>}
-								{/*<FaThumbsDown />*/}
-							</button>
 						</div>
 					</div>
-					<div className="border rounded-sm p-2 my-2 max-h-[300px] overflow-y-auto">
+					<div className="my-2 max-h-[300px] overflow-y-auto rounded-sm border p-2">
 						{/*{newPost.content}*/}
 						<textarea
 							className="w-full"
@@ -178,12 +181,12 @@ export const PostsTab: FC<ITabProps> = ({ isEditable }) => {
 			{TEST_DATA.map((data) => (
 				<div
 					key={data.id}
-					className="bg-white p-4 rounded-md"
+					className="rounded-md bg-white p-4"
 				>
-					<div className="flex items center justify-start shadow-gray-400">
+					<div className="items center flex justify-start shadow-gray-400">
 						<div className="flex flex-col">
 							<span>{data.author}</span>
-							<div className="text-gray-500 text-sm -translate-y-1/4">
+							<div className="-translate-y-1/4 text-sm text-gray-500">
 								<span>{data.role}</span>
 								<span> · {data.created_at}</span>
 							</div>
@@ -202,7 +205,7 @@ export const PostsTab: FC<ITabProps> = ({ isEditable }) => {
 							</button>
 						</div>
 					</div>
-					<div className="border rounded-sm p-2 my-2 max-h-[300px] overflow-y-auto">
+					<div className="my-2 max-h-[300px] overflow-y-auto rounded-sm border p-2">
 						{data.content}
 					</div>
 					<div className="flex items-center gap-2">

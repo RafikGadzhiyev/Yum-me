@@ -1,7 +1,7 @@
 import { handleRequest } from "@/utils/handlers.util";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest, res: NextResponse) => {
+export const GET = async () => {
 	try {
 		return handleRequest(null, null, 200);
 	} catch (e) {

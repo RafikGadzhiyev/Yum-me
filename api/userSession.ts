@@ -11,7 +11,5 @@ export const getUser = async () => {
 		return null;
 	}
 
-	let user = data.session.user;
-
-	return user;
+	return data.session.user;
 };

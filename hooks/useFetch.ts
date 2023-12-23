@@ -28,12 +28,12 @@ export const useFetch = <T>() => {
 	};
 
 	const sendRequest = useCallback(
-		(
+		function <T>(
 			method: string,
 			url: string,
-			body: null | Record<string, any> = null,
-			headers: null | Record<string, string> = null
-		) => {
+			body: null | Record<string, T> = null,
+			headers: null | Record<string, string> = null,
+		) {
 			const requestController = abortPreviousRequestAndSaveNew(url);
 
 			startLoading();
@@ -77,15 +77,15 @@ export const useFetch = <T>() => {
 				})
 				.finally(stopLoading);
 		},
-		[BASE_URL, startLoading, stopLoading]
+		[BASE_URL, startLoading, stopLoading],
 	);
 
-	const sendStreamRequest = async (
+	const sendStreamRequest = async function <T>(
 		method: string,
 		url: string,
-		body: null | Record<string, any> = null,
-		headers: null | Record<string, string> = null
-	): Promise<ReadableStream<Uint8Array> | null> => {
+		body: null | Record<string, T> = null,
+		headers: null | Record<string, string> = null,
+	): Promise<ReadableStream<Uint8Array> | null> {
 		const requestController = abortPreviousRequestAndSaveNew(url);
 
 		startLoading();

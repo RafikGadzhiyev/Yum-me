@@ -10,15 +10,15 @@ import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 export const LanguageSelect = () => {
 	const { t, i18n } = useTranslation();
 
-	const changeLanguage = (languageKey: string) => {
-		i18n.changeLanguage(languageKey);
+	const changeLanguage = async (languageKey: string) => {
+		await i18n.changeLanguage(languageKey);
 	};
 
 	return (
 		<Menu>
 			<MenuButton
 				as={Button}
-				className="rounded-md p-2 bg-white"
+				className="rounded-md bg-white p-2"
 				rightIcon={<FaChevronDown />}
 			>
 				{t("CHANGE_LANGUAGE")}
@@ -31,7 +31,7 @@ export const LanguageSelect = () => {
 				{LANGUAGES.map((language) => (
 					<MenuItem
 						key={language}
-						className="p-2 transition hover:bg-slate-100 rounded-md"
+						className="rounded-md p-2 transition hover:bg-slate-100"
 						onClick={() => changeLanguage(language)}
 					>
 						{language}

@@ -23,14 +23,14 @@ import { Loading } from "../UI/Loading";
 import { isConfigured } from "@/utils/validation.util";
 
 interface IGenerateNewFoodButtonProps {
-	updateGeneratedFoodList: (generatedFood: Record<string, any>) => void;
+	updateGeneratedFoodList: (generatedFood: GeneratedFood | GeneratedFood[]) => void;
 }
 
 export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	updateGeneratedFoodList,
 }) => {
 	const healthData = useSelector(
-		(store: RootStore) => store.userHealthDataReducer.userHealthData
+		(store: RootStore) => store.userHealthDataReducer.userHealthData,
 	);
 
 	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);
@@ -40,21 +40,29 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const generateNewAIResponse = async () => {
+		if (!healthData) {
+			return;
+		}
+
 		const streamedData = await sendStreamRequest(
 			"POST",
 			`/api/AI/generate_text?email=${healthData.email}`,
 			healthData,
 			{
 				"Content-Type": "application/json",
-			}
+			},
 		);
 
 		await readData(streamedData);
 	};
 
 	const addNewFood = () => {
-		const generatedDate = new Date();
-		const request = {
+		if (!healthData) {
+			return;
+		}
+
+		const generatedDate = Date.now();
+		const request: GeneratedFoodRequestBody = {
 			email: healthData.email,
 			generatedDate,
 			food: data,
@@ -63,8 +71,8 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 		sendRequest("POST", "/api/storage/text_generation", request, {
 			"Content-Type": "application/json",
 		})
-			.then(() => {
-				updateGeneratedFoodList(request);
+			.then((updatedGeneratedFoodList: GeneratedFood[]) => {
+				updateGeneratedFoodList(updatedGeneratedFoodList);
 			})
 			.finally(onClose);
 	};
@@ -117,7 +125,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 						</Collapse>
 					</ModalBody>
 					<ModalFooter gap={2}>
-						<div className="flex items-center gap-3 justify-end">
+						<div className="flex items-center justify-end gap-3">
 							<Button
 								onClick={addNewFood}
 								variant="ghost"
