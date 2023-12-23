@@ -8,5 +8,8 @@
 	"useTabs": true,
 	"quoteProps": "as-needed",
 	"bracketSpacing": true,
-	"singleAttributePerLine": true
+	"singleAttributePerLine": true,
+	"plugins": [
+		"prettier-plugin-tailwindcss"
+	]
 }
