@@ -12,9 +12,11 @@ import { Accordion } from "../UI/Accordion";
 import { ListWithPagination } from "./ListWithPagination";
 import { GenerateNewFoodModal } from "@/components/feature/GenerateNewFoodModal";
 
-export const GeneratedFoodsTab: FC<IHomePageTabProps> = ({
+export const GeneratedFoodsTab: FC<ITabProps> = ({
 	list,
 	state,
+	isEditable,
+
 	updateList,
 }) => {
 	const { i18n } = useTranslation();
@@ -27,7 +29,7 @@ export const GeneratedFoodsTab: FC<IHomePageTabProps> = ({
 
 	return (
 		<div>
-			<GenerateNewFoodModal updateGeneratedFoodList={updateList} />
+			{isEditable && <GenerateNewFoodModal updateGeneratedFoodList={updateList} />}
 
 			{!!list.length ? (
 				<AccordionContainer
