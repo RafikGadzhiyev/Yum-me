@@ -44,9 +44,6 @@ type Comment = {
 	content: string;
 };
 
-type TabsDataVariants = Post | GeneratedFood;
-type TabsDataListVariants = Post[] | GeneratedFood[];
-
 //? Should I save this?
 // type IInputConfig = {
 // 	name: string;
@@ -90,7 +87,7 @@ type RequestResponse<T, U> = {
 	status: ResponseNumericStatuses;
 };
 
-interface ITabProps<T extends TabsDataVariants> {
+interface ITabProps<T> {
 	list: T[];
 	state: ResponseStatus;
 	isEditable: boolean;
