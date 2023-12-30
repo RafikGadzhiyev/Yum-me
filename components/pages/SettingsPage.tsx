@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useLoading } from "@/hooks/useLoading";
 
-import { Query } from "@/app/appwrite";
+import { Query } from "@/lib/appwrite";
 import { RootStore } from "@/redux/store";
 
 import { Button, Wrap } from "@chakra-ui/react";

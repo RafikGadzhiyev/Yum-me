@@ -1,5 +1,5 @@
 //? Maybe then->catch->finally?
-import { databases } from "@/app/appwrite";
+import { databases } from "@/lib/appwrite";
 
 export const getUsers = async (queries: string[]) => {
 	const requestResult = await databases.listDocuments(

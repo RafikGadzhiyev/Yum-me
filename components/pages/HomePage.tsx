@@ -12,7 +12,7 @@ import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { HOME_PAGE_TABS } from "@/consts/tabs.const";
-import { Query, UserActiveSession, Document } from "@/app/appwrite";
+import { Query, UserActiveSession, Document } from "@/lib/appwrite";
 import { isConfigured } from "@/utils/validation.util";
 import { FaLock } from "react-icons/fa";
 import Link from "next/link";

@@ -1,4 +1,4 @@
-import { databases, ID } from "@/app/appwrite";
+import { databases, ID } from "@/lib/appwrite";
 
 export const getGeneratedFoodList = async (queries: string[]) => {
 	const requestResponse = await databases.listDocuments(

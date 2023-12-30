@@ -1,4 +1,4 @@
-import { account, databases, ID } from "@/app/appwrite";
+import { account, databases, ID } from "@/lib/appwrite";
 import { AppwriteException } from "appwrite";
 import { handleException } from "@/utils/clientHandlers.util";
 import { Roles } from "@/enums/roles.enum";

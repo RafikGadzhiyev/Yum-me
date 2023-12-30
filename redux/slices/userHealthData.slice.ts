@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Document } from "@/app/appwrite";
+import { Document } from "@/lib/appwrite";
 
 // TODO: add use health data type
 

@@ -1,4 +1,4 @@
-import { Document } from "@/app/appwrite";
+import { Document } from "@/lib/appwrite";
 
 export const isEmpty = (str: string) => str.length === 0;
 

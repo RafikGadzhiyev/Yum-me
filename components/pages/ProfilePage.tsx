@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { PROFILE_PAGE_TABS } from "@/consts/tabs.const";
 import { Roles } from "@/enums/roles.enum";
 import { RootStore } from "@/redux/store";
-import { Query, Document } from "@/app/appwrite";
+import { Query, Document } from "@/lib/appwrite";
 import { getSession } from "@/api/auth";
 import { getUsers } from "@/api/user";
 import { getGeneratedFoodList } from "@/api/generatedFood";
