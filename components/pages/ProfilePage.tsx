@@ -1,42 +1,39 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useFetch } from "@/hooks/useFetch";
-import { useDispatch } from "react-redux";
-
-import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
+import { useSelector } from "react-redux";
 
 import { PROFILE_PAGE_TABS } from "@/consts/tabs.const";
 import { Roles } from "@/enums/roles.enum";
+import { RootStore } from "@/redux/store";
+import { account, databases, Query, Document } from "@/app/appwrite";
 
-// TODO: refactor, duplicated code
-
-interface IProfilePageWrapper {
-	user: User;
-}
-
-export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
+export const ProfilePageWrapper = () => {
 	const router = useRouter();
 	const pathname = usePathname();
-	const dispatch = useDispatch();
 	const searchParams = useSearchParams();
+	const userFromStore = useSelector(
+		(store: RootStore) => store.userHealthDataReducer.userHealthData,
+	);
 
-	const { sendRequest, responseStatus } = useFetch();
+	const { responseStatus } = useFetch();
 	const { t } = useTranslation();
 
 	const [list, setList] = useState<any[]>([]); // eslint-disable-line
+	const [user, setUser] = useState<Document | null>(userFromStore);
 
 	const activeTab = +(searchParams.get("tab") as string) || 0;
 
-	const fullname = user.name + user.last_name;
+	const fullname = user?.name + user?.last_name;
 
 	const getCurrentTabDataList = async (tabIndex: number) => {
-		const tab = PROFILE_PAGE_TABS[tabIndex];
+		const tab = PROFILE_PAGE_TABS[tabIndex + 1]; // It is not fix of problem just tmp solution
 		let generatedFoodList;
 
 		switch (tab.key) {
@@ -56,14 +53,13 @@ export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
 
 	const getGeneratedFoods = async () => {
 		if (user?.email) {
-			return await sendRequest(
-				"GET",
-				`/api/storage/text_generation?email=${user.email}`,
-			).then((data) => {
-				if (data) {
-					return data.reverse();
-				}
-			});
+			return (
+				await databases.listDocuments(
+					process.env.NEXT_PUBLIC_DATABASE_ID!,
+					process.env.NEXT_PUBLIC_FOOD_COLLECTION_ID!,
+					[Query.equal("generated_for", user.email)],
+				)
+			).documents;
 		}
 
 		return Promise.resolve([]);
@@ -80,8 +76,38 @@ export const ProfilePageWrapper: FC<IProfilePageWrapper> = ({ user }) => {
 	};
 
 	useEffect(() => {
-		dispatch(readUserHealthData(user));
-	}, [user, dispatch]);
+		account.get().then((user) => {
+			databases
+				.listDocuments(
+					process.env.NEXT_PUBLIC_DATABASE_ID!,
+					process.env.NEXT_PUBLIC_USER_COLLECTION_ID!,
+					[
+						Query.equal("email", user.email),
+						Query.select([
+							"$id",
+							"email",
+							"name",
+							"last_name",
+							"age",
+							"weight",
+							"height",
+							"contraindications",
+							"wishes",
+							"gender",
+							"calories_per_day",
+							"role",
+						]),
+					],
+				)
+				.then((queryResult) => {
+					setUser(queryResult.documents[0]);
+				});
+		});
+	}, []);
+
+	if (!user) {
+		return <h1>Wait, it Takes few minutes</h1>;
+	}
 
 	return (
 		<div>

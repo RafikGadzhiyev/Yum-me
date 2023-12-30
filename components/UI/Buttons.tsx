@@ -3,9 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useLoading } from "@/hooks/useLoading";
-import { supabaseClient } from "@/lib/supabase";
 import { FC, useCallback, PropsWithChildren } from "react";
 import { FaDoorOpen } from "react-icons/fa";
+import { signOut } from "@/api/auth";
 
 interface IButtonProps extends PropsWithChildren {
 	dictionaryKey: string;
@@ -16,9 +16,9 @@ export const SignOutButton: FC<IButtonProps> = ({ dictionaryKey }) => {
 	const { t } = useTranslation();
 	const { startLoading, stopLoading } = useLoading();
 
-	const signOut = useCallback(async () => {
+	const signOutHandler = useCallback(async () => {
 		startLoading();
-		await supabaseClient.auth.signOut();
+		await signOut();
 		stopLoading();
 		router.refresh();
 	}, [router, startLoading, stopLoading]);
@@ -26,7 +26,7 @@ export const SignOutButton: FC<IButtonProps> = ({ dictionaryKey }) => {
 	return (
 		<button
 			className="mt-auto flex items-center justify-center gap-3 rounded-md bg-red-400 p-2 text-lg font-bold text-white transition hover:bg-red-500 active:bg-red-600"
-			onClick={signOut}
+			onClick={signOutHandler}
 		>
 			<FaDoorOpen />
 			{t(dictionaryKey)}

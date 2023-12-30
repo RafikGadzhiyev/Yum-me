@@ -18,9 +18,9 @@ type User = {
 };
 
 type GeneratedFood = {
-	_id: string;
-	generatedDate: number;
-	food: string;
+	$id: string;
+	created_at: Date;
+	description: string;
 };
 
 type Post = {
@@ -87,6 +87,11 @@ type RequestResponse<T, U> = {
 	status: ResponseNumericStatuses;
 };
 
+// TODO: REFACTOR
+type RequestResponseWithSuccess<T, U> = Omit<RequestResponse<T, U>, "status"> & {
+	success: boolean;
+};
+
 interface ITabProps<T> {
 	list: T[];
 	state: ResponseStatus;
@@ -107,9 +112,9 @@ type ItemSelectOption = {
 
 // API Types
 type GeneratedFoodRequestBody = {
-	email: string;
-	generatedDate: number;
-	food: string;
+	generated_for: string;
+	created_at: Date;
+	description: string;
 };
 
 // TODO: Change

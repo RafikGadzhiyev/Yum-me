@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation";
 import { PASSWORD_RESTRICTION } from "@/consts/auth.const";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { supabaseClient } from "@/lib/supabase";
+import { signUp } from "@/api/auth";
 
 const EYE_ICON_SIZE = 20;
 
@@ -82,42 +82,34 @@ export const SignUpForm = () => {
 
 	const [isPasswordShown, setIsPasswordShown] = useState(false);
 
-	const signUp: SubmitHandler<SignUpSchemaType> = async (data) => {
+	const signUpHandler: SubmitHandler<SignUpSchemaType> = async (data) => {
 		startLoading();
 
-		const signUpResponse = await supabaseClient.auth.signUp({
-			email: data.email,
-			password: data.password,
-		});
+		const signUpResult = await signUp(data.email, data.password);
 
-		if (signUpResponse.error) {
+		if (signUpResult.error) {
 			showToast({
-				title: signUpResponse.error.name,
-				description: signUpResponse.error.message,
+				title: signUpResult.error.title,
 				status: "error",
+				description: signUpResult.error.message,
 			});
 		} else {
-			const { error } = await supabaseClient.from("User").insert({
-				email: signUpResponse.data.user?.email,
+			showToast({
+				title: "Success",
+				status: "success",
+				description: "Redirecting to home page",
+				duration: 500,
 			});
 
-			if (error) {
-				showToast({
-					title: "Internal server error",
-					description:
-						"Something went wrong while app was creating a user instance!",
-					status: "error",
-				});
-			}
+			router.refresh();
 		}
 
-		router.push(`/confirm_email/${signUpResponse.data.user?.email}`);
 		stopLoading();
 	};
 
 	return (
 		<form
-			onSubmit={handleSubmit(signUp)}
+			onSubmit={handleSubmit(signUpHandler)}
 			className="w-2xl max-w-2xl p-2"
 		>
 			<Wrap>

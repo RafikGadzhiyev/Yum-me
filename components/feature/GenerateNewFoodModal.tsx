@@ -21,6 +21,7 @@ import {
 import { Loading } from "../UI/Loading";
 
 import { isConfigured } from "@/utils/validation.util";
+import { databases, ID } from "@/app/appwrite";
 
 interface IGenerateNewFoodButtonProps {
 	updateGeneratedFoodList: (generatedFood: GeneratedFood | GeneratedFood[]) => void;
@@ -35,7 +36,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 
 	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);
 
-	const { isLoading, sendRequest, sendStreamRequest } = useFetch();
+	const { isLoading, sendStreamRequest } = useFetch();
 	const { data, isReading, readData } = useStreamResponse();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -61,18 +62,27 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 			return;
 		}
 
-		const generatedDate = Date.now();
 		const request: GeneratedFoodRequestBody = {
-			email: healthData.email,
-			generatedDate,
-			food: data,
+			generated_for: healthData.email,
+			created_at: new Date(),
+			description: data,
 		};
 
-		sendRequest("POST", "/api/storage/text_generation", request, {
-			"Content-Type": "application/json",
-		})
-			.then((updatedGeneratedFoodList: GeneratedFood[]) => {
-				updateGeneratedFoodList(updatedGeneratedFoodList);
+		const saveGeneratedFoodPromise = databases.createDocument(
+			process.env.NEXT_PUBLIC_DATABASE_ID!,
+			process.env.NEXT_PUBLIC_FOOD_COLLECTION_ID!,
+			ID.unique(),
+			request,
+		);
+
+		saveGeneratedFoodPromise
+			.then((response) => {
+				const generatedFood: GeneratedFood = {
+					...request,
+					$id: response.$id,
+				};
+
+				updateGeneratedFoodList(generatedFood);
 			})
 			.finally(onClose);
 	};

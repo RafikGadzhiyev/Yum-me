@@ -11,5 +11,8 @@
 		"eslint-plugin-prettier/recommended",
 		"@typescript-eslint"
 	],
+	"rules": {
+		"newline-per-chained-call": "warn"
+	},
 	"root": true
 }

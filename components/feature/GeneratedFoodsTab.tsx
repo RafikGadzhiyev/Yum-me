@@ -40,16 +40,16 @@ export const GeneratedFoodsTab: FC<ITabProps<GeneratedFood>> = ({
 					<ListWithPagination>
 						{list.map((foodData) => (
 							<Accordion
-								key={foodData._id}
+								key={foodData.$id}
 								label={format(
-									new Date(foodData.generatedDate),
+									new Date(foodData.created_at),
 									"dd MMMM yyyy HH:mm:ss",
 									{
 										locale: LOCALE_BY_LANGUAGE[i18n.language],
 									},
 								)}
 							>
-								<ReactMarkdown>{foodData.food}</ReactMarkdown>
+								<ReactMarkdown>{foodData.description}</ReactMarkdown>
 							</Accordion>
 						))}
 					</ListWithPagination>

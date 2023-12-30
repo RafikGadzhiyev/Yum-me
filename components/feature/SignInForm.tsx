@@ -15,10 +15,10 @@ import {
 } from "@chakra-ui/react";
 
 import { useLoading } from "@/hooks/useLoading";
-import { supabaseClient } from "@/lib/supabase";
 import { useShowToast } from "@/hooks/useShowToast";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useState } from "react";
+import { signIn } from "@/api/auth";
 
 const SignInSchema = z.object({
 	email: z.string().email("Enter email"),
@@ -45,7 +45,7 @@ export const SignInForm = () => {
 
 	const router = useRouter();
 
-	const signIn: SubmitHandler<SignInSchemaType> = async (data) => {
+	const signInHandler: SubmitHandler<SignInSchemaType> = async (data) => {
 		if (!captcha) {
 			showToast({
 				title: "Captcha is required",
@@ -56,25 +56,14 @@ export const SignInForm = () => {
 		}
 
 		startLoading();
-		const signInResponse = await supabaseClient.auth.signInWithPassword({
-			email: data.email,
-			password: data.password,
-		});
-
-		if (signInResponse.error) {
-			showToast({
-				title: signInResponse.error.name,
-				description: signInResponse.error.message,
-				status: "error",
-			});
-		}
+		await signIn(data.email, data.password);
 
 		router.refresh();
 		stopLoading();
 	};
 
 	return (
-		<form onSubmit={handleSubmit(signIn)}>
+		<form onSubmit={handleSubmit(signInHandler)}>
 			<Wrap
 				spacingY={1}
 				marginBottom={5}
@@ -84,7 +73,7 @@ export const SignInForm = () => {
 					<Input
 						type="email"
 						placeholder="Email"
-						className="rounded-md p-1 w-full"
+						className="w-full rounded-md p-1"
 						aria-label="Email"
 						aria-hidden={false}
 						{...register("email")}
@@ -98,7 +87,7 @@ export const SignInForm = () => {
 					<Input
 						type="password"
 						placeholder="Password"
-						className="rounded-md p-1 w-full"
+						className="w-full rounded-md p-1"
 						aria-label="Password"
 						aria-hidden={false}
 						{...register("password")}
@@ -114,7 +103,7 @@ export const SignInForm = () => {
 			/>
 			<Button
 				type="submit"
-				className="rounded-md p-2 mt-2 bg-green-300 w-full transition hover:bg-green-200 active:bg-green-400"
+				className="mt-2 w-full rounded-md bg-green-300 p-2 transition hover:bg-green-200 active:bg-green-400"
 				isLoading={isLoading}
 			>
 				{t("SIGN_IN")}

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { User } from "@supabase/supabase-js";
+import { UserActiveSession } from "@/app/appwrite";
 
 interface IState {
-	user: User | null;
+	user: UserActiveSession | null;
 }
 
 const initialState: IState = {
@@ -19,7 +19,7 @@ const userSlice = createSlice({
 		removeUser() {
 			//  do some stuff
 		},
-		readUser(state, action: PayloadAction<User | null>) {
+		readUser(state, action: PayloadAction<UserActiveSession | null>) {
 			//  do some stuff
 			state.user = action.payload;
 

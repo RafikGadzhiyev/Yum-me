@@ -9,8 +9,8 @@ interface IShowToastProps {
 }
 
 const DEFAULT_PARAMS = {
-	DURATION: 2500,
-	IS_CLOSABLE: true,
+	duration: 2500,
+	isClosable: true,
 };
 
 export const useShowToast = () => {
