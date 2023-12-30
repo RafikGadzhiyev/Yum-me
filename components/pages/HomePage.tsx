@@ -12,17 +12,14 @@ import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { HOME_PAGE_TABS } from "@/consts/tabs.const";
-import {
-	account,
-	databases,
-	Query,
-	UserActiveSession,
-	Document,
-} from "@/app/appwrite";
+import { Query, UserActiveSession, Document } from "@/app/appwrite";
 import { isConfigured } from "@/utils/validation.util";
 import { FaLock } from "react-icons/fa";
 import Link from "next/link";
 import { ROUTES } from "@/consts/routes.const";
+import { getSession } from "@/api/auth";
+import { getUsers } from "@/api/user";
+import { getGeneratedFoodList } from "@/api/generatedFood";
 
 export const HomePage = () => {
 	const [userSession, setUserSession] = useState<null | UserActiveSession>(null);
@@ -58,13 +55,9 @@ export const HomePage = () => {
 
 	const getGeneratedFoods = async () => {
 		if (userSession?.email) {
-			return (
-				await databases.listDocuments(
-					process.env.NEXT_PUBLIC_DATABASE_ID!,
-					process.env.NEXT_PUBLIC_FOOD_COLLECTION_ID!,
-					[Query.equal("generated_for", userSession.email)],
-				)
-			).documents;
+			return await getGeneratedFoodList([
+				Query.equal("generated_for", userSession.email),
+			]);
 		}
 
 		return Promise.resolve([]);
@@ -91,21 +84,12 @@ export const HomePage = () => {
 
 	// TODO: Create scalable function that returns user and documents
 	useEffect(() => {
-		account.get().then((user) => {
-			setUserSession(user);
+		getSession().then((userSession) => {
+			setUserSession(userSession);
 
-			databases
-				.listDocuments(
-					process.env.NEXT_PUBLIC_DATABASE_ID!,
-					process.env.NEXT_PUBLIC_USER_COLLECTION_ID!,
-					[
-						Query.equal("email", user.email),
-						Query.select(["$id", "created_at", "description", "generated_for"]),
-					],
-				)
-				.then((queryResult) => {
-					setUserHealthData(queryResult.documents[0]);
-				});
+			getUsers([Query.equal("email", userSession.email)]).then((users) => {
+				setUserHealthData(users[0]);
+			});
 		});
 	}, []);
 

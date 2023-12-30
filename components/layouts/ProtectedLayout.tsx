@@ -1,9 +1,9 @@
 "use client";
 
 import { FC, PropsWithChildren, useCallback, useEffect } from "react";
-import { account } from "@/app/appwrite";
 import { useRouter, usePathname } from "next/navigation";
 import { AUTH_ROUTES, ROUTES } from "@/consts/routes.const";
+import { getSession } from "@/api/auth";
 
 export const ProtectedLayout: FC<PropsWithChildren> = ({ children }) => {
 	const router = useRouter();
@@ -15,7 +15,7 @@ export const ProtectedLayout: FC<PropsWithChildren> = ({ children }) => {
 		);
 
 		try {
-			const user = await account.get();
+			const user = await getSession();
 
 			if (user && authRoutesPathList.includes(pathname)) {
 				router.push(ROUTES.HOME.path);

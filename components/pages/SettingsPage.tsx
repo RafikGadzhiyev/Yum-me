@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useLoading } from "@/hooks/useLoading";
 
-import { account, databases, Query } from "@/app/appwrite";
+import { Query } from "@/app/appwrite";
 import { RootStore } from "@/redux/store";
 
 import { Button, Wrap } from "@chakra-ui/react";
@@ -14,6 +14,8 @@ import { GenderRadioGroup } from "../UI/GenderRadioGroup";
 import { FormInput } from "../UI/FormInput";
 import { FormTextarea } from "../UI/FormTextarea";
 import { ContentModal } from "../modals/ContentModal";
+import { getSession } from "@/api/auth";
+import { getUsers, updateUser } from "@/api/user";
 
 export const SettingsPageWrapper = () => {
 	const { t } = useTranslation();
@@ -43,9 +45,7 @@ export const SettingsPageWrapper = () => {
 
 		startLoading();
 
-		await databases.updateDocument(
-			process.env.NEXT_PUBLIC_DATABASE_ID!,
-			process.env.NEXT_PUBLIC_USER_COLLECTION_ID!,
+		await updateUser(
 			healthConfig.$id,
 			JSON.stringify({
 				weight: healthConfig.weight,
@@ -62,32 +62,10 @@ export const SettingsPageWrapper = () => {
 	};
 
 	useEffect(() => {
-		account.get().then((user) => {
-			databases
-				.listDocuments(
-					process.env.NEXT_PUBLIC_DATABASE_ID!,
-					process.env.NEXT_PUBLIC_USER_COLLECTION_ID!,
-					[
-						Query.equal("email", user.email),
-						Query.select([
-							"$id",
-							"email",
-							"name",
-							"last_name",
-							"age",
-							"weight",
-							"height",
-							"contraindications",
-							"wishes",
-							"gender",
-							"calories_per_day",
-							"role",
-						]),
-					],
-				)
-				.then((queryResult) => {
-					setHealthConfig(structuredClone(queryResult.documents[0]));
-				});
+		getSession().then((user) => {
+			getUsers([Query.equal("email", user.email)]).then((users) =>
+				setHealthConfig(structuredClone(users[0])),
+			);
 		});
 	}, []);
 

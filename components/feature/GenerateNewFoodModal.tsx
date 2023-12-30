@@ -21,7 +21,7 @@ import {
 import { Loading } from "../UI/Loading";
 
 import { isConfigured } from "@/utils/validation.util";
-import { databases, ID } from "@/app/appwrite";
+import { createGeneratedFood } from "@/api/generatedFood";
 
 interface IGenerateNewFoodButtonProps {
 	updateGeneratedFoodList: (generatedFood: GeneratedFood | GeneratedFood[]) => void;
@@ -68,14 +68,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 			description: data,
 		};
 
-		const saveGeneratedFoodPromise = databases.createDocument(
-			process.env.NEXT_PUBLIC_DATABASE_ID!,
-			process.env.NEXT_PUBLIC_FOOD_COLLECTION_ID!,
-			ID.unique(),
-			request,
-		);
-
-		saveGeneratedFoodPromise
+		createGeneratedFood(request)
 			.then((response) => {
 				const generatedFood: GeneratedFood = {
 					...request,

@@ -2,6 +2,7 @@ import { account, databases, ID } from "@/app/appwrite";
 import { AppwriteException } from "appwrite";
 import { handleException } from "@/utils/clientHandlers.util";
 import { Roles } from "@/enums/roles.enum";
+
 export const signUp = async (email: string, password: string) => {
 	const signUpResult: RequestResponseWithSuccess<
 		Awaited<ReturnType<typeof signIn>> | null,
@@ -55,4 +56,8 @@ export const signOut = async () => {
 	await account.deleteSession("current");
 
 	return null;
+};
+
+export const getSession = async () => {
+	return await account.get();
 };

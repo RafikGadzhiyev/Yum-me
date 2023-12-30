@@ -12,7 +12,10 @@ import { useSelector } from "react-redux";
 import { PROFILE_PAGE_TABS } from "@/consts/tabs.const";
 import { Roles } from "@/enums/roles.enum";
 import { RootStore } from "@/redux/store";
-import { account, databases, Query, Document } from "@/app/appwrite";
+import { Query, Document } from "@/app/appwrite";
+import { getSession } from "@/api/auth";
+import { getUsers } from "@/api/user";
+import { getGeneratedFoodList } from "@/api/generatedFood";
 
 export const ProfilePageWrapper = () => {
 	const router = useRouter();
@@ -53,13 +56,7 @@ export const ProfilePageWrapper = () => {
 
 	const getGeneratedFoods = async () => {
 		if (user?.email) {
-			return (
-				await databases.listDocuments(
-					process.env.NEXT_PUBLIC_DATABASE_ID!,
-					process.env.NEXT_PUBLIC_FOOD_COLLECTION_ID!,
-					[Query.equal("generated_for", user.email)],
-				)
-			).documents;
+			return await getGeneratedFoodList([Query.equal("generated_for", user.email)]);
 		}
 
 		return Promise.resolve([]);
@@ -76,32 +73,10 @@ export const ProfilePageWrapper = () => {
 	};
 
 	useEffect(() => {
-		account.get().then((user) => {
-			databases
-				.listDocuments(
-					process.env.NEXT_PUBLIC_DATABASE_ID!,
-					process.env.NEXT_PUBLIC_USER_COLLECTION_ID!,
-					[
-						Query.equal("email", user.email),
-						Query.select([
-							"$id",
-							"email",
-							"name",
-							"last_name",
-							"age",
-							"weight",
-							"height",
-							"contraindications",
-							"wishes",
-							"gender",
-							"calories_per_day",
-							"role",
-						]),
-					],
-				)
-				.then((queryResult) => {
-					setUser(queryResult.documents[0]);
-				});
+		getSession().then((user) => {
+			getUsers([Query.equal("email", user.email)]).then((users) => {
+				setUser(users[0]);
+			});
 		});
 	}, []);
 
