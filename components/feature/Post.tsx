@@ -92,7 +92,6 @@ export const Post: FC<Post & IPostProps> = ({
 				<button className="flex items-center gap-1">
 					<FaRegComment />
 					<span>{coverage.comments.length}</span>
-					{/*<FaComment />*/}
 				</button>
 				<button>
 					<FaRegBookmark />
