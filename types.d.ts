@@ -24,15 +24,15 @@ type GeneratedFood = {
 };
 
 type Post = {
-	_id: string;
+	$id: string;
 	author: string;
 	role: string;
-	created_at: number;
-	showLikes: boolean;
+	created_at: Date;
+	show_likes: boolean;
 	coverage: {
-		likes: number;
+		likes: string[];
 		comments: Comment[];
-		saved: number;
+		saved: string[];
 	};
 	content: string;
 };
@@ -115,6 +115,15 @@ type GeneratedFoodRequestBody = {
 	generated_for: string;
 	created_at: Date;
 	description: string;
+};
+
+type PostRequestBody = {
+	created_at: Date;
+	author: string;
+	role: string;
+	show_likes: boolean;
+	coverage: string;
+	content: string;
 };
 
 // TODO: Change

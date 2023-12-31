@@ -1,86 +1,16 @@
-// TODO: Create logic
-//! Important: this component is on test mode. Need refactor and more
-
-import {
-	// FaThumbsUp,
-	// FaThumbsDown,
-	// FaComment,
-	// FaBookmark,
-	FaRegBookmark,
-	FaRegComment,
-	FaRegThumbsUp,
-	FaRegThumbsDown,
-} from "react-icons/fa";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { RootStore } from "@/redux/store";
-import { formatDistanceToNow } from "date-fns";
-import { useTranslation } from "react-i18next";
-import { LOCALE_BY_LANGUAGE } from "@/i18n/dictionary";
-
-const TEST_DATA = [
-	{
-		id: 1,
-		author: "Elon Musk",
-		role: "surgeon",
-		created_at: "2 days ago", // Here will be actual date
-		showLikes: true,
-		coverage: {
-			likes: 10,
-			dislikes: 45,
-			comments: [{}, {}],
-		},
-		content: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam
-\t\t\t\t\taspernatur assumenda aut beatae corporis, delectus deleniti doloremque
-\t\t\t\t\texplicabo fuga fugit hic illo ipsa ipsum labore laudantium minima molestias
-\t\t\t\t\tnam necessitatibus odit porro quis quisquam quo rem repudiandae sapiente
-\t\t\t\t\tsed sit sunt tempora tempore, temporibus unde vitae, voluptas voluptate.
-\t\t\t\t\tAt, deserunt! Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-\t\t\t\t\tAliquam aspernatur assumenda aut beatae corporis, delectus deleniti
-\t\t\t\t\tdoloremque explicabo fuga fugit hic illo ipsa ipsum labore laudantium
-\t\t\t\t\tminima molestias nam necessitatibus odit porro quis quisquam quo rem
-\t\t\t\t\trepudiandae sapiente sed sit sunt tempora tempore, temporibus unde vitae,
-\t\t\t\t\tvoluptas voluptate. At, deserunt! Lorem ipsum dolor sit amet, consectetur
-\t\t\t\t\tadipisicing elit. Aliquam aspernatur assumenda aut beatae corporis,
-\t\t\t\t\tdelectus deleniti doloremque explicabo fuga fugit hic illo ipsa ipsum
-\t\t\t\t\tlabore laudantium minima molestias nam necessitatibus odit porro quis
-\t\t\t\t\tquisquam quo rem repudiandae sapiente sed sit sunt tempora tempore,
-\t\t\t\t\ttemporibus unde vitae, voluptas voluptate. At, deserunt!`,
-	},
-	{
-		id: 2,
-		author: "Doctor Dre",
-		role: "surgeon",
-		created_at: "54 min ago", // Here will be actual date
-		showLikes: true,
-		coverage: {
-			likes: 150342,
-			dislikes: 2450,
-			comments: Array(150).fill({}),
-		},
-		content: `Hello, everyone. Today I want to share with you with one interesting feature in medicine!`,
-	},
-	{
-		id: 3,
-		author: "Doctor Dre",
-		role: "surgeon",
-		created_at: "1 week ago", // Here will be actual date
-		showLikes: false,
-		coverage: {
-			likes: 1504,
-			dislikes: 20,
-			comments: Array(15320).fill({}),
-		},
-		content: `Hello, everyone. Today I want to share with you with one interesting feature in medicine!`,
-	},
-];
+import { createPost, getPostList, updatePost } from "@/api/post";
+import { Post } from "@/components/feature/Post";
+import { useLoading } from "@/hooks/useLoading";
+import { Loading } from "@/components/UI/Loading";
 
 export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
-	// const [posts, setPosts] = useState(TEST_DATA);
-	const [newPosts, setNewPosts] = useState<Post[]>([]);
-
-	const { i18n } = useTranslation();
+	const { startLoading, stopLoading, isLoading } = useLoading();
+	const [posts, setPosts] = useState<Post[]>([]);
+	const [newPost, setNewPost] = useState<Post | null>(null);
 
 	const user = useSelector(
 		(store: RootStore) => store.userHealthDataReducer.userHealthData,
@@ -91,136 +21,131 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 			return;
 		}
 
-		setNewPosts((prevNewPosts) => [
-			{
-				_id: Math.random() + "",
-				author: user.name + user.last_name,
-				role: user.role,
-				created_at: Date.now(), // Here will be actual date
-				showLikes: true,
-				coverage: {
-					likes: 0,
-					saved: 0,
-					comments: [],
-				},
-				content: "",
+		setNewPost({
+			$id: Math.random() + "",
+			author: user.name + " " + user.last_name,
+			role: user.role,
+			created_at: new Date(), // Here will be actual date
+			show_likes: true,
+			coverage: {
+				likes: [],
+				saved: [],
+				comments: [],
 			},
-			...prevNewPosts,
-		]);
+			content: "",
+		});
 	};
 
-	const updateNewPostField = function <T>(
-		newPostIndex: number,
+	const updateNewPostField = async function <T>(
 		field: string,
 		value: T,
+		isNew: boolean,
+		postId: string,
 	) {
-		setNewPosts((prevPosts) =>
-			prevPosts.map((prevPost, i) =>
-				i !== newPostIndex ? prevPost : { ...prevPost, [field]: value },
-			),
-		);
+		if (isNew) {
+			setNewPost((prevPost) =>
+				!prevPost
+					? null
+					: {
+							...prevPost,
+							[field]: value,
+						},
+			);
+		} else {
+			let post = posts.find((post) => post.$id === postId);
+
+			if (!post) return;
+
+			setPosts((prevPosts) =>
+				prevPosts.map((prevPost) =>
+					prevPost.$id === postId
+						? {
+								...prevPost,
+								[field]: value,
+							}
+						: prevPost,
+				),
+			);
+
+			post = {
+				...post,
+				[field]: value,
+			};
+
+			await updatePostRecord(post);
+		}
 	};
 
+	const cancelNewPost = () => {
+		setNewPost(null);
+	};
+
+	const createNewPostRecord = () => {
+		if (!newPost) return;
+		startLoading();
+		const newPostRequestBody: PostRequestBody = {
+			created_at: newPost.created_at,
+			author: newPost.author,
+			role: newPost.role,
+			show_likes: newPost.show_likes,
+			coverage: JSON.stringify(newPost.coverage),
+			content: newPost.content,
+		};
+
+		// This tmp fix waiting solution from appwrite
+		createPost(newPostRequestBody)
+			.then(
+				(
+					createdNewPost: any, // eslint-disable-line
+				) => {
+					createdNewPost.coverage = JSON.parse(createdNewPost.coverage);
+
+					setPosts((prevPosts) => [createdNewPost, ...prevPosts]);
+					setNewPost(null);
+				},
+			)
+			.finally(stopLoading);
+	};
+
+	const updatePostRecord = async (post: Post) => {
+		await updatePost(post.$id, {
+			author: post.author,
+			role: post.role,
+			created_at: post.created_at,
+			show_likes: post.show_likes,
+			coverage: JSON.stringify(post.coverage),
+			content: post.content,
+		});
+	};
+
+	useEffect(() => {
+		getPostList([]).then((postList: Post[]) => setPosts(postList));
+	}, []);
+
 	return (
-		<div className="flex flex-col gap-3">
-			{isEditable && <Button onClick={createNewPost}>New post</Button>}
+		<>
+			<div className="flex flex-col gap-3">
+				{newPost ? (
+					<Post
+						{...newPost}
+						isNew={true}
+						updatePost={updateNewPostField}
+						createNewPost={createNewPostRecord}
+						cancelNewPost={cancelNewPost}
+					/>
+				) : (
+					isEditable && <Button onClick={createNewPost}>New post</Button>
+				)}
 
-			{newPosts.map((newPost, newPostIndex) => (
-				<div
-					key={newPost._id}
-					className="rounded-md bg-white p-4"
-				>
-					<div className="items center flex justify-start shadow-gray-400">
-						<div className="flex flex-col">
-							<span>{newPost.author}</span>
-							<div className="-translate-y-1/4 text-sm text-gray-500">
-								<span>{newPost.role}</span>
-								<span>
-									{" "}
-									·{" "}
-									{formatDistanceToNow(newPost.created_at, {
-										locale: LOCALE_BY_LANGUAGE[i18n.language],
-										addSuffix: true,
-									})}
-								</span>
-							</div>
-						</div>
-
-						<div className="ml-auto flex items-center gap-3">
-							<button className="flex items-center gap-1">
-								<FaRegThumbsUp />
-								{newPost.showLikes && <span>{newPost.coverage.likes}</span>}
-								{/*<FaThumbsUp />*/}
-							</button>
-						</div>
-					</div>
-					<div className="my-2 max-h-[300px] overflow-y-auto rounded-sm border p-2">
-						{/*{newPost.content}*/}
-						<textarea
-							className="w-full"
-							value={newPost.content}
-							onChange={(e) =>
-								updateNewPostField(newPostIndex, "content", e.target.value)
-							}
-						></textarea>
-					</div>
-					<div className="flex items-center gap-2">
-						<button className="flex items-center gap-1">
-							<FaRegComment />
-							<span>{newPost.coverage.comments.length}</span>
-							{/*<FaComment />*/}
-						</button>
-						<button>
-							<FaRegBookmark />
-							{/*<FaBookmark />*/}
-						</button>
-					</div>
-				</div>
-			))}
-
-			{TEST_DATA.map((data) => (
-				<div
-					key={data.id}
-					className="rounded-md bg-white p-4"
-				>
-					<div className="items center flex justify-start shadow-gray-400">
-						<div className="flex flex-col">
-							<span>{data.author}</span>
-							<div className="-translate-y-1/4 text-sm text-gray-500">
-								<span>{data.role}</span>
-								<span> · {data.created_at}</span>
-							</div>
-						</div>
-
-						<div className="ml-auto flex items-center gap-3">
-							<button className="flex items-center gap-1">
-								<FaRegThumbsUp />
-								{data.showLikes && <span>{data.coverage.likes}</span>}
-								{/*<FaThumbsUp />*/}
-							</button>
-							<button className="flex items-center gap-1">
-								<FaRegThumbsDown />
-								{data.showLikes && <span>{data.coverage.dislikes}</span>}
-								{/*<FaThumbsDown />*/}
-							</button>
-						</div>
-					</div>
-					<div className="my-2 max-h-[300px] overflow-y-auto rounded-sm border p-2">
-						{data.content}
-					</div>
-					<div className="flex items-center gap-2">
-						<button className="flex items-center gap-1">
-							<FaRegComment />
-							<span>{data.coverage.comments.length}</span>
-							{/*<FaComment />*/}
-						</button>
-						<button>
-							<FaRegBookmark />
-							{/*<FaBookmark />*/}
-						</button>
-					</div>
-				</div>
-			))}
-		</div>
+				{posts.map((data) => (
+					<Post
+						key={data.$id}
+						updatePost={updateNewPostField}
+						{...data}
+					/>
+				))}
+			</div>
+			{isLoading && <Loading />}
+		</>
 	);
 };

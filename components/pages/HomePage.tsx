@@ -28,7 +28,7 @@ export const HomePage = () => {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const { t } = useTranslation();
-	const { sendRequest, responseStatus } = useFetch();
+	const { responseStatus } = useFetch();
 
 	const [list, setList] = useState<any[]>([]); // eslint-disable-line
 
@@ -75,10 +75,9 @@ export const HomePage = () => {
 
 	useEffect(() => {
 		dispatch(readUser(userSession));
-	}, [userSession, sendRequest, dispatch]);
+	}, [userSession, dispatch]);
 
 	useEffect(() => {
-		console.log(userHealthData);
 		dispatch(readUserHealthData(userHealthData));
 	}, [userHealthData, dispatch]);
 
