@@ -1,13 +1,8 @@
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
-import { formatDistanceToNow } from "date-fns";
-import {
-	FaRegBookmark,
-	FaRegComment,
-	FaRegThumbsUp,
-	FaThumbsUp,
-} from "react-icons/fa";
-import { LOCALE_BY_LANGUAGE } from "@/i18n/dictionary";
+import { PostCoverage } from "@/components/UI/PostCoverage";
+import { NewPostControlButtons } from "@/components/UI/NewPostControlButtons";
+import { PostContent } from "@/components/UI/PostContent";
+import { PostHeader } from "@/components/UI/PostHeader";
 
 interface IPostProps {
 	updatePost: <T>(field: string, value: T, isNew: boolean, postId: string) => void;
@@ -30,8 +25,6 @@ export const Post: FC<Post & IPostProps> = ({
 	cancelNewPost,
 	updatePost,
 }) => {
-	const { i18n } = useTranslation();
-
 	const updateLike = () => {
 		const likes = new Set(coverage.likes);
 
@@ -49,73 +42,44 @@ export const Post: FC<Post & IPostProps> = ({
 		);
 	};
 
+	const updateCoverage = (key: string) => {
+		switch (key) {
+			case "likes":
+				updateLike();
+				break;
+		}
+	};
+
 	return (
 		<div
 			key={$id}
 			className="rounded-md bg-white p-4"
 		>
-			<div className="items center flex justify-start shadow-gray-400">
-				<div className="flex flex-col">
-					<span>{author}</span>
-					<div className="-translate-y-1/4 text-sm text-gray-500">
-						<span>{role}</span>
-						<span>
-							{" "}
-							·{" "}
-							{formatDistanceToNow(new Date(created_at), {
-								addSuffix: true,
-								locale: LOCALE_BY_LANGUAGE[i18n.language],
-							})}
-						</span>
-					</div>
-				</div>
-			</div>
-			<div className="my-2 max-h-[300px] overflow-y-auto rounded-sm border p-2">
-				{isNew ? (
-					<textarea
-						className="min-h-[200px] w-full border-none outline-none"
-						onChange={(e) => updatePost("content", e.target.value, isNew, $id)}
-					></textarea>
-				) : (
-					content
-				)}
-			</div>
-			<div className="flex items-center gap-2">
-				<button
-					className="flex items-center gap-1"
-					onClick={updateLike}
-				>
-					{coverage.likes.includes($id) ? <FaThumbsUp /> : <FaRegThumbsUp />}
-					{show_likes && <span>{coverage.likes.length}</span>}
-				</button>
-
-				<button className="flex items-center gap-1">
-					<FaRegComment />
-					<span>{coverage.comments.length}</span>
-				</button>
-				<button>
-					<FaRegBookmark />
-					{/*<FaBookmark />*/}
-				</button>
-			</div>
-
-			{isNew && (
-				<div className="flex items-center gap-2">
-					<button
-						className="mt-2 rounded-md bg-green-500 p-2 py-1 text-white disabled:cursor-not-allowed disabled:opacity-20"
-						onClick={createNewPost}
-						disabled={!content.length}
-					>
-						Save
-					</button>
-					<button
-						className="mt-2 rounded-md bg-red-400 p-2 py-1 text-white"
-						onClick={cancelNewPost}
-					>
-						{" "}
-						Cancel
-					</button>
-				</div>
+			<PostHeader
+				author={author}
+				isNew={isNew}
+				role={role}
+				created_at={created_at}
+			/>
+			<PostContent
+				isNew={isNew}
+				postId={$id}
+				content={content}
+				updatePost={updatePost}
+			/>
+			{!isNew ? (
+				<PostCoverage
+					{...coverage}
+					postId={$id}
+					show_likes={show_likes}
+					updateCoverage={updateCoverage}
+				/>
+			) : (
+				<NewPostControlButtons
+					createNewPost={createNewPost}
+					cancelNewPost={cancelNewPost}
+					content={content}
+				/>
 			)}
 		</div>
 	);
