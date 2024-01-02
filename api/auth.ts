@@ -16,7 +16,7 @@ export const signUp = async (email: string, password: string) => {
 	try {
 		await account.create(ID.unique(), email, password);
 
-		signUpResult.data = await signIn(email, password);
+		signUpResult.data = await signIn(email, password, true);
 		signUpResult.success = true;
 	} catch (err: unknown) {
 		signUpResult.error = handleException(
@@ -29,26 +29,32 @@ export const signUp = async (email: string, password: string) => {
 	return signUpResult;
 };
 
-export const signIn = async (email: string, password: string) => {
+export const signIn = async (
+	email: string,
+	password: string,
+	afterSignUp: boolean = false,
+) => {
 	try {
 		await account.createEmailSession(email, password);
 
-		// creating new record in database
-		await databases.createDocument(
-			process.env.NEXT_PUBLIC_DATABASE_ID!,
-			process.env.NEXT_PUBLIC_USER_COLLECTION_ID!,
-			ID.unique(),
-			{
-				email,
-				role: Roles.USER,
-			},
-		);
+		if (afterSignUp) {
+			// creating new record in database
+			await databases.createDocument(
+				process.env.NEXT_PUBLIC_DATABASE_ID!,
+				process.env.NEXT_PUBLIC_USER_COLLECTION_ID!,
+				ID.unique(),
+				{
+					email,
+					role: Roles.USER,
+				},
+			);
+		}
 
-		return await account.get();
+		return account.get();
 	} catch (err) {
 		console.error((err as AppwriteException).message);
 
-		return null;
+		throw err;
 	}
 };
 

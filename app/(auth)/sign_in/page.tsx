@@ -6,7 +6,15 @@ export default function SignInPage() {
 	return (
 		<div>
 			<SignInForm />
-			<Link href={AUTH_ROUTES.SIGN_UP.path}>Sign up</Link>
+			<span>
+				Don&apos;t have an account?
+				<Link
+					href={AUTH_ROUTES.SIGN_UP.path}
+					className="ml-2 mt-4 text-blue-500 hover:underline"
+				>
+					Sign up
+				</Link>
+			</span>
 		</div>
 	);
 }

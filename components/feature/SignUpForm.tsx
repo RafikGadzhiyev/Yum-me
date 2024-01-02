@@ -1,15 +1,10 @@
 "use client";
 
-import { z } from "zod";
 import {
 	FormControl,
-	FormLabel,
-	Input,
 	Button,
 	Wrap,
-	InputGroup,
 	InputRightElement,
-	FormErrorMessage,
 	FormHelperText,
 } from "@chakra-ui/react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -24,50 +19,11 @@ import { PASSWORD_RESTRICTION } from "@/consts/auth.const";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUp } from "@/api/auth";
+import { ROUTES } from "@/consts/routes.const";
+import { SignUpSchema, SignUpSchemaType } from "@/consts/validations.const";
+import { FormInputWithControlProps } from "@/components/UI/FormInputWithControl";
 
 const EYE_ICON_SIZE = 20;
-
-const SignUpSchema = z
-	.object({
-		email: z.string().email("Enter a valid email"),
-		password: z
-			.string()
-			.min(
-				PASSWORD_RESTRICTION.LENGTH.MIN,
-				"Minimum password length must be at least 6 characters",
-			)
-			.max(
-				PASSWORD_RESTRICTION.LENGTH.MAX,
-				"Maximum password length must be at most 18 characters",
-			)
-			.regex(
-				new RegExp(`[${PASSWORD_RESTRICTION.SYMBOLS}]`, "g"),
-				`Should conaint at leat one character ${PASSWORD_RESTRICTION.SYMBOLS.join(
-					", ",
-				)}`,
-			),
-		confirm_password: z
-			.string()
-			.min(
-				PASSWORD_RESTRICTION.LENGTH.MIN,
-				"Minimum password length must be at least 6 characters",
-			)
-			.max(
-				PASSWORD_RESTRICTION.LENGTH.MAX,
-				"Maximum password length must be at most 18 characters",
-			),
-	})
-	.superRefine(({ confirm_password, password }, ctx) => {
-		if (confirm_password !== password) {
-			ctx.addIssue({
-				code: "custom",
-				message: "Password mismatch",
-				path: ["confirm_password"],
-			});
-		}
-	});
-
-type SignUpSchemaType = z.infer<typeof SignUpSchema>;
 
 export const SignUpForm = () => {
 	const {
@@ -101,7 +57,7 @@ export const SignUpForm = () => {
 				duration: 500,
 			});
 
-			router.refresh();
+			router.push(ROUTES.HOME.path);
 		}
 
 		stopLoading();
@@ -113,94 +69,78 @@ export const SignUpForm = () => {
 			className="w-2xl max-w-2xl p-2"
 		>
 			<Wrap>
-				<FormControl isInvalid={!!errors.email}>
-					<FormLabel>Email</FormLabel>
-					<Input
-						type="email"
-						placeholder="Email"
-						className="w-full rounded-md p-1 "
-						aria-label="Email"
-						aria-hidden={false}
-						{...register("email")}
-					/>
-					{errors.email && (
-						<FormErrorMessage>{errors.email.message}</FormErrorMessage>
-					)}
-				</FormControl>
+				<FormInputWithControlProps
+					isInvalid={!!errors.email}
+					label="Email"
+					registerProps={register("email")}
+					error={errors.email}
+					type="email"
+					placeholder="Email"
+					aria-hidden={false}
+				/>
 
-				<FormControl isInvalid={!!errors.password}>
-					<FormLabel>Password</FormLabel>
-					<InputGroup>
-						<Input
-							type={isPasswordShown ? "text" : "password"}
-							placeholder="Password"
-							className="w-full rounded-md p-1 "
-							aria-label="Password"
-							aria-hidden={false}
-							{...register("password")}
-						/>
-						<InputRightElement>
-							<Button
-								padding={0}
-								onClick={() =>
-									setIsPasswordShown((prevIsPasswordShowm) => !prevIsPasswordShowm)
-								}
-								tabIndex={-1}
-							>
-								{isPasswordShown ? (
-									<FaEyeSlash size={EYE_ICON_SIZE} />
-								) : (
-									<FaEye size={EYE_ICON_SIZE} />
-								)}
-							</Button>
-						</InputRightElement>
-					</InputGroup>
-					{errors.password && (
-						<FormErrorMessage>{errors.password.message}</FormErrorMessage>
-					)}
-				</FormControl>
+				<FormInputWithControlProps
+					isInvalid={!!errors.password}
+					label="Password"
+					placeholder="Password"
+					registerProps={register("password")}
+					error={errors.password}
+					type={isPasswordShown ? "text" : "password"}
+					aria-hidden={false}
+				>
+					<InputRightElement>
+						<Button
+							padding={0}
+							onClick={() =>
+								setIsPasswordShown((prevIsPasswordShowm) => !prevIsPasswordShowm)
+							}
+							tabIndex={-1}
+						>
+							{isPasswordShown ? (
+								<FaEyeSlash size={EYE_ICON_SIZE} />
+							) : (
+								<FaEye size={EYE_ICON_SIZE} />
+							)}
+						</Button>
+					</InputRightElement>
+				</FormInputWithControlProps>
 
-				<FormControl isInvalid={!!errors.confirm_password}>
-					<FormLabel>Confirm password</FormLabel>
-					<InputGroup>
-						<Input
-							type={isPasswordShown ? "text" : "password"}
-							placeholder="Confirm password"
-							className="w-full rounded-md p-1 "
-							aria-label="Confirm password"
-							aria-hidden={false}
-							{...register("confirm_password")}
-						/>
-						<InputRightElement>
-							<Button
-								padding={0}
-								onClick={() =>
-									setIsPasswordShown((prevIsPasswordShowm) => !prevIsPasswordShowm)
-								}
-								tabIndex={-1}
-							>
-								{isPasswordShown ? (
-									<FaEyeSlash size={EYE_ICON_SIZE} />
-								) : (
-									<FaEye size={EYE_ICON_SIZE} />
-								)}
-							</Button>
-						</InputRightElement>
-					</InputGroup>
-					{!errors.confirm_password ? (
-						<div>
-							<FormHelperText>
-								Password length must be in the range{" "}
-								{PASSWORD_RESTRICTION.LENGTH.MIN}-{PASSWORD_RESTRICTION.LENGTH.MAX}
-							</FormHelperText>
-							<FormHelperText>
-								Password shoul contain one or more special characters{" "}
-								{PASSWORD_RESTRICTION.SYMBOLS.join(", ")}
-							</FormHelperText>
-						</div>
-					) : (
-						<FormErrorMessage>{errors.confirm_password.message}</FormErrorMessage>
-					)}
+				<FormInputWithControlProps
+					isInvalid={!!errors.confirm_password}
+					label="Confirm password"
+					placeholder="Confirm password"
+					registerProps={register("confirm_password")}
+					error={errors.confirm_password}
+					type={isPasswordShown ? "text" : "password"}
+					aria-hidden={false}
+				>
+					<InputRightElement>
+						<Button
+							padding={0}
+							onClick={() =>
+								setIsPasswordShown((prevIsPasswordShowm) => !prevIsPasswordShowm)
+							}
+							tabIndex={-1}
+						>
+							{isPasswordShown ? (
+								<FaEyeSlash size={EYE_ICON_SIZE} />
+							) : (
+								<FaEye size={EYE_ICON_SIZE} />
+							)}
+						</Button>
+					</InputRightElement>
+				</FormInputWithControlProps>
+				<FormControl>
+					<div>
+						<FormHelperText>
+							Password length must be in the range {PASSWORD_RESTRICTION.LENGTH.MIN}-
+							{PASSWORD_RESTRICTION.LENGTH.MAX}
+						</FormHelperText>
+						<FormHelperText>
+							Password shoul contain one or more special characters{" "}
+							{PASSWORD_RESTRICTION.SYMBOLS.join(", ")}
+						</FormHelperText>
+					</div>
 				</FormControl>
 			</Wrap>
 			<Button

@@ -3,29 +3,18 @@
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-	Input,
-	Button,
-	Wrap,
-	FormControl,
-	FormLabel,
-	FormErrorMessage,
-} from "@chakra-ui/react";
+import { Button, Wrap } from "@chakra-ui/react";
 
 import { useLoading } from "@/hooks/useLoading";
 import { useShowToast } from "@/hooks/useShowToast";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useState } from "react";
 import { signIn } from "@/api/auth";
-
-const SignInSchema = z.object({
-	email: z.string().email("Enter email"),
-	password: z.string().refine((password) => password.length > 0, "Fill the input"),
-});
-
-type SignInSchemaType = z.infer<typeof SignInSchema>;
+import { ROUTES } from "@/consts/routes.const";
+import { SignInSchema, SignInSchemaType } from "@/consts/validations.const";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AppwriteException } from "appwrite";
+import { FormInputWithControlProps } from "@/components/UI/FormInputWithControl";
 
 export const SignInForm = () => {
 	const {
@@ -56,10 +45,26 @@ export const SignInForm = () => {
 		}
 
 		startLoading();
-		await signIn(data.email, data.password);
+		signIn(data.email, data.password)
+			.then(() => {
+				showToast({
+					title: "Success!",
+					description: "Redirecting",
+					status: "success",
+					duration: 1000,
+				});
 
-		router.refresh();
-		stopLoading();
+				router.push(ROUTES.HOME.path);
+			})
+			.catch((err: AppwriteException) => {
+				console.log(err);
+				showToast({
+					title: err.name,
+					description: err.message,
+					status: "error",
+				});
+			})
+			.finally(stopLoading);
 	};
 
 	return (
@@ -68,34 +73,25 @@ export const SignInForm = () => {
 				spacingY={1}
 				marginBottom={5}
 			>
-				<FormControl isInvalid={!!errors.email}>
-					<FormLabel>Email</FormLabel>
-					<Input
-						type="email"
-						placeholder="Email"
-						className="w-full rounded-md p-1"
-						aria-label="Email"
-						aria-hidden={false}
-						{...register("email")}
-					/>
-					{errors.email && (
-						<FormErrorMessage>{errors.email.message}</FormErrorMessage>
-					)}
-				</FormControl>
-				<FormControl isInvalid={!!errors.password}>
-					<FormLabel>Password</FormLabel>
-					<Input
-						type="password"
-						placeholder="Password"
-						className="w-full rounded-md p-1"
-						aria-label="Password"
-						aria-hidden={false}
-						{...register("password")}
-					/>
-					{errors.password && (
-						<FormErrorMessage>{errors.password.message}</FormErrorMessage>
-					)}
-				</FormControl>
+				<FormInputWithControlProps
+					isInvalid={!!errors.email}
+					label="Email"
+					registerProps={register("email")}
+					error={errors.email}
+					type="email"
+					placeholder="Email"
+					aria-hidden={false}
+				/>
+
+				<FormInputWithControlProps
+					isInvalid={!!errors.password}
+					label="Password"
+					registerProps={register("password")}
+					error={errors.password}
+					type="password"
+					placeholder="Password"
+					aria-hidden={false}
+				/>
 			</Wrap>
 			<HCaptcha
 				sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY!}
