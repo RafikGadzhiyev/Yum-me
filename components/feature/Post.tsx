@@ -3,6 +3,7 @@ import { PostCoverage } from "@/components/UI/PostCoverage";
 import { NewPostControlButtons } from "@/components/UI/NewPostControlButtons";
 import { PostContent } from "@/components/UI/PostContent";
 import { PostHeader } from "@/components/UI/PostHeader";
+import { updatePostLikes } from "@/utils/post.utils";
 
 interface IPostProps {
 	updatePost: <T>(field: string, value: T, isNew: boolean, postId: string) => void;
@@ -26,17 +27,11 @@ export const Post: FC<Post & IPostProps> = ({
 	updatePost,
 }) => {
 	const updateLike = () => {
-		const likes = new Set(coverage.likes);
-
-		if (likes.has($id)) {
-			likes.delete($id);
-		} else {
-			likes.add($id);
-		}
+		const updatedLikes = updatePostLikes(coverage.likes, $id);
 
 		updatePost<Post["coverage"]>(
 			"coverage",
-			{ ...coverage, likes: Array.from(likes) },
+			{ ...coverage, likes: updatedLikes },
 			isNew,
 			$id,
 		);
