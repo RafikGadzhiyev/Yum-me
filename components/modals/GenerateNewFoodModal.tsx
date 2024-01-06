@@ -14,14 +14,15 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
-	useDisclosure,
 	Card,
 	Collapse,
+	useDisclosure,
 } from "@chakra-ui/react";
 import { Loading } from "../UI/Loading";
 
 import { isConfigured } from "@/utils/validation.util";
 import { createGeneratedFood } from "@/api/generatedFood";
+import { useUserHealthData } from "@/hooks/useUserHealthData";
 
 interface IGenerateNewFoodButtonProps {
 	updateGeneratedFoodList: (generatedFood: GeneratedFood | GeneratedFood[]) => void;
@@ -30,9 +31,8 @@ interface IGenerateNewFoodButtonProps {
 export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	updateGeneratedFoodList,
 }) => {
-	const healthData = useSelector(
-		(store: RootStore) => store.userHealthDataReducer.userHealthData,
-	);
+	const user = useSelector((store: RootStore) => store.userReducer.user);
+	const healthData = useUserHealthData(user?.email || "");
 
 	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);
 
