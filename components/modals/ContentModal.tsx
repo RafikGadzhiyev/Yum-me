@@ -16,11 +16,12 @@ import {
 } from "@chakra-ui/react";
 
 interface IContentWrapper extends PropsWithChildren {
-	config: string;
+	label: string; // Either string or Key for i18n
+	content: string;
 }
 
-export const ContentModal: FC<IContentWrapper> = ({ config }) => {
-	const { t } = useTranslation();
+export const ContentModal: FC<IContentWrapper> = ({ content, label }) => {
+	const { t, i18n } = useTranslation();
 
 	const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -32,6 +33,7 @@ export const ContentModal: FC<IContentWrapper> = ({ config }) => {
 				// className="rounded-md p-2 bg-green-300 py-1 transition hover:bg-green-400"
 				onClick={onOpen}
 			>
+				{/*TODO: RENAME*/}
 				{t("SHOW_CONFIG")}
 			</Button>
 			<Modal
@@ -42,10 +44,10 @@ export const ContentModal: FC<IContentWrapper> = ({ config }) => {
 			>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>{t("USER_HEALTH_CONFIG")}</ModalHeader>
+					<ModalHeader>{i18n.exists(label) ? t(label) : label}</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
-						<pre className="whitespace-pre-wrap">{config}</pre>
+						<pre className="whitespace-pre-wrap">{content}</pre>
 					</ModalBody>
 					<ModalFooter>
 						<Button onClick={onClose}>{t("CLOSE")}</Button>
