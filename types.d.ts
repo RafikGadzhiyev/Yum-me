@@ -17,6 +17,15 @@ type User = {
 	role: string;
 };
 
+type PostComment = {
+	id: string;
+	author: string; // user full name
+	email: string;
+	content: string;
+	created_at: Date;
+	replies: PostComment[];
+};
+
 type GeneratedFood = {
 	$id: string;
 	created_at: Date;
@@ -31,16 +40,9 @@ type Post = {
 	show_likes: boolean;
 	coverage: {
 		likes: string[];
-		comments: Comment[];
+		comments: PostComment[];
 		saved: string[];
 	};
-	content: string;
-};
-
-type Comment = {
-	author: string;
-	created_at: number;
-	likes: number;
 	content: string;
 };
 
