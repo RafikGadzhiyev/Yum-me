@@ -75,7 +75,10 @@ export const SettingsPageWrapper = () => {
 
 	return (
 		<div>
-			<ContentModal config={JSON.stringify(healthConfig, null, 2)} />
+			<ContentModal
+				content={JSON.stringify(healthConfig, null, 2)}
+				label="USER_HEALTH_CONFIG"
+			/>
 
 			<div>
 				<GenderRadioGroup
