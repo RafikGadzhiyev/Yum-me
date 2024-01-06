@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 
@@ -18,6 +18,7 @@ import { getUsers } from "@/api/user";
 import { getGeneratedFoodList } from "@/api/generatedFood";
 
 export const ProfilePageWrapper = () => {
+	const isEditableTab = useRef(false);
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
@@ -36,7 +37,7 @@ export const ProfilePageWrapper = () => {
 	const fullname = user?.name + user?.last_name;
 
 	const getCurrentTabDataList = async (tabIndex: number) => {
-		const tab = PROFILE_PAGE_TABS[tabIndex + 1]; // It is not fix of problem just tmp solution
+		const tab = PROFILE_PAGE_TABS[tabIndex]; // It is not fix of problem just tmp solution
 		let generatedFoodList;
 
 		switch (tab.key) {
@@ -46,6 +47,7 @@ export const ProfilePageWrapper = () => {
 				break;
 			case "GENERATED_FOODS":
 				generatedFoodList = await getGeneratedFoods();
+				isEditableTab.current = true;
 
 				setList(generatedFoodList);
 				break;
@@ -126,7 +128,7 @@ export const ProfilePageWrapper = () => {
 										list={list}
 										state={responseStatus}
 										updateList={updateList}
-										isEditable={false}
+										isEditable={isEditableTab.current}
 									/>
 								</TabPanel>
 							) : null,
