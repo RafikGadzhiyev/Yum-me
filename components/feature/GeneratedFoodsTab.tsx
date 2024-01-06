@@ -10,7 +10,7 @@ import { LOCALE_BY_LANGUAGE } from "@/i18n/dictionary";
 import { Accordion as AccordionContainer } from "@chakra-ui/react";
 import { Accordion } from "../UI/Accordion";
 import { ListWithPagination } from "./ListWithPagination";
-import { GenerateNewFoodModal } from "@/components/feature/GenerateNewFoodModal";
+import { GenerateNewFoodModal } from "@/components/modals/GenerateNewFoodModal";
 
 export const GeneratedFoodsTab: FC<ITabProps<GeneratedFood>> = ({
 	list,
