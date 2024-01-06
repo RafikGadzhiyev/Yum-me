@@ -3,7 +3,7 @@ import { PostCoverage } from "@/components/UI/PostCoverage";
 import { NewPostControlButtons } from "@/components/UI/NewPostControlButtons";
 import { PostContent } from "@/components/UI/PostContent";
 import { PostHeader } from "@/components/UI/PostHeader";
-import { updatePostLikes } from "@/utils/post.utils";
+import { updatePostComments, updatePostLikes } from "@/utils/post.utils";
 
 interface IPostProps {
 	updatePost: <T>(field: string, value: T, isNew: boolean, postId: string) => void;
@@ -37,6 +37,11 @@ export const Post: FC<Post & IPostProps> = ({
 		);
 	};
 
+	// TODO: Need to think
+	// const updateComment = () => {
+	// 	const updatedComments = updatePostComments(coverage.comments, author, email);
+	// };
+
 	const updateCoverage = (key: string) => {
 		switch (key) {
 			case "likes":
@@ -64,7 +69,7 @@ export const Post: FC<Post & IPostProps> = ({
 			/>
 			{!isNew ? (
 				<PostCoverage
-					{...coverage}
+					coverage={coverage}
 					postId={$id}
 					show_likes={show_likes}
 					updateCoverage={updateCoverage}

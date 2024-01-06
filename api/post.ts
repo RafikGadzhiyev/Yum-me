@@ -31,7 +31,10 @@ export const createPost = async (request: PostRequestBody) => {
 	);
 };
 
-export const updatePost = async (postId: string, updatedData: PostRequestBody) => {
+export const updatePost = async (
+	postId: string,
+	updatedData: Partial<PostRequestBody>,
+) => {
 	await databases.updateDocument(
 		process.env.NEXT_PUBLIC_DATABASE_ID!,
 		process.env.NEXT_PUBLIC_POST_COLLECTION_ID!,
