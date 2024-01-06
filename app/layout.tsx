@@ -15,11 +15,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en">
 			<body>
 				<SpeedInsights />
-				<ProtectedLayout>
-					<Suspense fallback="Loaging data!">
-						<Provider>{children}</Provider>
-					</Suspense>
-				</ProtectedLayout>
+				<Provider>
+					<ProtectedLayout>
+						<Suspense fallback="Loaging data!">{children}</Suspense>
+					</ProtectedLayout>
+				</Provider>
 			</body>
 		</html>
 	);
