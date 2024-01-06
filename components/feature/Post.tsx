@@ -3,7 +3,7 @@ import { PostCoverage } from "@/components/UI/PostCoverage";
 import { NewPostControlButtons } from "@/components/UI/NewPostControlButtons";
 import { PostContent } from "@/components/UI/PostContent";
 import { PostHeader } from "@/components/UI/PostHeader";
-import { updatePostComments, updatePostLikes } from "@/utils/post.utils";
+import { updatePostLikes } from "@/utils/post.utils";
 
 interface IPostProps {
 	updatePost: <T>(field: string, value: T, isNew: boolean, postId: string) => void;
