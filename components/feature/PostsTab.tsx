@@ -28,6 +28,7 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 		}
 
 		const newPost = getNewPost(user as User);
+
 		setNewPost(newPost);
 	};
 
@@ -57,7 +58,7 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 	const createNewPostRecord = () => {
 		if (!newPost) return;
 		startLoading();
-		const newPostRequestBody = constructPostRecord(newPost) as PostRequestBody;
+		const newPostRequestBody = constructPostRecord(newPost, true) as PostRequestBody;
 
 		// This tmp fix waiting solution from appwrite
 		createPost(newPostRequestBody)
