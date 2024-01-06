@@ -1,4 +1,71 @@
-import { ID, UserActiveSession } from "@/lib/appwrite";
+import { v4 as uuid4 } from "uuid";
+
+export const getNewPost = (user: User): Post => {
+	return {
+		$id: uuid4(),
+		author: getUserFullName(user),
+		role: user.role,
+		created_at: new Date(),
+		show_likes: true,
+		content: "",
+		coverage: {
+			likes: [],
+			saved: [],
+			comments: [],
+		},
+	};
+};
+
+export const updateNewPost = function <T>(
+	newPost: Post | null,
+	field: string,
+	value: T,
+) {
+	if (!newPost) {
+		return newPost;
+	}
+
+	return {
+		...newPost,
+		[field]: value,
+	};
+};
+
+export const constructPostRecord = (updatedPost: Post) => {
+	let constructedPostRecord: Partial<PostRequestBody> = {};
+
+	for (const [field, value] of Object.entries(updatedPost)) {
+		let processedValue = value;
+
+		if (field === "coverage") {
+			processedValue = JSON.stringify(value);
+		}
+
+		// FIXME: should be solution
+		constructedPostRecord = {
+			...constructedPostRecord,
+			[field]: processedValue,
+		};
+	}
+
+	return constructedPostRecord;
+};
+
+export const updatePostInPostList = function <T>(
+	postList: Post[],
+	postId: string,
+	field: string,
+	value: T,
+) {
+	return postList.map((post) =>
+		post.$id === postId
+			? {
+					...post,
+					[field]: value,
+				}
+			: post,
+	);
+};
 
 export const updatePostLikes = (likes: string[], userId: string) => {
 	const uniqueLikes = new Set(likes);
@@ -19,7 +86,7 @@ export const updatePostComments = (
 	newCommentContent: string,
 ) => {
 	const newComment: PostComment = {
-		id: ID.unique(),
+		id: uuid4(),
 		content: newCommentContent,
 		replies: [],
 		created_at: new Date(),

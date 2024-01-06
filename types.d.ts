@@ -95,11 +95,8 @@ type RequestResponseWithSuccess<T, U> = Omit<RequestResponse<T, U>, "status"> & 
 };
 
 interface ITabProps<T> {
-	list: T[];
 	state: ResponseStatus;
 	isEditable: boolean;
-
-	updateList: (newValue: T | T[]) => void;
 }
 
 type useFetchResponse<T, U> = {

@@ -58,6 +58,7 @@ export const SignInForm = () => {
 			})
 			.catch((err: AppwriteException) => {
 				console.log(err);
+
 				showToast({
 					title: err.name,
 					description: err.message,

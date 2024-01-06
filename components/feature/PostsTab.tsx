@@ -6,6 +6,12 @@ import { createPost, getPostList, updatePost } from "@/api/post";
 import { Post } from "@/components/feature/Post";
 import { useLoading } from "@/hooks/useLoading";
 import { Loading } from "@/components/UI/Loading";
+import {
+	constructPostRecord,
+	getNewPost,
+	updateNewPost,
+	updatePostInPostList,
+} from "@/utils/post.utils";
 
 export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 	const { startLoading, stopLoading, isLoading } = useLoading();
@@ -21,19 +27,8 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 			return;
 		}
 
-		setNewPost({
-			$id: Math.random() + "",
-			author: user.name + " " + user.last_name,
-			role: user.role,
-			created_at: new Date(), // Here will be actual date
-			show_likes: true,
-			coverage: {
-				likes: [],
-				saved: [],
-				comments: [],
-			},
-			content: "",
-		});
+		const newPost = getNewPost(user as User);
+		setNewPost(newPost);
 	};
 
 	const updateNewPostField = async function <T>(
@@ -43,34 +38,13 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 		postId: string,
 	) {
 		if (isNew) {
-			setNewPost((prevPost) =>
-				!prevPost
-					? null
-					: {
-							...prevPost,
-							[field]: value,
-						},
-			);
+			setNewPost((prevPost) => updateNewPost(prevPost, field, value));
 		} else {
-			let post = posts.find((post) => post.$id === postId);
+			setPosts((prevPosts) => updatePostInPostList(prevPosts, postId, field, value));
+
+			const post = posts.find((post) => post.$id === postId);
 
 			if (!post) return;
-
-			setPosts((prevPosts) =>
-				prevPosts.map((prevPost) =>
-					prevPost.$id === postId
-						? {
-								...prevPost,
-								[field]: value,
-							}
-						: prevPost,
-				),
-			);
-
-			post = {
-				...post,
-				[field]: value,
-			};
 
 			await updatePostRecord(post);
 		}
@@ -83,14 +57,7 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 	const createNewPostRecord = () => {
 		if (!newPost) return;
 		startLoading();
-		const newPostRequestBody: PostRequestBody = {
-			created_at: newPost.created_at,
-			author: newPost.author,
-			role: newPost.role,
-			show_likes: newPost.show_likes,
-			coverage: JSON.stringify(newPost.coverage),
-			content: newPost.content,
-		};
+		const newPostRequestBody = constructPostRecord(newPost) as PostRequestBody;
 
 		// This tmp fix waiting solution from appwrite
 		createPost(newPostRequestBody)
@@ -108,14 +75,7 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 	};
 
 	const updatePostRecord = async (post: Post) => {
-		await updatePost(post.$id, {
-			author: post.author,
-			role: post.role,
-			created_at: post.created_at,
-			show_likes: post.show_likes,
-			coverage: JSON.stringify(post.coverage),
-			content: post.content,
-		});
+		await updatePost(post.$id, constructPostRecord(post));
 	};
 
 	useEffect(() => {

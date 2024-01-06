@@ -24,18 +24,6 @@ export const HomePage = () => {
 
 	const { responseStatus } = useFetch();
 
-	const [list, setList] = useState<any[]>([]); // eslint-disable-line
-
-	const updateList = (newValue: unknown) => {
-		if (Array.isArray(newValue)) {
-			setList(newValue);
-
-			return;
-		}
-
-		setList((prevValue) => [newValue, ...prevValue]);
-	};
-
 	useEffect(() => {
 		dispatch(readUser(userSession));
 	}, [userSession, dispatch]);
@@ -61,10 +49,8 @@ export const HomePage = () => {
 			) : (
 				<div>
 					<PostsTab
-						list={list}
 						state={responseStatus}
 						isEditable={true}
-						updateList={updateList}
 					/>
 				</div>
 			)}

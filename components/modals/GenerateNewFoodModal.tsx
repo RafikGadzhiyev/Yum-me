@@ -25,7 +25,7 @@ import { createGeneratedFood } from "@/api/generatedFood";
 import { useUserHealthData } from "@/hooks/useUserHealthData";
 
 interface IGenerateNewFoodButtonProps {
-	updateGeneratedFoodList: (generatedFood: GeneratedFood | GeneratedFood[]) => void;
+	updateGeneratedFoodList: (generatedFood: GeneratedFood) => void;
 }
 
 export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
