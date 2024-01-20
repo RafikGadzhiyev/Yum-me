@@ -8,7 +8,7 @@ interface IProfilePageHeaderProps {
 export const ProfilePageHeader: FC<IProfilePageHeaderProps> = ({ user }) => {
 	return (
 		<header className="flex h-[350px] flex-col items-center py-2">
-			<div className="mb-3 h-[100px] w-[100px] rounded-full bg-gray-400"></div>
+			<div className="mb-3 h-[100px] w-[100px] rounded-full bg-base-300"></div>
 			<span className="text-3xl font-bold">{getUserFullName(user)}</span>
 			<div>
 				<h1 className="mb-2 text-center text-xl font-bold">User info</h1>

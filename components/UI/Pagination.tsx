@@ -27,7 +27,7 @@ export const Pagination: FC<IPaginationProps> = ({
 
 	return (
 		<ul
-			className={clsx("flex gap-1 items-center", {
+			className={clsx("flex items-center gap-1", {
 				"justify-center": horizontalAlign === "center",
 				"justify-right": horizontalAlign === "right",
 				"items-start": verticalAlign === "top",
@@ -37,7 +37,7 @@ export const Pagination: FC<IPaginationProps> = ({
 			{withArrows && (
 				<li>
 					<button
-						className="rounded-md mx-2 p-1 border bg-green-400 disabled:opacity-50 disabled:cursor-not-allowed"
+						className="btn btn-square btn-sm mx-2 p-1"
 						onClick={() => changePage(currentPage - 1)}
 						disabled={currentPage === 1}
 					>
@@ -50,8 +50,8 @@ export const Pagination: FC<IPaginationProps> = ({
 				<li key={idx}>
 					{paginationElement !== BREAKING_ITEM_IDENTIFIER ? (
 						<button
-							className={clsx("rounded-md mx-1 p-2 py-1 border border-green-400", {
-								" bg-green-300": paginationElement === currentPage,
+							className={clsx("btn btn-square btn-sm mx-2 p-1", {
+								"bg-accent-content": paginationElement === currentPage,
 							})}
 							onClick={() => changePage(paginationElement)}
 						>
@@ -66,7 +66,7 @@ export const Pagination: FC<IPaginationProps> = ({
 			{withArrows && (
 				<li>
 					<button
-						className="rounded-md mx-2 p-1 border bg-green-400 disabled:opacity-50 disabled:cursor-not-allowed"
+						className="btn btn-square btn-sm mx-2 p-1"
 						onClick={() => changePage(currentPage + 1)}
 						disabled={currentPage === totalPages}
 					>

@@ -18,7 +18,7 @@ export const ItemPerPageSelect: FC<IITemPerPageSelectProps> = ({
 	changeOptions,
 }) => {
 	const perPageSelectContainerRef = useOutsideClick<HTMLDivElement>(() =>
-		setIsOpened(false)
+		setIsOpened(false),
 	);
 
 	const [isOpened, setIsOpened] = useState(false);
@@ -26,7 +26,7 @@ export const ItemPerPageSelect: FC<IITemPerPageSelectProps> = ({
 	return (
 		<div
 			ref={perPageSelectContainerRef}
-			className={clsx("flex gap-1 mx-auto items-center relative ml-auto", {
+			className={clsx("relative mx-auto ml-auto flex items-center gap-1", {
 				"justify-center": horizontalAlign === "center",
 				"justify-right": horizontalAlign === "right",
 				"items-start": verticalAlign === "top",
@@ -34,34 +34,33 @@ export const ItemPerPageSelect: FC<IITemPerPageSelectProps> = ({
 			})}
 			onClick={() => setIsOpened((prevIsOpened) => !prevIsOpened)}
 		>
-			<div className="rounded-md cursor-pointer p-2 py-1 bg-[#87EFAC] text-center min-w-[100px] my-1">
+			<div
+				className="btn-solid btn my-1 min-w-[100px] cursor-pointer rounded-md p-2 py-1 text-center"
+				role="button"
+			>
 				{currentOption.value} / per page
 			</div>
 			<AnimatePresence>
 				{isOpened && (
 					<motion.div
-						className="absolute overflow-hidden bg-[#87EFAC] rounded-md top-full w-full flex flex-col"
+						className="absolute top-full flex w-full flex-col overflow-hidden rounded-md bg-info-content"
 						initial={{
-							y: 20,
+							y: -20,
 							opacity: 0,
 						}}
 						animate={{
-							y: 0,
+							y: "-145%",
 							opacity: 1,
 						}}
 						exit={{
-							y: 20,
+							y: -20,
 							opacity: 0,
 						}}
 					>
-						{options.map((option, optionIndex) => (
+						{options.map((option) => (
 							<button
 								key={`per-page-${option.value}`}
-								className={clsx("transition p-1", {
-									"border-t": optionIndex !== 0,
-									"hover:bg-green-400": option.value !== currentOption.value,
-									"bg-green-500 text-white": option.value === currentOption.value,
-								})}
+								className="btn-solid btn-ghost"
 								onClick={() => changeOptions(option)}
 							>
 								{option.value}

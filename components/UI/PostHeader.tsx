@@ -13,11 +13,11 @@ interface IPostHeader {
 export const PostHeader: FC<IPostHeader> = ({ author, isNew, created_at, role }) => {
 	const { i18n } = useTranslation();
 	return (
-		<div className="items center flex justify-start shadow-gray-400">
+		<div className="items center flex justify-start">
 			<div className="flex flex-col">
 				<span>{author}</span>
 				{!isNew && (
-					<div className="-translate-y-1/4 text-sm text-gray-500">
+					<div className="text-info- -translate-y-1/4 text-sm text-neutral">
 						<span>{role}</span>
 						<span>
 							{" "}

@@ -29,10 +29,7 @@ export const PostCoverage: FC<IPostCoverageProps> = ({
 				postId={postId}
 				coverage={coverage}
 			/>
-			{/*<button className="flex items-center gap-1">*/}
-			{/*	<FaRegComment />*/}
-			{/*	<span>{comments.length}</span>*/}
-			{/*</button>*/}
+
 			<button className="flex items-center gap-1">
 				<FaRegBookmark />
 				<span>{coverage.saved.length}</span>

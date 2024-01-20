@@ -29,6 +29,7 @@ export const Post: FC<Post & IPostProps> = ({
 	const updateLike = () => {
 		const updatedLikes = updatePostLikes(coverage.likes, $id);
 
+		console.log({ ...coverage, likes: updatedLikes });
 		updatePost<Post["coverage"]>(
 			"coverage",
 			{ ...coverage, likes: updatedLikes },
@@ -53,7 +54,7 @@ export const Post: FC<Post & IPostProps> = ({
 	return (
 		<div
 			key={$id}
-			className="rounded-md bg-white p-4"
+			className="rounded-md bg-base-300 p-4"
 		>
 			<PostHeader
 				author={author}

@@ -47,7 +47,7 @@ export const ProfilePageMain: FC<IProfilePageMainProps> = ({ activeTab, user }) 
 							<TabPanel key={tab.key}>
 								<tab.Component
 									state={responseStatus}
-									isEditable={isEditableTab.current}
+									isEditable={true}
 								/>
 							</TabPanel>
 						) : null,

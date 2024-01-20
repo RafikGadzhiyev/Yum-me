@@ -15,14 +15,14 @@ export const NewPostControlButtons: FC<INewPostControlButtonsProps> = ({
 	return (
 		<div className="flex items-center gap-2">
 			<button
-				className="mt-2 rounded-md bg-green-500 p-2 py-1 text-white disabled:cursor-not-allowed disabled:opacity-20"
+				className="btn btn-success"
 				onClick={createNewPost}
 				disabled={!content.length}
 			>
 				Save
 			</button>
 			<button
-				className="mt-2 rounded-md bg-red-400 p-2 py-1 text-white"
+				className="btn btn-error"
 				onClick={cancelNewPost}
 			>
 				Cancel

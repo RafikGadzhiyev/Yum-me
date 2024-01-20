@@ -14,10 +14,10 @@ export const PostContent: FC<IPostContentProps> = ({
 	updatePost,
 }) => {
 	return (
-		<div className="my-2 max-h-[300px] overflow-y-auto rounded-sm border p-2">
+		<div className="my-2 max-h-[300px] overflow-y-auto rounded-sm  border border-base-content p-2">
 			{isNew ? (
 				<textarea
-					className="min-h-[200px] w-full border-none outline-none"
+					className="min-h-[200px] w-full border-none bg-transparent outline-none"
 					onChange={(e) => updatePost("content", e.target.value, isNew, postId)}
 				></textarea>
 			) : (

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Provider } from "@/components/Provider";
 import "./globals.css";
 import { ProtectedLayout } from "@/components/layouts/ProtectedLayout";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
 	title: "YumMe",
@@ -11,8 +12,14 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+	const headerList = headers();
+	const theme = headerList.get("theme") || "retro";
+
 	return (
-		<html lang="en">
+		<html
+			lang="en"
+			data-theme={theme}
+		>
 			<body>
 				<SpeedInsights />
 				<Provider>

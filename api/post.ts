@@ -1,6 +1,9 @@
 import { databases, ID } from "@/lib/appwrite";
+import { Models } from "appwrite";
 
 export const getPostList = async (queries: string[]) => {
+	const KEYS_FOR_REMOVE = ["$collectionId", "$databaseId", "$permissions"];
+
 	const requestResponse = await databases.listDocuments(
 		process.env.NEXT_PUBLIC_DATABASE_ID!,
 		process.env.NEXT_PUBLIC_POST_COLLECTION_ID!,
@@ -10,13 +13,23 @@ export const getPostList = async (queries: string[]) => {
 	const parsedDocuments: Post[] = [];
 
 	for (const document of requestResponse.documents) {
-		const parsedDocument = {
+		const parsedDocument: Record<string, any> = {
 			...document,
 			coverage: JSON.parse(document.coverage),
 		};
 
+		const preparedDocument = {} as Record<string, any>;
+
+		for (let key of Object.keys(parsedDocument)) {
+			if (KEYS_FOR_REMOVE.includes(key)) {
+				continue;
+			}
+
+			preparedDocument[key] = parsedDocument[key];
+		}
+
 		// TODO: fix this problem
-		parsedDocuments.push(parsedDocument as any); //eslint-disable-line
+		parsedDocuments.push(preparedDocument as any); //eslint-disable-line
 	}
 
 	return parsedDocuments.reverse();

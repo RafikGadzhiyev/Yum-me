@@ -18,6 +18,14 @@ const config: Config = {
 	plugins: [
 		require("@headlessui/tailwindcss")({ prefix: "ui" }), // eslint-disable-line
 		require("@tailwindcss/typography"),
+		require("daisyui"),
 	],
+
+	daisyui: {
+		themes: ["dark", "light", "retro"], // false = only light and dark
+		darkTheme: "dark", // choosing on of the dark themes
+		styled: true,
+		utils: true, // add utils and responsive design
+	},
 };
 export default config;

@@ -25,7 +25,7 @@ export const SignOutButton: FC<IButtonProps> = ({ dictionaryKey }) => {
 
 	return (
 		<button
-			className="mt-auto flex items-center justify-center gap-3 rounded-md bg-red-400 p-2 text-lg font-bold text-white transition hover:bg-red-500 active:bg-red-600"
+			className="btn btn-error"
 			onClick={signOutHandler}
 		>
 			<FaDoorOpen />
@@ -33,3 +33,15 @@ export const SignOutButton: FC<IButtonProps> = ({ dictionaryKey }) => {
 		</button>
 	);
 };
+
+/**
+ *
+ * <button
+ * 			className="mt-auto flex items-center justify-center gap-3 rounded-md bg-red-400 p-2 text-lg font-bold text-white transition hover:bg-red-500 active:bg-red-600"
+ * 			onClick={signOutHandler}
+ * 		>
+ * 			<FaDoorOpen />
+ * 			{t(dictionaryKey)}
+ * 		</button>
+ *
+ */

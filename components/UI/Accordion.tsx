@@ -14,19 +14,16 @@ interface IAccordionProps extends PropsWithChildren {
 
 export const Accordion: FC<IAccordionProps> = ({ children, label }) => {
 	return (
-		<AccordionItem className="bg-slate-300 rounded-md overflow-hidden">
+		<AccordionItem className="overflow-hidden rounded-md border-none bg-neutral">
 			<h2>
-				<AccordionButton
-					className="transition p-2 bg-slate-300"
-					_expanded={{ bg: "#87EEAB" }}
-				>
-					<span>{label}</span>
+				<AccordionButton className=" p-2 transition">
+					<span className="text-neutral-content">{label}</span>
 					<AccordionIcon />
 				</AccordionButton>
 			</h2>
 			<AccordionPanel
 				padding={5}
-				className="bg-[#81bb95] text-white prose max-w-full"
+				className="prose max-w-full bg-base-300"
 			>
 				{children}
 			</AccordionPanel>

@@ -89,21 +89,19 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 
 	return (
 		<>
-			<Button
-				mb={5}
-				variant="outline"
+			<button
+				className="btn btn-outline mb-5	"
 				onClick={onOpen}
-				isLoading={isLoading}
 			>
 				Generate
-			</Button>
+			</button>
 			<Modal
 				isOpen={isOpen}
 				onClose={onClose}
 				isCentered
 			>
 				<ModalOverlay />
-				<ModalContent>
+				<ModalContent className="mt-5">
 					{isLoading && <Loading />}
 
 					<ModalHeader>Generation by user health data</ModalHeader>
@@ -118,7 +116,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 							<div className="max-h-[400px] overflow-y-auto rounded-md">
 								<Card
 									ref={AIResponseContainerRef}
-									backgroundColor="green.300"
+									className="bg-accent text-accent-content"
 									p={3}
 									my={2}
 								>

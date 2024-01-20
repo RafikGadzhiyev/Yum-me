@@ -5,8 +5,6 @@ import { FaChevronDown } from "react-icons/fa";
 
 import { LANGUAGES } from "@/i18n/dictionary";
 
-import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
-
 export const LanguageSelect = () => {
 	const { t, i18n } = useTranslation();
 
@@ -15,29 +13,28 @@ export const LanguageSelect = () => {
 	};
 
 	return (
-		<Menu>
-			<MenuButton
-				as={Button}
-				className="rounded-md bg-white p-2"
-				rightIcon={<FaChevronDown />}
+		<div className="dropdown dropdown-top">
+			<div
+				tabIndex={0}
+				role="button"
+				className="btn btn-outline m-1"
 			>
 				{t("CHANGE_LANGUAGE")}
-			</MenuButton>
-			<MenuList
-				className="rounded-md bg-white p-2"
-				zIndex={10000}
-				width={""}
+				<FaChevronDown />
+			</div>
+			<ul
+				tabIndex={0}
+				className="menu dropdown-content z-[1] w-52 rounded-box bg-base-100 p-2 shadow"
 			>
 				{LANGUAGES.map((language) => (
-					<MenuItem
+					<li
 						key={language}
-						className="rounded-md p-2 transition hover:bg-slate-100"
 						onClick={() => changeLanguage(language)}
 					>
-						{language}
-					</MenuItem>
+						<a>{language}</a>
+					</li>
 				))}
-			</MenuList>
-		</Menu>
+			</ul>
+		</div>
 	);
 };

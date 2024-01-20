@@ -41,9 +41,12 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 		if (isNew) {
 			setNewPost((prevPost) => updateNewPost(prevPost, field, value));
 		} else {
-			setPosts((prevPosts) => updatePostInPostList(prevPosts, postId, field, value));
+			const updatedPostList = updatePostInPostList(posts, postId, field, value);
+			setPosts((prevPosts) => updatedPostList);
 
-			const post = posts.find((post) => post.$id === postId);
+			let post: Post | undefined = updatedPostList.find(
+				(post) => post.$id === postId,
+			);
 
 			if (!post) return;
 
@@ -95,7 +98,14 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 						cancelNewPost={cancelNewPost}
 					/>
 				) : (
-					isEditable && <Button onClick={createNewPost}>New post</Button>
+					isEditable && (
+						<button
+							className="btn btn-ghost"
+							onClick={createNewPost}
+						>
+							New post
+						</button>
+					)
 				)}
 
 				{posts.map((data) => (
