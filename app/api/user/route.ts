@@ -55,8 +55,7 @@ export const GET = async (req: NextRequest) => {
 		}
 
 		const user = await prisma.user.findUnique({
-			// @ts-expect-error fox in the future
-			where: searchQuery,
+			where: searchQuery as any, // eslint-disable-line
 			include: {
 				generatedFoods: true,
 				posts: true,
