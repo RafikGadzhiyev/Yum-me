@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GeneratedFood } from "@prisma/client";
+import type { GeneratedFood } from "@prisma/client";
 
 export const GET = async (req: NextRequest) => {
 	try {

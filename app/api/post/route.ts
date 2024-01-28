@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Post } from "@prisma/client";
+import type { Post } from "@prisma/client";
 
 export const GET = async (req: NextRequest) => {
 	try {
