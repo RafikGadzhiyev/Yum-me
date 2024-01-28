@@ -26,13 +26,11 @@ const userHealthData = createSlice({
 				"$collectionId",
 				"$createdAt",
 				"$databaseId",
-				"$id",
 				"$permissions",
 				"$updatedAt",
 				"generated_foods",
 				"created_at",
 				"updated_at",
-				"id",
 				"",
 			];
 

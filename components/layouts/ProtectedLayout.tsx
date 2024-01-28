@@ -3,17 +3,15 @@
 import { FC, PropsWithChildren, useCallback, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AUTH_ROUTES, ROUTES } from "@/consts/routes.const";
-import { getSession } from "@/api/auth";
-import { useDispatch } from "react-redux";
+import { auth } from "@/lib/firabase";
 import { readUser } from "@/redux/slices/user.slice";
-import { Query, UserActiveSession } from "@/lib/appwrite";
-import { getUsers } from "@/api/user";
+import { useDispatch } from "react-redux";
 import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
 
 export const ProtectedLayout: FC<PropsWithChildren> = ({ children }) => {
-	const dispatch = useDispatch();
 	const router = useRouter();
 	const pathname = usePathname();
+	const dispatch = useDispatch();
 
 	const getUser = useCallback(async () => {
 		const authRoutesPathList = Object.values(AUTH_ROUTES).map(
@@ -21,30 +19,30 @@ export const ProtectedLayout: FC<PropsWithChildren> = ({ children }) => {
 		);
 
 		try {
-			const user = await getSession();
+			await auth.authStateReady(); // waiting until auth state will be ready
+			const user = auth.currentUser;
 
-			dispatch(readUser(user));
+			if (user) {
+				// @ts-expect-error type mismatch
+				dispatch(readUser(user.toJSON()));
 
-			if (user && authRoutesPathList.includes(pathname)) {
-				await getUserHealth(user);
+				const userResponse = await fetch(
+					process.env.NEXT_PUBLIC_BASE_URL + `/api/user?email=${user.email}`,
+				);
+				const userRecord = await userResponse.json();
 
-				router.push(ROUTES.HOME.path);
+				dispatch(readUserHealthData(userRecord.data));
+
+				if (authRoutesPathList.includes(pathname)) {
+					router.push(ROUTES.HOME.path);
+				}
 			}
 		} catch (err) {
 			if (!authRoutesPathList.includes(pathname)) {
 				router.push(AUTH_ROUTES.SIGN_IN.path);
 			}
 		}
-	}, [pathname, router]);
-
-	const getUserHealth = async (user: UserActiveSession) => {
-		const users = await getUsers([Query.equal("email", user.email)]);
-		const userHealthData = users[0];
-
-		dispatch(readUserHealthData(userHealthData));
-
-		return userHealthData;
-	};
+	}, [dispatch, pathname, router]);
 
 	useEffect(() => {
 		getUser();

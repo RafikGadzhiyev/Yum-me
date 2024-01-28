@@ -21,8 +21,6 @@ import {
 import { Loading } from "../UI/Loading";
 
 import { isConfigured } from "@/utils/validation.util";
-import { createGeneratedFood } from "@/api/generatedFood";
-import { useUserHealthData } from "@/hooks/useUserHealthData";
 
 interface IGenerateNewFoodButtonProps {
 	updateGeneratedFoodList: (generatedFood: GeneratedFood) => void;
@@ -31,8 +29,10 @@ interface IGenerateNewFoodButtonProps {
 export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	updateGeneratedFoodList,
 }) => {
-	const user = useSelector((store: RootStore) => store.userReducer.user);
-	const healthData = useUserHealthData(user?.email || "");
+	// const healthData = useUserHealthData(user?.email || "");
+	const healthData = useSelector(
+		(store: RootStore) => store.userHealthDataReducer.userHealthData,
+	);
 
 	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -57,27 +57,28 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 		await readData(streamedData);
 	};
 
-	const addNewFood = () => {
+	const addNewFood = async () => {
 		if (!healthData) {
 			return;
 		}
 
 		const request: GeneratedFoodRequestBody = {
-			generated_for: healthData.email,
-			created_at: new Date(),
+			generatedById: healthData.id,
 			description: data,
 		};
 
-		createGeneratedFood(request)
-			.then((response) => {
-				const generatedFood: GeneratedFood = {
-					...request,
-					$id: response.$id,
-				};
+		const createGeneratedFoodResponse = await fetch(
+			process.env.NEXT_PUBLIC_BASE_URL + "/api/generated_food",
+			{
+				method: "POST",
+				body: JSON.stringify(request),
+			},
+		);
 
-				updateGeneratedFoodList(generatedFood);
-			})
-			.finally(onClose);
+		const generatedFood = await createGeneratedFoodResponse.json();
+
+		updateGeneratedFoodList(generatedFood);
+		onClose();
 	};
 
 	useEffect(() => {

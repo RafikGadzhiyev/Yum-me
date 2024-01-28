@@ -5,7 +5,8 @@ import { useTranslation } from "react-i18next";
 import { useLoading } from "@/hooks/useLoading";
 import { FC, useCallback, PropsWithChildren } from "react";
 import { FaDoorOpen } from "react-icons/fa";
-import { signOut } from "@/api/auth";
+import { signOut } from "@/api/NewAuth";
+import { AUTH_ROUTES } from "@/consts/routes.const";
 
 interface IButtonProps extends PropsWithChildren {
 	dictionaryKey: string;
@@ -20,7 +21,7 @@ export const SignOutButton: FC<IButtonProps> = ({ dictionaryKey }) => {
 		startLoading();
 		await signOut();
 		stopLoading();
-		router.refresh();
+		router.push(AUTH_ROUTES.SIGN_IN.path);
 	}, [router, startLoading, stopLoading]);
 
 	return (

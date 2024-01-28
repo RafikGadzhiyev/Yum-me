@@ -14,21 +14,20 @@ import {
 } from "@chakra-ui/react";
 import { RootStore } from "@/redux/store";
 import { useSelector } from "react-redux";
-import { ID } from "@/lib/appwrite";
+import { v4 as uuid4 } from "uuid";
 import { getUserFullName } from "@/utils/post.utils";
-import { updatePost } from "@/api/post";
 import { formatDistanceToNow } from "date-fns";
 import { LOCALE_BY_LANGUAGE } from "@/i18n/dictionary";
 import i18n from "i18next";
 
 interface IPostCommentsModalProps {
 	postId: string;
-	coverage: Post["coverage"];
+	comments: Post["comments"];
 }
 
 export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 	postId,
-	coverage,
+	comments: commentList,
 }) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -37,7 +36,7 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 	);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const [comments, setComments] = useState(coverage.comments);
+	const [comments, setComments] = useState(commentList);
 
 	const addNewPostComment = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -45,24 +44,36 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 		if (!inputRef.current || !userData) return;
 
 		const newPostComment: PostComment = {
-			id: ID.unique(),
+			id: uuid4(),
 			content: inputRef.current.value,
 			author: getUserFullName(userData as User),
 			email: userData.email,
-			created_at: new Date(),
+			createdAt: new Date(),
 			replies: [],
 		};
 
 		inputRef.current.value = "";
 
-		await updatePost(postId, {
-			coverage: JSON.stringify({
-				...coverage,
-				comments: [...coverage.comments, newPostComment],
-			}),
-		});
-
 		setComments((prevComments) => [...prevComments, newPostComment]);
+
+		const updatePostResponse = await fetch(
+			process.env.NEXT_PUBLIC_BASE_URL + "/api/post",
+			{
+				method: "PATCH",
+				body: JSON.stringify({
+					searchQuery: {
+						id: postId,
+					},
+					fieldsToUpdate: {
+						comments: [...comments, newPostComment],
+					},
+				}),
+			},
+		);
+
+		const { data: updatedPost } = await updatePostResponse.json();
+
+		setComments(updatedPost.comments);
 	};
 
 	return (
@@ -97,7 +108,7 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 										<div className="items center flex justify-between">
 											<h1 className="text-xl font-bold">{comment.author}</h1>
 											<span>
-												{formatDistanceToNow(new Date(comment.created_at), {
+												{formatDistanceToNow(new Date(comment.createdAt), {
 													addSuffix: true,
 													locale: LOCALE_BY_LANGUAGE[i18n.language],
 												})}

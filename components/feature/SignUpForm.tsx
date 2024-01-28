@@ -18,10 +18,11 @@ import { useRouter } from "next/navigation";
 import { PASSWORD_RESTRICTION } from "@/consts/auth.const";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUp } from "@/api/auth";
+// import { signUp } from "@/api/auth";
 import { ROUTES } from "@/consts/routes.const";
 import { SignUpSchema, SignUpSchemaType } from "@/consts/validations.const";
 import { FormInputWithControlProps } from "@/components/UI/FormInputWithControl";
+import { signUp } from "@/api/NewAuth";
 
 const EYE_ICON_SIZE = 20;
 
@@ -41,26 +42,32 @@ export const SignUpForm = () => {
 	const signUpHandler: SubmitHandler<SignUpSchemaType> = async (data) => {
 		startLoading();
 
-		const signUpResult = await signUp(data.email, data.password);
+		signUp(data.email, data.password)
+			.then(async (user) => {
+				console.log(user);
 
-		if (signUpResult.error) {
-			showToast({
-				title: signUpResult.error.title,
-				status: "error",
-				description: signUpResult.error.message,
-			});
-		} else {
-			showToast({
-				title: "Success",
-				status: "success",
-				description: "Redirecting to home page",
-				duration: 500,
-			});
+				await fetch(process.env.NEXT_PUBLIC_BASE_URL! + "/api/user", {
+					method: "POST",
+					body: JSON.stringify(data),
+				});
 
-			router.push(ROUTES.HOME.path);
-		}
+				showToast({
+					title: "Success",
+					status: "success",
+					description: "Redirecting to home page",
+					duration: 500,
+				});
 
-		stopLoading();
+				router.push(ROUTES.HOME.path);
+			})
+			.catch((err) => {
+				showToast({
+					title: err.code,
+					status: "error",
+					description: err.message,
+				});
+			})
+			.finally(stopLoading);
 	};
 
 	return (

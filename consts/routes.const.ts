@@ -21,9 +21,9 @@ export const ROUTES: Record<string, Route> = {
 		},
 	},
 	SAVED_RECIPES: {
-		path: "/saved-recipes",
+		path: "/saved",
 		key: "saved_recipes",
-		label: "Saved Recipes",
+		label: "Saved",
 		Icon: FaBookmark,
 	},
 	SEARCH: {

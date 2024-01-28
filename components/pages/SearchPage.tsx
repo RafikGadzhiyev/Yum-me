@@ -1,22 +1,98 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { useLoading } from "@/hooks/useLoading";
+import { Loading } from "@/components/UI/Loading";
+import { SearchedUser } from "@/components/feature/SearchedUser";
+import { Models } from "appwrite";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export const SearchPageWrapper = () => {
+	const searchInputRef = useRef<HTMLInputElement | null>(null);
+
+	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+
+	const { startLoading, stopLoading, isLoading } = useLoading();
 	const { t } = useTranslation();
+	const [searchResults, setSearchResults] = useState<null | Array<Models.Document>>(
+		null,
+	);
+
+	const savedQuery = searchParams.get("query");
+
+	const searchHandler = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		if (!searchInputRef.current) {
+			return;
+		}
+
+		await search(searchInputRef.current?.value);
+	};
+
+	const search = async (query: string) => {
+		startLoading();
+		const mutableSearchParams = new URLSearchParams(searchParams.toString());
+
+		mutableSearchParams.set("query", query);
+		mutableSearchParams.set("searchBy", "email");
+
+		router.push(pathname + "?" + mutableSearchParams.toString());
+
+		const queryResponse = await fetch(
+			process.env.NEXT_PUBLIC_BASE_URL + `/api/user?query=${query}&searchBy=email`, // TODO: give opportunity to choose search field
+		);
+		const { data: queryResult } = await queryResponse.json();
+
+		setSearchResults(queryResult);
+		stopLoading();
+	};
+
+	useEffect(() => {
+		if (savedQuery) {
+			search(savedQuery);
+		}
+	}, [savedQuery]);
 
 	return (
 		<>
-			<form className="flex  gap-2">
+			<form
+				className="mb-2 flex gap-1"
+				onSubmit={searchHandler}
+			>
 				<input
-					className=" border-none outline-none rounded-md p-2 py-1 flex-1"
-					placeholder="Search recipes"
+					ref={searchInputRef}
+					className="input input-bordered flex-1 rounded-md p-2 py-1"
+					placeholder="Query"
 				/>
 
-				<button className="rounded-md px-2 bg-green-300 transition hover:bg-green-400 hover:text-white">
-					{t("SEARCH")}
-				</button>
+				<button className="btn">{t("SEARCH")}</button>
 			</form>
+			<div className="flex h-full justify-center">
+				{searchResults && !searchResults.length && <span>Nothing was found</span>}
+				{searchResults && searchResults.length && (
+					<ul className="flex w-full flex-wrap items-start justify-between gap-1">
+						{searchResults.map((searchResult) => (
+							<li
+								className="card my-2 border-2 bg-base-200"
+								key={searchResult.id}
+							>
+								<SearchedUser
+									$id={searchResult.id}
+									name={searchResult.name}
+									email={searchResult.email}
+									age={searchResult.age}
+									role={searchResult.role}
+								/>
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
+			{isLoading && <Loading />}
 		</>
 	);
 };

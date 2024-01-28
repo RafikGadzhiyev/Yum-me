@@ -12,7 +12,7 @@ export const getUsers = async (queries: string[]) => {
 };
 
 export const updateUser = async (userId: string, updatedData: string) => {
-	await databases.updateDocument(
+	return await databases.updateDocument(
 		process.env.NEXT_PUBLIC_DATABASE_ID!,
 		process.env.NEXT_PUBLIC_USER_COLLECTION_ID!,
 		userId,

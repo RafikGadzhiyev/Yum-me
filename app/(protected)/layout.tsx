@@ -22,7 +22,7 @@ export default async function ProtectedPagesLayout({ children }: PropsWithChildr
 			</div>
 			<div className="drawer-content">
 				<ScrollableLayout>
-					<div className="h-fit min-h-[100dvh] flex-1 p-2 md:pb-2">
+					<div className="flex h-[100vh] max-h-[100vh] flex-1 flex-col p-2 md:pb-2">
 						<div>
 							<label
 								htmlFor="sidebar-navigation-drawer"

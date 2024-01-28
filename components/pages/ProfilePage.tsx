@@ -1,16 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense } from "react";
 
 import { useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 
 import { RootStore } from "@/redux/store";
-import { Query, Document } from "@/lib/appwrite";
-import { getSession } from "@/api/auth";
-import { getUsers } from "@/api/user";
 import { ProfilePageHeader } from "@/components/UI/ProfilePageHeader";
 import { ProfilePageMain } from "@/components/feature/ProfilePageMain";
+import { AnotherUserProfile } from "@/components/feature/AnotherUserProfile";
 
 export const ProfilePageWrapper = () => {
 	const searchParams = useSearchParams();
@@ -18,28 +16,28 @@ export const ProfilePageWrapper = () => {
 		(store: RootStore) => store.userHealthDataReducer.userHealthData,
 	);
 
-	const [user, setUser] = useState<Document | null>(userFromStore);
-
 	const activeTab = +(searchParams.get("tab") as string) || 0;
+	const userId = searchParams.get("id");
 
-	useEffect(() => {
-		getSession().then((user) => {
-			getUsers([Query.equal("email", user.email)]).then((users) => {
-				setUser(users[0]);
-			});
-		});
-	}, []);
+	if (userId) {
+		return (
+			// Todo: Create fallback skeleton
+			<Suspense fallback={<h1>Loading. . . .</h1>}>
+				<AnotherUserProfile $id={userId} />
+			</Suspense>
+		);
+	}
 
-	if (!user) {
+	if (!userFromStore) {
 		return <h1>Wait, it Takes few minutes</h1>;
 	}
 
 	return (
 		<div>
-			<ProfilePageHeader user={user as User} />
+			<ProfilePageHeader user={userFromStore as User} />
 			<ProfilePageMain
 				activeTab={activeTab}
-				user={user as User}
+				user={userFromStore as User}
 			/>
 		</div>
 	);

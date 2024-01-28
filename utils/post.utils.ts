@@ -2,17 +2,16 @@ import { v4 as uuid4 } from "uuid";
 
 export const getNewPost = (user: User): Post => {
 	return {
-		$id: uuid4(),
-		author: getUserFullName(user),
+		id: uuid4(),
+		updatedAt: new Date(),
+		authorId: user.id,
 		role: user.role,
-		created_at: new Date(),
-		show_likes: true,
+		createdAt: new Date(),
+		showLikes: true,
 		content: "",
-		coverage: {
-			likes: [],
-			saved: [],
-			comments: [],
-		},
+		likes: [],
+		savedBy: [],
+		comments: [],
 	};
 };
 
@@ -64,7 +63,7 @@ export const updatePostInPostList = function <T>(
 	value: T,
 ) {
 	return postList.map((post) =>
-		post.$id === postId
+		post.id === postId
 			? {
 					...post,
 					[field]: value,
@@ -85,6 +84,18 @@ export const updatePostLikes = (likes: string[], userId: string) => {
 	return Array.from(uniqueLikes);
 };
 
+export const updatePostSaved = (saved: string[], userId: string) => {
+	const uniqueSaved = new Set(saved);
+
+	if (uniqueSaved.has(userId)) {
+		uniqueSaved.delete(userId);
+	} else {
+		uniqueSaved.add(userId);
+	}
+
+	return Array.from(uniqueSaved);
+};
+
 export const updatePostComments = (
 	comments: PostComment[],
 	author: string,
@@ -95,7 +106,7 @@ export const updatePostComments = (
 		id: uuid4(),
 		content: newCommentContent,
 		replies: [],
-		created_at: new Date(),
+		createdAt: new Date(),
 
 		author,
 		email,

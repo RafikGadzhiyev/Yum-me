@@ -1,17 +1,10 @@
 import { FC, useEffect, useState } from "react";
-import { Button } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { RootStore } from "@/redux/store";
-import { createPost, getPostList, updatePost } from "@/api/post";
 import { Post } from "@/components/feature/Post";
 import { useLoading } from "@/hooks/useLoading";
 import { Loading } from "@/components/UI/Loading";
-import {
-	constructPostRecord,
-	getNewPost,
-	updateNewPost,
-	updatePostInPostList,
-} from "@/utils/post.utils";
+import { getNewPost, updateNewPost, updatePostInPostList } from "@/utils/post.utils";
 
 export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 	const { startLoading, stopLoading, isLoading } = useLoading();
@@ -42,10 +35,10 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 			setNewPost((prevPost) => updateNewPost(prevPost, field, value));
 		} else {
 			const updatedPostList = updatePostInPostList(posts, postId, field, value);
-			setPosts((prevPosts) => updatedPostList);
+			setPosts(() => updatedPostList);
 
-			let post: Post | undefined = updatedPostList.find(
-				(post) => post.$id === postId,
+			const post: Post | undefined = updatedPostList.find(
+				(post) => post.id === postId,
 			);
 
 			if (!post) return;
@@ -58,32 +51,58 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 		setNewPost(null);
 	};
 
-	const createNewPostRecord = () => {
-		if (!newPost) return;
+	const createNewPostRecord = async () => {
+		if (!newPost || !user) return;
 		startLoading();
-		const newPostRequestBody = constructPostRecord(newPost, true) as PostRequestBody;
 
-		// This tmp fix waiting solution from appwrite
-		createPost(newPostRequestBody)
-			.then(
-				(
-					createdNewPost: any, // eslint-disable-line
-				) => {
-					createdNewPost.coverage = JSON.parse(createdNewPost.coverage);
+		const newPostResponse = await fetch(
+			process.env.NEXT_PUBLIC_BASE_URL + "/api/post",
+			{
+				method: "POST",
+				body: JSON.stringify({
+					authorId: user.id,
+					showLikes: newPost.showLikes, // TODO: fix typo
+					content: newPost.content,
+				}),
+			},
+		);
 
-					setPosts((prevPosts) => [createdNewPost, ...prevPosts]);
-					setNewPost(null);
-				},
-			)
-			.finally(stopLoading);
+		const { data } = await newPostResponse.json();
+
+		console.log(data);
+
+		setPosts((prevPosts) => [...prevPosts, data]);
+		setNewPost(null);
+
+		stopLoading();
 	};
 
 	const updatePostRecord = async (post: Post) => {
-		await updatePost(post.$id, constructPostRecord(post));
+		const searchQuery = {
+			id: post.id,
+		};
+
+		const updatePostResponse = await fetch(
+			process.env.NEXT_PUBLIC_BASE_URL + "/api/post",
+			{
+				method: "PATCH",
+				body: JSON.stringify({
+					searchQuery,
+					fieldsToUpdate: post,
+				}),
+			},
+		);
+
+		const updatedPost = await updatePostResponse.json();
+
+		console.log(updatedPost);
+		// await updatePost(post.id, constructPostRecord(post));
 	};
 
 	useEffect(() => {
-		getPostList([]).then((postList: Post[]) => setPosts(postList));
+		fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/post").then((postsResponse) => {
+			postsResponse.json().then(({ data: posts }) => setPosts(posts));
+		});
 	}, []);
 
 	return (
@@ -92,6 +111,7 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 				{newPost ? (
 					<Post
 						{...newPost}
+						$userId={user?.id}
 						isNew={true}
 						updatePost={updateNewPostField}
 						createNewPost={createNewPostRecord}
@@ -110,7 +130,8 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 
 				{posts.map((data) => (
 					<Post
-						key={data.$id}
+						$userId={user?.id}
+						key={data.id}
 						updatePost={updateNewPostField}
 						{...data}
 					/>

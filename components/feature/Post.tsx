@@ -3,23 +3,29 @@ import { PostCoverage } from "@/components/UI/PostCoverage";
 import { NewPostControlButtons } from "@/components/UI/NewPostControlButtons";
 import { PostContent } from "@/components/UI/PostContent";
 import { PostHeader } from "@/components/UI/PostHeader";
-import { updatePostLikes } from "@/utils/post.utils";
+import { updatePostLikes, updatePostSaved } from "@/utils/post.utils";
 
 interface IPostProps {
+	$userId: string;
 	updatePost: <T>(field: string, value: T, isNew: boolean, postId: string) => void;
 	isNew?: boolean;
 	createNewPost?: () => void;
 	cancelNewPost?: () => void;
 }
 
+// TODO: REFACTOR
+
 export const Post: FC<Post & IPostProps> = ({
-	$id,
-	created_at,
-	coverage,
-	author,
+	id,
+	$userId,
+	createdAt,
+	likes,
+	comments,
+	savedBy,
+	authorId,
 	role,
 	content,
-	show_likes,
+	showLikes,
 	isNew = false,
 
 	createNewPost,
@@ -27,52 +33,53 @@ export const Post: FC<Post & IPostProps> = ({
 	updatePost,
 }) => {
 	const updateLike = () => {
-		const updatedLikes = updatePostLikes(coverage.likes, $id);
+		const updatedLikes = updatePostLikes(likes, $userId);
 
-		console.log({ ...coverage, likes: updatedLikes });
-		updatePost<Post["coverage"]>(
-			"coverage",
-			{ ...coverage, likes: updatedLikes },
-			isNew,
-			$id,
-		);
+		updatePost<Post["likes"]>("likes", updatedLikes, isNew, id);
 	};
 
-	// TODO: Need to think
-	// const updateComment = () => {
-	// 	const updatedComments = updatePostComments(coverage.comments, author, email);
-	// };
+	const updateSaved = async () => {
+		const updatedSaved = updatePostSaved(savedBy, $userId);
+
+		updatePost<Post["savedBy"]>("savedBy", updatedSaved, isNew, id);
+	};
 
 	const updateCoverage = (key: string) => {
 		switch (key) {
 			case "likes":
 				updateLike();
 				break;
+			case "savedBy":
+				updateSaved();
+				break;
 		}
 	};
 
 	return (
 		<div
-			key={$id}
+			key={id}
 			className="rounded-md bg-base-300 p-4"
 		>
 			<PostHeader
-				author={author}
+				author={authorId}
 				isNew={isNew}
 				role={role}
-				created_at={created_at}
+				created_at={createdAt}
 			/>
 			<PostContent
 				isNew={isNew}
-				postId={$id}
+				postId={id}
 				content={content}
 				updatePost={updatePost}
 			/>
 			{!isNew ? (
 				<PostCoverage
-					coverage={coverage}
-					postId={$id}
-					show_likes={show_likes}
+					$userId={$userId}
+					likes={likes}
+					comments={comments}
+					savedBy={savedBy}
+					postId={id}
+					show_likes={showLikes}
 					updateCoverage={updateCoverage}
 				/>
 			) : (

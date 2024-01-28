@@ -29,7 +29,7 @@ export const GenderRadioGroup: FC<IGenderRadioGroupProps> = ({
 			<div className="flex items-center gap-2">
 				{GENDERS.map((gender) => (
 					<RadioGroup.Option
-						value={gender}
+						value={gender.toUpperCase()}
 						key={gender}
 						className="my-3 cursor-pointer rounded-md bg-slate-500 p-2 py-1 capitalize text-white ui-checked:bg-green-600"
 					>

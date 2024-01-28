@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { HTMLInputTypeAttribute, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLoading } from "@/hooks/useLoading";
 
-import { Query } from "@/lib/appwrite";
 import { RootStore } from "@/redux/store";
 
 import { Button, Wrap } from "@chakra-ui/react";
@@ -14,8 +13,7 @@ import { GenderRadioGroup } from "../UI/GenderRadioGroup";
 import { FormInput } from "../UI/FormInput";
 import { FormTextarea } from "../UI/FormTextarea";
 import { ContentModal } from "../modals/ContentModal";
-import { getSession } from "@/api/auth";
-import { getUsers, updateUser } from "@/api/user";
+import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
 
 export const SettingsPageWrapper = () => {
 	const { t } = useTranslation();
@@ -25,6 +23,8 @@ export const SettingsPageWrapper = () => {
 		(store: RootStore) => store.userHealthDataReducer.userHealthData,
 	);
 
+	const dispatch = useDispatch();
+
 	const [healthConfig, setHealthConfig] = useState(
 		structuredClone(cachedUserHealthConfig),
 	);
@@ -33,10 +33,25 @@ export const SettingsPageWrapper = () => {
 		setHealthConfig(structuredClone(cachedUserHealthConfig));
 	};
 
-	const updateConfig = (key: string, value: string | number) => {
+	const getValueWithCorrectType = (value: string, type: HTMLInputTypeAttribute) => {
+		switch (type) {
+			case "number":
+				return parseInt(value);
+			default:
+				return value;
+		}
+	};
+
+	const updateConfig = (
+		key: string,
+		value: string,
+		type: HTMLInputTypeAttribute,
+	) => {
+		const valueWithCorrectType = getValueWithCorrectType(value, type);
+
 		setHealthConfig({
 			...healthConfig,
-			[key]: value,
+			[key]: valueWithCorrectType,
 		});
 	};
 
@@ -45,29 +60,31 @@ export const SettingsPageWrapper = () => {
 
 		startLoading();
 
-		await updateUser(
-			healthConfig.$id,
-			JSON.stringify({
-				weight: healthConfig.weight,
-				height: healthConfig.height,
-				age: healthConfig.age,
-				gender: healthConfig.gender,
-				calories_per_day: healthConfig.calories_per_day,
-				contraindications: healthConfig.contraindications,
-				wishes: healthConfig.wishes,
-			}),
+		const searchQuery = {
+			email: healthConfig.email,
+		};
+
+		const updateResponse = await fetch(
+			process.env.NEXT_PUBLIC_BASE_URL + "/api/user",
+			{
+				method: "PATCH",
+				body: JSON.stringify({
+					searchQuery: searchQuery,
+					fieldsToUpdate: healthConfig,
+				}),
+			},
 		);
+
+		const { data } = await updateResponse.json();
+
+		dispatch(readUserHealthData(data));
 
 		stopLoading();
 	};
 
 	useEffect(() => {
-		getSession().then((user) => {
-			getUsers([Query.equal("email", user.email)]).then((users) =>
-				setHealthConfig(structuredClone(users[0])),
-			);
-		});
-	}, []);
+		setHealthConfig(structuredClone(cachedUserHealthConfig));
+	}, [cachedUserHealthConfig]);
 
 	if (!healthConfig) {
 		return <span>Wait, It takes few minutes</span>;
@@ -83,10 +100,10 @@ export const SettingsPageWrapper = () => {
 			<div>
 				<GenderRadioGroup
 					initialGender={healthConfig?.gender}
-					updateGender={(gender: string) => updateConfig("gender", gender)}
+					updateGender={(gender: string) => updateConfig("gender", gender, "text")}
 				/>
 				<Wrap mb={4}>
-					<FormInput<number, "number">
+					<FormInput
 						initialValue={healthConfig?.weight}
 						field="weight"
 						labelValueKey="WEIGHT"
@@ -95,7 +112,7 @@ export const SettingsPageWrapper = () => {
 						updateValue={updateConfig}
 					/>
 
-					<FormInput<number, "number">
+					<FormInput
 						initialValue={healthConfig?.height}
 						field="height"
 						labelValueKey="HEIGHT"
@@ -109,7 +126,7 @@ export const SettingsPageWrapper = () => {
 					direction="column"
 					mb={4}
 				>
-					<FormInput<number, "number">
+					<FormInput
 						initialValue={healthConfig?.age}
 						field="age"
 						labelValueKey="AGE"
@@ -118,9 +135,9 @@ export const SettingsPageWrapper = () => {
 						updateValue={updateConfig}
 					/>
 
-					<FormInput<number, "number">
-						initialValue={healthConfig?.calories_per_day}
-						field="calories_per_day"
+					<FormInput
+						initialValue={healthConfig?.caloriesPerDay}
+						field="caloriesPerDay"
 						labelValueKey="CALORIES_PER_DAY"
 						placeholder="Your calories per day"
 						type="number"

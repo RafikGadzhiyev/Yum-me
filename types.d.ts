@@ -22,27 +22,27 @@ type PostComment = {
 	author: string; // user full name
 	email: string;
 	content: string;
-	created_at: Date;
+	createdAt: Date;
 	replies: PostComment[];
 };
 
 type GeneratedFood = {
-	$id: string;
-	created_at: Date;
+	id: strin;
+	createdAt: Date;
+	generatedById: string;
 	description: string;
 };
 
 type Post = {
-	$id: string;
-	author: string;
+	id: string;
+	authorId: string;
 	role: string;
-	created_at: Date;
-	show_likes: boolean;
-	coverage: {
-		likes: string[];
-		comments: PostComment[];
-		saved: string[];
-	};
+	createdAt: Date;
+	updatedAt: Date;
+	showLikes: boolean;
+	likes: string[];
+	comments: PostComment[];
+	savedBy: string[];
 	content: string;
 };
 
@@ -111,8 +111,7 @@ type ItemSelectOption = {
 
 // API Types
 type GeneratedFoodRequestBody = {
-	generated_for: string;
-	created_at: Date;
+	generatedById: string;
 	description: string;
 };
 

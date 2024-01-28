@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String          @id @default(uuid())
+  email             String          @unique @default("")
+  gender            Gender          @default(MALE)
+  role              Role            @default(GUEST)
+  name              String          @default("Anonymous")
+  lastName          String          @default("")
+  age               Int             @default(0)
+  height            Int             @default(0)
+  weight            Int             @default(0)
+  caloriesPerDay    Int             @default(0)
+  contraindications String          @default("")
+  wishes            String          @default("")
+  generatedFoods    GeneratedFood[]
+  posts             Post[]          @relation(name: "PostAuthor")
+  savedPosts        String[]
+  subscribers       String[]
+  subscriptions     String[]
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  author    User     @relation(name: "PostAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  content   String   @default("")
+  comments  Json[]
+  likes     String[]
+  savedBy   String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  showLikes Boolean  @default(true)
+
+  @@index([authorId])
+}
+
+model GeneratedFood {
+  id            String   @id @default(uuid())
+  generatedBy   User     @relation(fields: [generatedById], references: [id], onDelete: Cascade)
+  generatedById String
+  description   String   @default("")
+  createdAt     DateTime @default(now())
+
+  @@index([generatedById])
+}
+
+enum Role {
+  ADMIN
+  DOCTOR
+  GUEST
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}

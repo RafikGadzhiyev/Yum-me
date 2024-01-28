@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
@@ -12,36 +12,22 @@ import { Accordion } from "../UI/Accordion";
 import { ListWithPagination } from "./ListWithPagination";
 import { GenerateNewFoodModal } from "@/components/modals/GenerateNewFoodModal";
 import { DataNotFound } from "@/components/UI/DataNotFound";
-import { getGeneratedFoodList } from "@/api/generatedFood";
 import { useSelector } from "react-redux";
 import { RootStore } from "@/redux/store";
-import { Query, UserActiveSession } from "@/lib/appwrite";
 
 export const GeneratedFoodsTab: FC<ITabProps<GeneratedFood>> = ({
 	state,
 	isEditable,
 }) => {
-	const user = useSelector((store: RootStore) => store.userReducer.user);
-	const [generatedFoods, setGeneratedFoods] = useState<GeneratedFood[]>([]);
+	const userData = useSelector(
+		(store: RootStore) => store.userHealthDataReducer.userHealthData,
+	);
+
+	const [generatedFoods, setGeneratedFoods] = useState<GeneratedFood[]>(
+		userData?.generatedFoods,
+	);
 
 	const { i18n } = useTranslation();
-
-	const getGeneratedFoods = (user: UserActiveSession) => {
-		getGeneratedFoodList([Query.equal("generated_for", user.email)]).then(
-			(generatedFoodList) => {
-				// Tmp fix waiting updates from appwrite
-				setGeneratedFoods(generatedFoodList as any); // eslint-disable-line
-			},
-		);
-	};
-
-	useEffect(() => {
-		if (!user) {
-			return;
-		}
-
-		getGeneratedFoods(user);
-	}, []);
 
 	if (state === "loading") {
 		return <span>Loading. . .</span>;
@@ -70,9 +56,9 @@ export const GeneratedFoodsTab: FC<ITabProps<GeneratedFood>> = ({
 					<ListWithPagination>
 						{generatedFoods.map((foodData) => (
 							<Accordion
-								key={foodData.$id}
+								key={foodData.id}
 								label={format(
-									new Date(foodData.created_at),
+									new Date(foodData.createdAt),
 									"dd MMMM yyyy HH:mm:ss",
 									{
 										locale: LOCALE_BY_LANGUAGE[i18n.language],

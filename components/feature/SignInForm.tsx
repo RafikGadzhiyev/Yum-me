@@ -9,12 +9,12 @@ import { useLoading } from "@/hooks/useLoading";
 import { useShowToast } from "@/hooks/useShowToast";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useState } from "react";
-import { signIn } from "@/api/auth";
 import { ROUTES } from "@/consts/routes.const";
 import { SignInSchema, SignInSchemaType } from "@/consts/validations.const";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AppwriteException } from "appwrite";
 import { FormInputWithControlProps } from "@/components/UI/FormInputWithControl";
+import { signIn } from "@/api/NewAuth";
 
 export const SignInForm = () => {
 	const {
@@ -45,6 +45,7 @@ export const SignInForm = () => {
 		}
 
 		startLoading();
+
 		signIn(data.email, data.password)
 			.then(() => {
 				showToast({

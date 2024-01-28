@@ -2,7 +2,7 @@ import { SearchPageWrapper } from "@/components/pages/SearchPage";
 
 export default async function SearchPage() {
 	return (
-		<div>
+		<div className="h-full">
 			<SearchPageWrapper />
 		</div>
 	);
