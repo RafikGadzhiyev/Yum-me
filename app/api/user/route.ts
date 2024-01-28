@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { Prisma } from ".prisma/client";
-import UserWhereUniqueInput = Prisma.UserWhereUniqueInput;
 
 export const GET = async (req: NextRequest) => {
 	try {
@@ -38,7 +36,7 @@ export const GET = async (req: NextRequest) => {
 			};
 
 			const users = await prisma.user.findMany({
-				where: searchQuery as UserWhereUniqueInput,
+				where: searchQuery,
 				include: {
 					generatedFoods: true,
 					posts: true,
@@ -57,7 +55,8 @@ export const GET = async (req: NextRequest) => {
 		}
 
 		const user = await prisma.user.findUnique({
-			where: searchQuery as UserWhereUniqueInput,
+			// @ts-expect-error fox in the future
+			where: searchQuery,
 			include: {
 				generatedFoods: true,
 				posts: true,
