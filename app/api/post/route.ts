@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import type { Post } from "@prisma/client";
 
 export const GET = async (req: NextRequest) => {
 	try {
@@ -12,7 +11,7 @@ export const GET = async (req: NextRequest) => {
 			getType = "concrete_post";
 		}
 
-		let searchResult: null | Post | Post[] = null;
+		let searchResult = null;
 
 		const includeQuery = {
 			author: {
