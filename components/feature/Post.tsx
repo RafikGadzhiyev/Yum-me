@@ -11,6 +11,7 @@ interface IPostProps {
 	isNew?: boolean;
 	createNewPost?: () => void;
 	cancelNewPost?: () => void;
+	authorEmail: string;
 }
 
 // TODO: REFACTOR
@@ -22,10 +23,10 @@ export const Post: FC<Post & IPostProps> = ({
 	likes,
 	comments,
 	savedBy,
-	authorId,
 	role,
 	content,
 	showLikes,
+	authorEmail,
 	isNew = false,
 
 	createNewPost,
@@ -61,7 +62,7 @@ export const Post: FC<Post & IPostProps> = ({
 			className="rounded-md bg-base-300 p-4"
 		>
 			<PostHeader
-				author={authorId}
+				author={authorEmail}
 				isNew={isNew}
 				role={role}
 				created_at={createdAt}

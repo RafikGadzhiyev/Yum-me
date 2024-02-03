@@ -114,6 +114,9 @@ export const POST = async (req: NextRequest) => {
 
 export const PATCH = async (req: NextRequest) => {
 	try {
+		const CONSTANT_FIELDS = ["id"];
+		const POPULATED_FIELDS = ["author"];
+
 		const body = await req.json();
 
 		delete body.id;
@@ -129,10 +132,23 @@ export const PATCH = async (req: NextRequest) => {
 		// 	comments: body.fieldsToUpdate.comments,
 		// };
 		const searchQuery = body.searchQuery;
+		const updateQuery = body.fieldsToUpdate;
+
+		// ensuring that updateQuery does not contain fields from constant fields
+		for (const constantField of CONSTANT_FIELDS) {
+			delete updateQuery[constantField];
+		}
+
+		// for populated fields changing update query
+		for (const populatedField of POPULATED_FIELDS) {
+			updateQuery[populatedField] = {
+				connect: updateQuery[populatedField],
+			};
+		}
 
 		const updatedPost = await prisma.post.update({
 			where: searchQuery,
-			data: body.fieldsToUpdate,
+			data: updateQuery,
 			include: {
 				author: {
 					select: {

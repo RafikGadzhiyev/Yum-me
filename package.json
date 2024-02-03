@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
-		"build": "next build",
+		"build": "npx prisma generate & next build",
 		"start": "next start",
 		"lint": "next lint",
 		"format:check": "prettier --check --ignore-path .gitignore .",
@@ -19,7 +19,7 @@
 		"@headlessui/react": "^1.7.17",
 		"@headlessui/tailwindcss": "^0.2.0",
 		"@hookform/resolvers": "^3.3.2",
-		"@prisma/client": "^5.8.1",
+		"@prisma/client": "^5.9.1",
 		"@reduxjs/toolkit": "^1.9.7",
 		"@vercel/speed-insights": "^1.0.2",
 		"ai": "^2.2.25",

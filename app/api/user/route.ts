@@ -129,10 +129,26 @@ export const POST = async (req: NextRequest) => {
 
 export const PATCH = async (req: NextRequest) => {
 	try {
+		// list of fields that cannot be updated
+		const CONSTANT_FIELDS = ["id"];
+		const POPULATED_FIELDS = ["generatedFoods", "posts"];
+
 		const body = await req.json();
 
 		const updateQuery = body.fieldsToUpdate;
 		const searchQuery = body.searchQuery;
+
+		// ensuring that updateQuery does not contain fields from constant fields
+		for (const constantField of CONSTANT_FIELDS) {
+			delete updateQuery[constantField];
+		}
+
+		// for populated fields changing update query
+		for (const populatedField of POPULATED_FIELDS) {
+			updateQuery[populatedField] = {
+				connect: updateQuery[populatedField],
+			};
+		}
 
 		const user = await prisma.user.update({
 			where: searchQuery,

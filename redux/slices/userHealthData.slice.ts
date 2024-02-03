@@ -5,10 +5,12 @@ import { Document } from "@/lib/appwrite";
 
 interface IState {
 	userHealthData: Document | null;
+	bio: Document | null;
 }
 
 const initialState: IState = {
 	userHealthData: null,
+	bio: null,
 };
 
 const userHealthData = createSlice({
@@ -45,6 +47,18 @@ const userHealthData = createSlice({
 			}
 
 			state.userHealthData = action.payload;
+
+			state.bio = {
+				id: state.userHealthData.id,
+				email: state.userHealthData.email,
+				gender: state.userHealthData.gender,
+				age: state.userHealthData.age,
+				height: state.userHealthData.height,
+				weight: state.userHealthData.weight,
+				caloriesPerDay: state.userHealthData.caloriesPerDay,
+				contraindications: state.userHealthData.contraindications,
+				wishes: state.userHealthData.wishes,
+			};
 
 			return state;
 		},

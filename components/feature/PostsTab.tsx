@@ -101,7 +101,9 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 
 	useEffect(() => {
 		fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/post").then((postsResponse) => {
-			postsResponse.json().then(({ data: posts }) => setPosts(posts));
+			postsResponse.json().then(({ data: posts }) => {
+				setPosts(posts);
+			});
 		});
 	}, []);
 
@@ -111,6 +113,7 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 				{newPost ? (
 					<Post
 						{...newPost}
+						authorEmail={user?.email}
 						$userId={user?.id}
 						isNew={true}
 						updatePost={updateNewPostField}
@@ -131,6 +134,7 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 				{posts.map((data) => (
 					<Post
 						$userId={user?.id}
+						authorEmail={user?.email}
 						key={data.id}
 						updatePost={updateNewPostField}
 						{...data}
