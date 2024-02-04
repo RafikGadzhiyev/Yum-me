@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export const GET = async (req: NextRequest) => {
 	try {
@@ -131,8 +132,9 @@ export const POST = async (req: NextRequest) => {
 export const PATCH = async (req: NextRequest) => {
 	try {
 		// list of fields that cannot be updated
-		const CONSTANT_FIELDS = ["id"];
+		const CONSTANT_FIELDS = ["id", "posts"];
 		const POPULATED_FIELDS = ["generatedFoods", "posts"];
+		const JSON_FIELDS = ["comments"];
 
 		const body = await req.json();
 
@@ -146,6 +148,12 @@ export const PATCH = async (req: NextRequest) => {
 
 		// for populated fields changing update query
 		for (const populatedField of POPULATED_FIELDS) {
+			let updatedValue = updateQuery[populatedField];
+
+			if (JSON_FIELDS.includes(populatedField)) {
+				updatedValue = updatedValue as Prisma.JsonArray;
+			}
+
 			updateQuery[populatedField] = {
 				connect: updateQuery[populatedField],
 			};
