@@ -32,7 +32,7 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
 	const userData = useSelector(
-		(store: RootStore) => store.userHealthDataReducer.userHealthData,
+		(store: RootStore) => store.userHealthDataReducer.user,
 	);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 

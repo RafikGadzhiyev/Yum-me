@@ -20,7 +20,7 @@ export const GeneratedFoodsTab: FC<ITabProps<GeneratedFood>> = ({
 	isEditable,
 }) => {
 	const userData = useSelector(
-		(store: RootStore) => store.userHealthDataReducer.userHealthData,
+		(store: RootStore) => store.userHealthDataReducer.user,
 	);
 
 	const [generatedFoods, setGeneratedFoods] = useState<GeneratedFood[]>(

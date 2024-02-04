@@ -31,7 +31,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 }) => {
 	// const healthData = useUserHealthData(user?.email || "");
 	const healthData = useSelector(
-		(store: RootStore) => store.userHealthDataReducer.bio,
+		(store: RootStore) => store.userHealthDataReducer.healthData,
 	);
 
 	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);

@@ -4,9 +4,9 @@ import { FC, PropsWithChildren, useCallback, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AUTH_ROUTES, ROUTES } from "@/consts/routes.const";
 import { auth } from "@/lib/firabase";
-import { readUser } from "@/redux/slices/user.slice";
+import { readUserSession } from "@/redux/slices/userSession.slice";
 import { useDispatch } from "react-redux";
-import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
+import { readUserHealthData } from "@/redux/slices/user.slice";
 
 export const ProtectedLayout: FC<PropsWithChildren> = ({ children }) => {
 	const router = useRouter();
@@ -24,7 +24,7 @@ export const ProtectedLayout: FC<PropsWithChildren> = ({ children }) => {
 
 			if (user) {
 				// @ts-expect-error type mismatch
-				dispatch(readUser(user.toJSON()));
+				dispatch(readUserSession(user.toJSON()));
 
 				const userResponse = await fetch(
 					process.env.NEXT_PUBLIC_BASE_URL + `/api/user?email=${user.email}`,

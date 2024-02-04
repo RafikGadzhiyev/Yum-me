@@ -13,14 +13,14 @@ import { GenderRadioGroup } from "../UI/GenderRadioGroup";
 import { FormInput } from "../UI/FormInput";
 import { FormTextarea } from "../UI/FormTextarea";
 import { ContentModal } from "../modals/ContentModal";
-import { readUserHealthData } from "@/redux/slices/userHealthData.slice";
+import { readUserHealthData } from "@/redux/slices/user.slice";
 
 export const SettingsPageWrapper = () => {
 	const { t } = useTranslation();
 	const { startLoading, stopLoading, isLoading } = useLoading();
 
 	const cachedUserHealthConfig = useSelector(
-		(store: RootStore) => store.userHealthDataReducer.userHealthData,
+		(store: RootStore) => store.userHealthDataReducer.user,
 	);
 
 	const dispatch = useDispatch();

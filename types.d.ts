@@ -115,6 +115,11 @@ type GeneratedFoodRequestBody = {
 	description: string;
 };
 
+type AuthLiteError = {
+	code: string;
+	message: string;
+};
+
 type PostRequestBody = {
 	created_at: Date;
 	author: string;

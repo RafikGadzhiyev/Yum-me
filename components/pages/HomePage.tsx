@@ -11,7 +11,7 @@ import { NotConfiguredHealthData } from "@/components/UI/NotConfiguredHealthData
 
 export const HomePage = () => {
 	const userHealthData = useSelector(
-		(store: RootStore) => store.userHealthDataReducer.userHealthData,
+		(store: RootStore) => store.userHealthDataReducer.user,
 	);
 
 	const { responseStatus } = useFetch();

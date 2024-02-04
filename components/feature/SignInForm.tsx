@@ -12,7 +12,6 @@ import { useState } from "react";
 import { ROUTES } from "@/consts/routes.const";
 import { SignInSchema, SignInSchemaType } from "@/consts/validations.const";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AppwriteException } from "appwrite";
 import { FormInputWithControlProps } from "@/components/UI/FormInputWithControl";
 import { signIn } from "@/api/auth";
 
@@ -46,27 +45,30 @@ export const SignInForm = () => {
 
 		startLoading();
 
-		signIn(data.email, data.password)
-			.then(() => {
-				showToast({
-					title: "Success!",
-					description: "Redirecting",
-					status: "success",
-					duration: 1000,
-				});
+		const signInResult = await signIn(data.email, data.password);
 
-				router.push(ROUTES.HOME.path);
-			})
-			.catch((err: AppwriteException) => {
-				console.log(err);
+		stopLoading();
 
-				showToast({
-					title: err.name,
-					description: err.message,
-					status: "error",
-				});
-			})
-			.finally(stopLoading);
+		if ((signInResult as AuthLiteError).code) {
+			showToast({
+				title: (signInResult as AuthLiteError).code,
+				description: (signInResult as AuthLiteError).message,
+				status: "error",
+			});
+
+			return;
+		}
+
+		showToast({
+			title: "Success!",
+			description: "Redirecting",
+			status: "success",
+			duration: 1000,
+		});
+
+		router.push(ROUTES.HOME.path);
+
+		stopLoading();
 	};
 
 	return (

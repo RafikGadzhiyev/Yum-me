@@ -13,7 +13,7 @@ import { AnotherUserProfile } from "@/components/feature/AnotherUserProfile";
 export const ProfilePageWrapper = () => {
 	const searchParams = useSearchParams();
 	const userFromStore = useSelector(
-		(store: RootStore) => store.userHealthDataReducer.userHealthData,
+		(store: RootStore) => store.userHealthDataReducer.user,
 	);
 
 	const activeTab = +(searchParams.get("tab") as string) || 0;

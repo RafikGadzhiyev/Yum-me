@@ -11,9 +11,7 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [newPost, setNewPost] = useState<Post | null>(null);
 
-	const user = useSelector(
-		(store: RootStore) => store.userHealthDataReducer.userHealthData,
-	);
+	const user = useSelector((store: RootStore) => store.userHealthDataReducer.user);
 
 	const createNewPost = () => {
 		if (!user) {

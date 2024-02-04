@@ -19,21 +19,21 @@ export const signUp = async (email: string, password: string) => {
 		return {
 			code: (err as AuthError).code,
 			message: (err as AuthError).message,
-		};
+		} as AuthLiteError;
 	}
 };
 
-export const signIn = (email: string, password: string) => {
-	return signInWithEmailAndPassword(auth, email, password)
-		.then((userSession) => {
-			return userSession.user;
-		})
-		.catch((sessionError) => {
-			return {
-				code: sessionError.code,
-				message: sessionError.message,
-			};
-		});
+export const signIn = async (email: string, password: string) => {
+	try {
+		const authData = await signInWithEmailAndPassword(auth, email, password);
+
+		return authData.user;
+	} catch (err) {
+		return {
+			code: (err as AuthError).code,
+			message: "Invalid credentials",
+		} as AuthLiteError;
+	}
 };
 
 export const signOut = () => {
