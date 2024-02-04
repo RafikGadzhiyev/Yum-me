@@ -14,7 +14,7 @@ import { SignInSchema, SignInSchemaType } from "@/consts/validations.const";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AppwriteException } from "appwrite";
 import { FormInputWithControlProps } from "@/components/UI/FormInputWithControl";
-import { signIn } from "@/api/NewAuth";
+import { signIn } from "@/api/auth";
 
 export const SignInForm = () => {
 	const {

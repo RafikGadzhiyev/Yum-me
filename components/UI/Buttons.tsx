@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useLoading } from "@/hooks/useLoading";
 import { FC, useCallback, PropsWithChildren } from "react";
 import { FaDoorOpen } from "react-icons/fa";
-import { signOut } from "@/api/NewAuth";
+import { signOut } from "@/api/auth";
 import { AUTH_ROUTES } from "@/consts/routes.const";
 
 interface IButtonProps extends PropsWithChildren {

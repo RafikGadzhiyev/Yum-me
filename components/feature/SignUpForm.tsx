@@ -22,7 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ROUTES } from "@/consts/routes.const";
 import { SignUpSchema, SignUpSchemaType } from "@/consts/validations.const";
 import { FormInputWithControlProps } from "@/components/UI/FormInputWithControl";
-import { signUp } from "@/api/NewAuth";
+import { signUp } from "@/api/auth";
 
 const EYE_ICON_SIZE = 20;
 

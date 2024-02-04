@@ -1,69 +1,43 @@
-import { account, databases, ID } from "@/lib/appwrite";
-import { AppwriteException } from "appwrite";
-import { handleException } from "@/utils/clientHandlers.util";
-import { Roles } from "@/enums/roles.enum";
+import {
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	signOut as firebaseSignOut,
+} from "firebase/auth";
+import { auth } from "@/lib/firabase";
+import { AuthError } from "@firebase/auth";
 
 export const signUp = async (email: string, password: string) => {
-	const signUpResult: RequestResponseWithSuccess<
-		Awaited<ReturnType<typeof signIn>> | null,
-		RequestError | null
-	> = {
-		success: false,
-		data: null,
-		error: null,
-	};
-
 	try {
-		await account.create(ID.unique(), email, password);
-
-		signUpResult.data = await signIn(email, password, true);
-		signUpResult.success = true;
-	} catch (err: unknown) {
-		signUpResult.error = handleException(
-			(err as AppwriteException).message,
-			"Sign up error",
+		const userSignUpResult = await createUserWithEmailAndPassword(
+			auth,
+			email,
+			password,
 		);
-		signUpResult.success = false;
-	}
 
-	return signUpResult;
-};
-
-export const signIn = async (
-	email: string,
-	password: string,
-	afterSignUp: boolean = false,
-) => {
-	try {
-		await account.createEmailSession(email, password);
-
-		if (afterSignUp) {
-			// creating new record in database
-			await databases.createDocument(
-				process.env.NEXT_PUBLIC_DATABASE_ID!,
-				process.env.NEXT_PUBLIC_USER_COLLECTION_ID!,
-				ID.unique(),
-				{
-					email,
-					role: Roles.USER,
-				},
-			);
-		}
-
-		return account.get();
-	} catch (err) {
-		console.error((err as AppwriteException).message);
-
-		throw err;
+		return userSignUpResult.user;
+	} catch (err: unknown) {
+		return {
+			code: (err as AuthError).code,
+			message: (err as AuthError).message,
+		};
 	}
 };
 
-export const signOut = async () => {
-	await account.deleteSession("current");
-
-	return null;
+export const signIn = (email: string, password: string) => {
+	return signInWithEmailAndPassword(auth, email, password)
+		.then((userSession) => {
+			return userSession.user;
+		})
+		.catch((sessionError) => {
+			return {
+				code: sessionError.code,
+				message: sessionError.message,
+			};
+		});
 };
 
-export const getSession = async () => {
-	return await account.get();
+export const signOut = () => {
+	return firebaseSignOut(auth)
+		.then(() => true)
+		.catch(() => false);
 };
