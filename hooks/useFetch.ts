@@ -33,16 +33,25 @@ export const useFetch = <T>() => {
 			url: string,
 			body: null | Record<string, T> = null,
 			headers: null | Record<string, string> = null,
+			options: Record<string, unknown> = {},
 		) {
-			const requestController = abortPreviousRequestAndSaveNew(url);
+			const { withoutLoading, cancelable } = options;
 
-			startLoading();
+			if (!withoutLoading) {
+				startLoading();
+			}
+
 			setResponseStatus("loading");
 
 			const request: RequestInit = {
 				method,
-				signal: requestController.signal,
 			};
+
+			if (cancelable) {
+				const requestController = abortPreviousRequestAndSaveNew(url);
+
+				request.signal = requestController.signal;
+			}
 
 			if (headers) {
 				request.headers = headers;

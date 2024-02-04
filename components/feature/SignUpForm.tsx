@@ -11,14 +11,13 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLoading } from "@/hooks/useLoading";
 import { useShowToast } from "@/hooks/useShowToast";
 import { useRouter } from "next/navigation";
+import { useFetch } from "@/hooks/useFetch";
 
 import { PASSWORD_RESTRICTION } from "@/consts/auth.const";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import { signUp } from "@/api/auth";
 import { ROUTES } from "@/consts/routes.const";
 import { SignUpSchema, SignUpSchemaType } from "@/consts/validations.const";
 import { FormInputWithControlProps } from "@/components/UI/FormInputWithControl";
@@ -32,23 +31,18 @@ export const SignUpForm = () => {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<SignUpSchemaType>({ resolver: zodResolver(SignUpSchema) });
+	const { isLoading, sendRequest } = useFetch();
 	const { t } = useTranslation();
 	const { show: showToast } = useShowToast();
-	const { isLoading, startLoading, stopLoading } = useLoading();
 	const router = useRouter();
 
 	const [isPasswordShown, setIsPasswordShown] = useState(false);
 
 	const signUpHandler: SubmitHandler<SignUpSchemaType> = async (data) => {
-		startLoading();
-
 		signUp(data.email, data.password)
-			.then(async (user) => {
-				console.log(user);
-
-				await fetch(process.env.NEXT_PUBLIC_BASE_URL! + "/api/user", {
-					method: "POST",
-					body: JSON.stringify(data),
+			.then(async () => {
+				await sendRequest("POST", "/api/user", data, {
+					"Content-Type": "application/json",
 				});
 
 				showToast({
@@ -66,8 +60,7 @@ export const SignUpForm = () => {
 					status: "error",
 					description: err.message,
 				});
-			})
-			.finally(stopLoading);
+			});
 	};
 
 	return (
@@ -99,7 +92,7 @@ export const SignUpForm = () => {
 						<Button
 							padding={0}
 							onClick={() =>
-								setIsPasswordShown((prevIsPasswordShowm) => !prevIsPasswordShowm)
+								setIsPasswordShown((prevIsPasswordShown) => !prevIsPasswordShown)
 							}
 							tabIndex={-1}
 						>
@@ -125,7 +118,7 @@ export const SignUpForm = () => {
 						<Button
 							padding={0}
 							onClick={() =>
-								setIsPasswordShown((prevIsPasswordShowm) => !prevIsPasswordShowm)
+								setIsPasswordShown((prevIsPasswordShown) => !prevIsPasswordShown)
 							}
 							tabIndex={-1}
 						>

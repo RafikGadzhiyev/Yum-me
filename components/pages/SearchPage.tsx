@@ -2,7 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { useLoading } from "@/hooks/useLoading";
+import { useFetch } from "@/hooks/useFetch";
 import { Loading } from "@/components/UI/Loading";
 import { SearchedUser } from "@/components/feature/SearchedUser";
 import { Models } from "appwrite";
@@ -15,7 +15,7 @@ export const SearchPageWrapper = () => {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 
-	const { startLoading, stopLoading, isLoading } = useLoading();
+	const { isLoading, sendRequest } = useFetch();
 	const { t } = useTranslation();
 	const [searchResults, setSearchResults] = useState<null | Array<Models.Document>>(
 		null,
@@ -34,7 +34,6 @@ export const SearchPageWrapper = () => {
 	};
 
 	const search = async (query: string) => {
-		startLoading();
 		const mutableSearchParams = new URLSearchParams(searchParams.toString());
 
 		mutableSearchParams.set("query", query);
@@ -42,13 +41,11 @@ export const SearchPageWrapper = () => {
 
 		router.push(pathname + "?" + mutableSearchParams.toString());
 
-		const queryResponse = await fetch(
-			process.env.NEXT_PUBLIC_BASE_URL + `/api/user?query=${query}&searchBy=email`, // TODO: give opportunity to choose search field
+		const queryResult = await sendRequest(
+			"GET",
+			`/api/user?query=${query}&searchBy=email`, // TODO: give opportunity to choose search field
 		);
-		const { data: queryResult } = await queryResponse.json();
-
 		setSearchResults(queryResult);
-		stopLoading();
 	};
 
 	useEffect(() => {

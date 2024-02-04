@@ -36,7 +36,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 
 	const AIResponseContainerRef = useRef<HTMLDivElement | null>(null);
 
-	const { isLoading, sendStreamRequest } = useFetch();
+	const { isLoading, sendStreamRequest, sendRequest } = useFetch();
 	const { data, isReading, readData } = useStreamResponse();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -67,15 +67,9 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 			description: data,
 		};
 
-		const createGeneratedFoodResponse = await fetch(
-			process.env.NEXT_PUBLIC_BASE_URL + "/api/generated_food",
-			{
-				method: "POST",
-				body: JSON.stringify(request),
-			},
-		);
-
-		const { data: generatedFood } = await createGeneratedFoodResponse.json();
+		const generatedFood = await sendRequest("POST", "/api/generated_food", request, {
+			"Content-Type": "application/json",
+		});
 
 		updateGeneratedFoodList(generatedFood);
 		onClose();

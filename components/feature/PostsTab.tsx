@@ -2,12 +2,12 @@ import { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootStore } from "@/redux/store";
 import { Post } from "@/components/feature/Post";
-import { useLoading } from "@/hooks/useLoading";
 import { Loading } from "@/components/UI/Loading";
 import { getNewPost, updateNewPost, updatePostInPostList } from "@/utils/post.utils";
+import { useFetch } from "@/hooks/useFetch";
 
 export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
-	const { startLoading, stopLoading, isLoading } = useLoading();
+	const { isLoading, sendRequest } = useFetch();
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [newPost, setNewPost] = useState<Post | null>(null);
 
@@ -51,28 +51,22 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 
 	const createNewPostRecord = async () => {
 		if (!newPost || !user) return;
-		startLoading();
 
-		const newPostResponse = await fetch(
-			process.env.NEXT_PUBLIC_BASE_URL + "/api/post",
+		const newPostResponse = await sendRequest(
+			"POST",
+			"/api/post",
 			{
-				method: "POST",
-				body: JSON.stringify({
-					authorId: user.id,
-					showLikes: newPost.showLikes, // TODO: fix typo
-					content: newPost.content,
-				}),
+				authorId: user.id,
+				showLikes: newPost.showLikes,
+				content: newPost.content,
+			},
+			{
+				"Content-Type": "application/json",
 			},
 		);
 
-		const { data } = await newPostResponse.json();
-
-		console.log(data);
-
-		setPosts((prevPosts) => [...prevPosts, data]);
+		setPosts((prevPosts) => [...prevPosts, newPostResponse]);
 		setNewPost(null);
-
-		stopLoading();
 	};
 
 	const updatePostRecord = async (post: Post) => {
@@ -80,30 +74,26 @@ export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
 			id: post.id,
 		};
 
-		const updatePostResponse = await fetch(
-			process.env.NEXT_PUBLIC_BASE_URL + "/api/post",
+		await sendRequest(
+			"PATCH",
+			"/api/post",
 			{
-				method: "PATCH",
-				body: JSON.stringify({
-					searchQuery,
-					fieldsToUpdate: post,
-				}),
+				searchQuery,
+				fieldsToUpdate: post,
+			},
+			{
+				"Content-Type": "application/json",
+			},
+			{
+				withoutLoading: true,
+				cancelable: false,
 			},
 		);
-
-		const updatedPost = await updatePostResponse.json();
-
-		console.log(updatedPost);
-		// await updatePost(post.id, constructPostRecord(post));
 	};
 
 	useEffect(() => {
-		fetch(process.env.NEXT_PUBLIC_BASE_URL + "/api/post").then((postsResponse) => {
-			postsResponse.json().then(({ data: posts }) => {
-				setPosts(posts);
-			});
-		});
-	}, []);
+		sendRequest("GET", "/api/post").then((posts) => setPosts(posts));
+	}, [sendRequest]);
 
 	return (
 		<>

@@ -3,7 +3,7 @@
 import { HTMLInputTypeAttribute, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoading } from "@/hooks/useLoading";
+import { useFetch } from "@/hooks/useFetch";
 
 import { RootStore } from "@/redux/store";
 
@@ -17,7 +17,7 @@ import { readUserHealthData } from "@/redux/slices/user.slice";
 
 export const SettingsPageWrapper = () => {
 	const { t } = useTranslation();
-	const { startLoading, stopLoading, isLoading } = useLoading();
+	const { isLoading, sendRequest } = useFetch();
 
 	const cachedUserHealthConfig = useSelector(
 		(store: RootStore) => store.userHealthDataReducer.user,
@@ -58,28 +58,23 @@ export const SettingsPageWrapper = () => {
 	const updateConfigInDatabase = async () => {
 		if (!healthConfig) return;
 
-		startLoading();
-
 		const searchQuery = {
 			email: healthConfig.email,
 		};
 
-		const updateResponse = await fetch(
-			process.env.NEXT_PUBLIC_BASE_URL + "/api/user",
+		const user = await sendRequest(
+			"PATCH",
+			"/api/user",
 			{
-				method: "PATCH",
-				body: JSON.stringify({
-					searchQuery: searchQuery,
-					fieldsToUpdate: healthConfig,
-				}),
+				searchQuery,
+				fieldsToUpdate: healthConfig,
+			},
+			{
+				"Content-Type": "application/json",
 			},
 		);
 
-		const { data } = await updateResponse.json();
-
-		dispatch(readUserHealthData(data));
-
-		stopLoading();
+		dispatch(readUserHealthData(user));
 	};
 
 	useEffect(() => {

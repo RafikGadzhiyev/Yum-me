@@ -7,8 +7,11 @@ import { auth } from "@/lib/firabase";
 import { readUserSession } from "@/redux/slices/userSession.slice";
 import { useDispatch } from "react-redux";
 import { readUserHealthData } from "@/redux/slices/user.slice";
+import { useFetch } from "@/hooks/useFetch";
+import { Loading } from "@/components/UI/Loading";
 
 export const ProtectedLayout: FC<PropsWithChildren> = ({ children }) => {
+	const { isLoading, sendRequest } = useFetch();
 	const router = useRouter();
 	const pathname = usePathname();
 	const dispatch = useDispatch();
@@ -26,12 +29,9 @@ export const ProtectedLayout: FC<PropsWithChildren> = ({ children }) => {
 				// @ts-expect-error type mismatch
 				dispatch(readUserSession(user.toJSON()));
 
-				const userResponse = await fetch(
-					process.env.NEXT_PUBLIC_BASE_URL + `/api/user?email=${user.email}`,
-				);
-				const userRecord = await userResponse.json();
+				const userRecord = await sendRequest("GET", `/api/user?email=${user.email}`);
 
-				dispatch(readUserHealthData(userRecord.data));
+				dispatch(readUserHealthData(userRecord));
 
 				if (authRoutesPathList.includes(pathname)) {
 					router.push(ROUTES.HOME.path);
@@ -42,11 +42,16 @@ export const ProtectedLayout: FC<PropsWithChildren> = ({ children }) => {
 				router.push(AUTH_ROUTES.SIGN_IN.path);
 			}
 		}
-	}, [dispatch, pathname, router]);
+	}, [sendRequest, dispatch, pathname, router]);
 
 	useEffect(() => {
 		getUser();
 	}, [getUser]);
 
-	return <>{children}</>;
+	return (
+		<>
+			{children}
+			{isLoading && <Loading />}
+		</>
+	);
 };
