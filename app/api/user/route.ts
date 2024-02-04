@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
+import { handleRequest } from "@/utils/handlers.util";
 
 export const GET = async (req: NextRequest) => {
 	try {
@@ -14,16 +15,16 @@ export const GET = async (req: NextRequest) => {
 		const searchQuery: Record<string, unknown> = {};
 
 		if (!email && !id && !query && !searchBy) {
-			return NextResponse.json(
+			return handleRequest(
+				null,
 				{
-					message: "Bad request",
-					data: null,
+					title: "Bad request",
+					message: "search parameters did not provide",
 				},
-				{
-					status: 404,
-				},
+				400,
 			);
 		}
+
 		if (email) {
 			searchQuery.email = email;
 		}
@@ -45,15 +46,7 @@ export const GET = async (req: NextRequest) => {
 				},
 			});
 
-			return NextResponse.json(
-				{
-					message: "Success",
-					data: users,
-				},
-				{
-					status: 200,
-				},
-			);
+			return handleRequest(users, null, 200);
 		}
 
 		const user = await prisma.user.findUnique({
@@ -65,29 +58,27 @@ export const GET = async (req: NextRequest) => {
 		});
 
 		if (!user) {
-			return NextResponse.json(
+			return handleRequest(
+				null,
 				{
+					title: "Not found",
 					message: "User does not exist",
-					data: null,
 				},
-				{
-					status: 404,
-				},
+				404,
 			);
 		}
 
-		return NextResponse.json({
-			message: "Success",
-			data: user,
-		});
+		return handleRequest(user, null, 200);
 	} catch (err) {
-		return NextResponse.json(
+		console.error(err);
+
+		return handleRequest(
+			null,
 			{
-				message: (err as Error).message,
+				title: "Server Error",
+				message: "Something went wrong",
 			},
-			{
-				status: 500,
-			},
+			500,
 		);
 	}
 };
@@ -103,28 +94,27 @@ export const POST = async (req: NextRequest) => {
 		});
 
 		if (!user) {
-			return NextResponse.json(
+			return handleRequest(
+				null,
 				{
-					message: "Bad request",
+					title: "Bad request",
+					message: "Cannot create new user",
 				},
-				{
-					status: 404,
-				},
+				400,
 			);
 		}
 
-		return NextResponse.json({
-			data: user,
-			message: "Success",
-		});
+		return handleRequest(user, null, 200);
 	} catch (err) {
-		return NextResponse.json(
+		console.error(err);
+
+		return handleRequest(
+			null,
 			{
-				message: (err as Error).message,
+				title: "Server Error",
+				message: "Something went wrong",
 			},
-			{
-				status: 500,
-			},
+			500,
 		);
 	}
 };
@@ -164,18 +154,17 @@ export const PATCH = async (req: NextRequest) => {
 			data: updateQuery,
 		});
 
-		return NextResponse.json({
-			message: "Success",
-			data: user,
-		});
+		return handleRequest(user, null, 200);
 	} catch (err) {
-		return NextResponse.json(
+		console.log(err);
+
+		return handleRequest(
+			null,
 			{
-				message: (err as Error).message,
+				title: "Server Error",
+				message: "Something went wrong",
 			},
-			{
-				status: 500,
-			},
+			500,
 		);
 	}
 };

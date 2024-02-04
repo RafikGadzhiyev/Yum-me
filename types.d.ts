@@ -86,7 +86,7 @@ type StringTransformTypes = "capitalize" | "uppercase" | "lowercase";
 type RequestResponse<T, U> = {
 	data: T;
 	error: U;
-	status: ResponseNumericStatuses;
+	status: number;
 };
 
 // TODO: REFACTOR
@@ -128,17 +128,3 @@ type PostRequestBody = {
 	coverage: string;
 	content: string;
 };
-
-// TODO: Change
-type ResponseNumericStatuses =
-	| 200
-	| 301
-	| 302
-	| 304
-	| 400
-	| 401
-	| 403
-	| 404
-	| 500
-	| 501
-	| 502;

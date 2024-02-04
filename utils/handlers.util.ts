@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export const handleRequest = <T = null, U = RequestError>(
 	data: T,
 	error: U,
-	status: ResponseNumericStatuses,
+	status: number,
 ): NextResponse<RequestResponse<T, U>> => {
 	return NextResponse.json(
 		{

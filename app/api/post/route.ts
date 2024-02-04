@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 import prisma from "@/lib/prisma";
+import { handleRequest } from "@/utils/handlers.util";
 
 export const GET = async (req: NextRequest) => {
 	try {
@@ -42,29 +43,27 @@ export const GET = async (req: NextRequest) => {
 
 				break;
 			default:
-				return NextResponse.json(
+				return handleRequest(
+					null,
 					{
-						message: "Bad request!",
+						title: "Bad request",
+						message: "Invalid getType",
 					},
-					{
-						status: 403,
-					},
+					400,
 				);
 		}
 
-		return NextResponse.json({
-			message: "Success",
-			data: searchResult,
-		});
+		return handleRequest(searchResult, null, 200);
 	} catch (err) {
-		return NextResponse.json(
+		console.error(err);
+
+		return handleRequest(
+			null,
 			{
-				code: "Server Error!",
-				message: (err as Error).message,
+				title: "Server Error!",
+				message: "Something went wrong",
 			},
-			{
-				status: 500,
-			},
+			500,
 		);
 	}
 };
@@ -76,13 +75,13 @@ export const POST = async (req: NextRequest) => {
 		const { authorId, content, showLikes } = body;
 
 		if (!authorId) {
-			return NextResponse.json(
+			return handleRequest(
+				null,
 				{
-					message: "Bad request!",
+					title: "Bad request",
+					message: "Invalid authorId",
 				},
-				{
-					status: 403,
-				},
+				400,
 			);
 		}
 
@@ -98,18 +97,17 @@ export const POST = async (req: NextRequest) => {
 			},
 		});
 
-		return NextResponse.json({
-			message: "Success!",
-			data: newPost,
-		});
+		return handleRequest(newPost, null, 200);
 	} catch (err) {
-		return NextResponse.json(
+		console.log(err);
+
+		return handleRequest(
+			null,
 			{
-				message: "Server error!",
+				title: "Server error!",
+				message: "Something went wrong",
 			},
-			{
-				status: 500,
-			},
+			500,
 		);
 	}
 };
@@ -125,14 +123,6 @@ export const PATCH = async (req: NextRequest) => {
 		delete body.fieldsToUpdate.authorId;
 		delete body.fieldsToUpdate.author;
 
-		// TODO: Fix
-		// const updateQuery = {
-		// 	content: body.fieldsToUpdate.content,
-		// 	likes: body.fieldsToUpdate.likes,
-		// 	savedBy: body.fieldsToUpdate.savedBy,
-		// 	showLikes: body.fieldsToUpdate.showLikes,
-		// 	comments: body.fieldsToUpdate.comments,
-		// };
 		const searchQuery = body.searchQuery;
 		const updateQuery = body.fieldsToUpdate;
 
@@ -162,19 +152,17 @@ export const PATCH = async (req: NextRequest) => {
 			},
 		});
 
-		return NextResponse.json({
-			message: "Success",
-			data: updatedPost,
-		});
+		return handleRequest(updatedPost, null, 200);
 	} catch (err) {
-		return NextResponse.json(
+		console.error(err);
+
+		return handleRequest(
+			null,
 			{
 				title: "Server error!",
-				message: (err as Error).message,
+				message: "Something went wrong",
 			},
-			{
-				status: 500,
-			},
+			500,
 		);
 	}
 };
