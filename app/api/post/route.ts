@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+import prisma from "@/lib/prisma";
+
 export const GET = async (req: NextRequest) => {
 	try {
 		const searchParams = req.nextUrl.searchParams;
