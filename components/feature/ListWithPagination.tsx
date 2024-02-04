@@ -5,7 +5,7 @@ import { FC, PropsWithChildren, ReactNode, useCallback, useState } from "react";
 import { Pagination } from "@/components/UI/Pagination";
 import { ItemPerPageSelect } from "@/components/UI/ItemPerPageSelect";
 
-import { ITEMS_PER_PAGE } from "@/consts/itemsPerPageSelect.const";
+import { ITEMS_PER_PAGE } from "@/consts/pagination.const";
 
 export const ListWithPagination: FC<PropsWithChildren> = ({ children }) => {
 	const [itemsPerPage, setItemsPerPage] = useState(ITEMS_PER_PAGE[0]);
@@ -13,8 +13,8 @@ export const ListWithPagination: FC<PropsWithChildren> = ({ children }) => {
 	const [pageElems, setPageElems] = useState(
 		(children as ReactNode[]).slice(
 			itemsPerPage.value * (page - 1),
-			itemsPerPage.value * page
-		)
+			itemsPerPage.value * page,
+		),
 	);
 
 	const pageCount = Math.ceil((children as ReactNode[]).length / itemsPerPage.value);
@@ -26,7 +26,7 @@ export const ListWithPagination: FC<PropsWithChildren> = ({ children }) => {
 
 			setPageElems((children as ReactNode[]).slice(0, newItemsPerPage.value));
 		},
-		[children]
+		[children],
 	);
 
 	const updateCurrentPage = useCallback(
@@ -36,11 +36,11 @@ export const ListWithPagination: FC<PropsWithChildren> = ({ children }) => {
 			setPageElems(
 				(children as ReactNode[]).slice(
 					itemsPerPage.value * (newPage - 1),
-					itemsPerPage.value * newPage
-				)
+					itemsPerPage.value * newPage,
+				),
 			);
 		},
-		[children, itemsPerPage.value]
+		[children, itemsPerPage.value],
 	);
 
 	return (

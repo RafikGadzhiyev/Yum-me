@@ -4,7 +4,7 @@ import { $Enums } from "@prisma/client";
 import { GeneratedFoodsTab } from "@/components/feature/GeneratedFoodsTab";
 import { PostsTab } from "@/components/feature/PostsTab";
 import { LikesTab } from "@/components/feature/LikesTab";
-import { FC, JSX } from "react";
+import { FC } from "react";
 
 export const HOME_PAGE_TABS = [
 	{
@@ -22,7 +22,6 @@ export const PROFILE_PAGE_TABS: {
 	Component: FC<any>; // eslint-disable-line
 	roles?: $Enums.Role[];
 }[] = [
-	// This tab is only accessible for doctors and admins
 	{
 		key: "POSTS",
 		Component: PostsTab,

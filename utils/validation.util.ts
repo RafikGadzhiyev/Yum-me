@@ -1,5 +1,4 @@
 import { Document } from "@/lib/appwrite";
-
 export const isEmpty = (str: string) => str.length === 0;
 
 export const isConfigured = (userData: Document | null) => {

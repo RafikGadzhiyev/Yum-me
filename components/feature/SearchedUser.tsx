@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Roles } from "@/enums/roles.enum";
+import { $Enums } from "@prisma/client";
 import Link from "next/link";
 import { ROUTES } from "@/consts/routes.const";
 
@@ -8,7 +8,7 @@ interface ISearchedUserProps {
 	name: string;
 	email: string;
 	age: number;
-	role: Roles;
+	role: $Enums.Role;
 }
 
 export const SearchedUser: FC<ISearchedUserProps> = ({

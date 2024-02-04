@@ -30,32 +30,6 @@ export const updateNewPost = function <T>(
 	};
 };
 
-export const constructPostRecord = (updatedPost: Post, isNew: boolean = false) => {
-	const SKIP_KEYS = ["$id"];
-
-	let constructedPostRecord: Partial<PostRequestBody> = {};
-
-	for (const [field, value] of Object.entries(updatedPost)) {
-		let processedValue = value;
-
-		if (isNew && SKIP_KEYS.includes(field)) {
-			continue;
-		}
-
-		if (field === "coverage") {
-			processedValue = JSON.stringify(value);
-		}
-
-		// FIXME: should be solution
-		constructedPostRecord = {
-			...constructedPostRecord,
-			[field]: processedValue,
-		};
-	}
-
-	return constructedPostRecord;
-};
-
 export const updatePostInPostList = function <T>(
 	postList: Post[],
 	postId: string,
@@ -94,27 +68,6 @@ export const updatePostSaved = (saved: string[], userId: string) => {
 	}
 
 	return Array.from(uniqueSaved);
-};
-
-export const updatePostComments = (
-	comments: PostComment[],
-	author: string,
-	email: string,
-	newCommentContent: string,
-) => {
-	const newComment: PostComment = {
-		id: uuid4(),
-		content: newCommentContent,
-		replies: [],
-		createdAt: new Date(),
-
-		author,
-		email,
-	};
-
-	comments.push(newComment);
-
-	return newComment;
 };
 
 export const getUserFullName = (user: User) => user.name + " " + user.last_name;

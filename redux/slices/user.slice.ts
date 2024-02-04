@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { UserActiveSession } from "@/lib/appwrite";
 
 interface IState {
-	user: UserActiveSession | null;
+	user: User | null;
 }
 
 const initialState: IState = {
@@ -19,7 +18,7 @@ const userSlice = createSlice({
 		removeUser() {
 			//  do some stuff
 		},
-		readUser(state, action: PayloadAction<UserActiveSession | null>) {
+		readUser(state, action: PayloadAction<User | null>) {
 			//  do some stuff
 			state.user = action.payload;
 
