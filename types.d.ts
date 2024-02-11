@@ -1,4 +1,5 @@
 // Supabase types
+
 type User = {
 	id: string;
 	created_at: number;
@@ -94,10 +95,22 @@ type RequestResponseWithSuccess<T, U> = Omit<RequestResponse<T, U>, "status"> & 
 	success: boolean;
 };
 
-interface ITabProps<T> {
+interface ITabProps {
 	state: ResponseStatus;
 	isEditable: boolean;
 }
+
+type TabContext = {
+	tabs: Tab[];
+	currentTabKey?: string;
+	onChange: (tab: string) => void;
+};
+
+type Tab = {
+	key: string;
+	Component: FC<any>; // eslint-disable-line
+	roles?: $Enums.Role[];
+};
 
 type useFetchResponse<T, U> = {
 	isLoading: boolean;

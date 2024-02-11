@@ -7,7 +7,6 @@ import { useFetch } from "@/hooks/useFetch";
 
 import { RootStore } from "@/redux/store";
 
-import { Button, Wrap } from "@chakra-ui/react";
 import { Loading } from "../UI/Loading";
 import { GenderRadioGroup } from "../UI/GenderRadioGroup";
 import { FormInput } from "../UI/FormInput";
@@ -97,7 +96,7 @@ export const SettingsPageWrapper = () => {
 					initialGender={healthConfig?.gender}
 					updateGender={(gender: string) => updateConfig("gender", gender, "text")}
 				/>
-				<Wrap mb={4}>
+				<div className="my-4 flex gap-3">
 					<FormInput
 						initialValue={healthConfig?.weight}
 						field="weight"
@@ -115,12 +114,9 @@ export const SettingsPageWrapper = () => {
 						type="number"
 						updateValue={updateConfig}
 					/>
-				</Wrap>
+				</div>
 
-				<Wrap
-					direction="column"
-					mb={4}
-				>
+				<div className="my-4 flex gap-3">
 					<FormInput
 						initialValue={healthConfig?.age}
 						field="age"
@@ -138,9 +134,9 @@ export const SettingsPageWrapper = () => {
 						type="number"
 						updateValue={updateConfig}
 					/>
-				</Wrap>
+				</div>
 
-				<Wrap direction="column">
+				<div className="flex flex-col">
 					<FormTextarea
 						initialValue={healthConfig?.contraindications}
 						labelValueKey="CONTRAINDICATIONS"
@@ -156,25 +152,23 @@ export const SettingsPageWrapper = () => {
 						placeholder="Your wishes"
 						updateValue={updateConfig}
 					/>
-				</Wrap>
+				</div>
 
-				<Wrap my={3}>
-					<Button
-						variant="ghost"
-						colorScheme="green"
+				<div className="my-3 flex items-center gap-3">
+					<button
+						className="btn btn-success"
 						onClick={updateConfigInDatabase}
 					>
 						{t("SAVE")}
-					</Button>
+					</button>
 
-					<Button
-						variant="ghost"
-						colorScheme="red"
+					<button
+						className="btn btn-error"
 						onClick={resetConfig}
 					>
 						{t("RESET")}
-					</Button>
-				</Wrap>
+					</button>
+				</div>
 			</div>
 
 			{isLoading && <Loading />}

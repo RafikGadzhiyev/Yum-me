@@ -6,7 +6,7 @@ import { Loading } from "@/components/UI/Loading";
 import { getNewPost, updateNewPost, updatePostInPostList } from "@/utils/post.utils";
 import { useFetch } from "@/hooks/useFetch";
 
-export const PostsTab: FC<ITabProps<Post>> = ({ isEditable }) => {
+export const PostsTab: FC<ITabProps> = ({ isEditable }) => {
 	const { isLoading, sendRequest } = useFetch();
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [newPost, setNewPost] = useState<Post | null>(null);

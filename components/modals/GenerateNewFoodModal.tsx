@@ -6,18 +6,6 @@ import { RootStore } from "@/redux/store";
 import { useFetch } from "@/hooks/useFetch";
 import { useStreamResponse } from "@/hooks/useStreamResponse";
 
-import {
-	Button,
-	Modal,
-	ModalBody,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	Card,
-	Collapse,
-	useDisclosure,
-} from "@chakra-ui/react";
 import { Loading } from "../UI/Loading";
 
 import { isConfigured } from "@/utils/validation.util";
@@ -29,7 +17,7 @@ interface IGenerateNewFoodButtonProps {
 export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	updateGeneratedFoodList,
 }) => {
-	// const healthData = useUserHealthData(user?.email || "");
+	const modalStateRef = useRef<HTMLInputElement | null>(null);
 	const healthData = useSelector(
 		(store: RootStore) => store.userHealthDataReducer.healthData,
 	);
@@ -38,7 +26,6 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 
 	const { isLoading, sendStreamRequest, sendRequest } = useFetch();
 	const { data, isReading, readData } = useStreamResponse();
-	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const generateNewAIResponse = async () => {
 		if (!healthData) {
@@ -72,7 +59,12 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 		});
 
 		updateGeneratedFoodList(generatedFood);
-		onClose();
+
+		if (!modalStateRef.current) {
+			return;
+		}
+
+		modalStateRef.current.checked = false;
 	};
 
 	useEffect(() => {
@@ -84,64 +76,63 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 
 	return (
 		<>
-			<button
-				className="btn btn-outline mb-5	"
-				onClick={onOpen}
+			<label
+				className="btn btn-outline mb-5"
+				htmlFor="generate_modal"
 			>
 				Generate
-			</button>
-			<Modal
-				isOpen={isOpen}
-				onClose={onClose}
-				isCentered
-			>
-				<ModalOverlay />
-				<ModalContent className="mt-5">
-					{isLoading && <Loading />}
+			</label>
 
-					<ModalHeader>Generation by user health data</ModalHeader>
-					<ModalBody>
-						<pre className="whitespace-pre-wrap">
-							{JSON.stringify(healthData, null, 2)}
-						</pre>
-						<Collapse
-							in={!!data}
-							animateOpacity
+			<input
+				ref={modalStateRef}
+				type="checkbox"
+				id="generate_modal"
+				className="modal-toggle"
+			/>
+
+			<div
+				className="modal"
+				role="dialog"
+			>
+				<div className="modal-box">
+					{isLoading && <Loading />}
+					<h3 className="text-lg font-bold">Generation by user health data</h3>
+					<pre className="mt-3 whitespace-pre-wrap">
+						{JSON.stringify(healthData, null, 2)}
+					</pre>
+					{/*TODO: Add collapsing*/}
+					{/*FIXME:  issue with scrolling*/}
+					<div
+						ref={AIResponseContainerRef}
+						className="my-3 max-h-[400px] overflow-y-auto rounded-md bg-accent px-3 text-accent-content"
+					>
+						<ReactMarkdown>{data}</ReactMarkdown>
+					</div>
+
+					<div className="flex items-center justify-end gap-3 ">
+						<button
+							className="btn btn-success"
+							onClick={addNewFood}
+							disabled={!data || isReading}
 						>
-							<div className="max-h-[400px] overflow-y-auto rounded-md">
-								<Card
-									ref={AIResponseContainerRef}
-									className="bg-accent text-accent-content"
-									p={3}
-									my={2}
-								>
-									<ReactMarkdown>{data}</ReactMarkdown>
-								</Card>
-							</div>
-						</Collapse>
-					</ModalBody>
-					<ModalFooter gap={2}>
-						<div className="flex items-center justify-end gap-3">
-							<Button
-								onClick={addNewFood}
-								variant="ghost"
-								colorScheme="green"
-								isDisabled={!data || isReading}
-							>
-								Save
-							</Button>
-							<Button
-								onClick={generateNewAIResponse}
-								variant="ghost"
-								colorScheme="red"
-								isDisabled={!isConfigured(healthData) || isReading}
-							>
-								Generate
-							</Button>
-						</div>
-					</ModalFooter>
-				</ModalContent>
-			</Modal>
+							Save
+						</button>
+
+						<button
+							onClick={generateNewAIResponse}
+							className="btn btn-error"
+							disabled={!isConfigured(healthData) || isReading}
+						>
+							Generate
+						</button>
+					</div>
+				</div>
+
+				<label
+					className="modal-backdrop"
+					htmlFor="generate_modal"
+				/>
+			</div>
 		</>
 	);
 };

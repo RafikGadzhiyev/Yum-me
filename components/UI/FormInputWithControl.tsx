@@ -1,10 +1,3 @@
-import {
-	FormControl,
-	FormErrorMessage,
-	FormLabel,
-	Input,
-	InputGroup,
-} from "@chakra-ui/react";
 import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 import {
 	DetailedHTMLProps,
@@ -12,6 +5,7 @@ import {
 	HTMLInputTypeAttribute,
 	PropsWithChildren,
 } from "react";
+import clsx from "clsx";
 
 interface IFormInputWithControlProps
 	extends DetailedHTMLProps<HTMLAttributes<HTMLInputElement>, HTMLInputElement>,
@@ -21,6 +15,7 @@ interface IFormInputWithControlProps
 	registerProps: UseFormRegisterReturn<string>;
 	error: FieldError | undefined;
 	type: HTMLInputTypeAttribute;
+	RightComponent?: () => JSX.Element;
 }
 
 export function FormInputWithControlProps({
@@ -28,23 +23,30 @@ export function FormInputWithControlProps({
 	label,
 	error,
 	isInvalid,
-	children,
+	RightComponent,
 
 	...attributes
 }: IFormInputWithControlProps) {
 	return (
-		<FormControl isInvalid={isInvalid}>
-			<FormLabel>{label}</FormLabel>
-			<InputGroup>
-				<Input
+		<div className="w-full">
+			<label>{label}</label>
+			<div className="relative">
+				<input
 					{...attributes}
 					{...registerProps}
 					aria-label={label}
-					className="w-full rounded-md p-1"
+					className={clsx("input input-bordered w-full rounded-md p-1", {
+						"border-error focus:border-error focus:outline-error": isInvalid,
+					})}
 				/>
-				{children}
-			</InputGroup>
-			{error && <FormErrorMessage>{error.message}</FormErrorMessage>}
-		</FormControl>
+
+				{RightComponent && (
+					<div className="absolute right-1 top-1/2 -translate-y-1/2">
+						<RightComponent />
+					</div>
+				)}
+			</div>
+			{error && <span className="text-sm text-error">{error.message}</span>}
+		</div>
 	);
 }

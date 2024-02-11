@@ -4,8 +4,8 @@ import { PropsWithChildren } from "react";
 export default function AuthLayout({ children }: PropsWithChildren) {
 	return (
 		<div className="flex h-[100dvh]">
-			<div className="hidden md:flex flex-1 flex-col p-2 px-4  items-center justify-center gap-3 bg-lime-200">
-				<h1 className="text-lg font-bold text-center mb-3">
+			<div className="hidden flex-1 flex-col items-center justify-center gap-3  bg-base-300 p-2 px-4 md:flex">
+				<h1 className="mb-3 text-center text-lg font-bold">
 					Hungry but can&apos;t decide what to eat? Let Yum Me take the guesswork out
 					of meal planning.
 				</h1>
@@ -44,7 +44,7 @@ export default function AuthLayout({ children }: PropsWithChildren) {
 
 				<LanguageSelect />
 			</div>
-			<div className="flex-[2] flex items-center justify-center">{children}</div>
+			<div className="flex flex-[2] items-center justify-center">{children}</div>
 		</div>
 	);
 }

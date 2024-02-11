@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { useLoading } from "@/hooks/useLoading";
 import { FC, useCallback, PropsWithChildren } from "react";
 import { FaDoorOpen } from "react-icons/fa";
 import { signOut } from "@/api/auth";
@@ -15,14 +14,11 @@ interface IButtonProps extends PropsWithChildren {
 export const SignOutButton: FC<IButtonProps> = ({ dictionaryKey }) => {
 	const router = useRouter();
 	const { t } = useTranslation();
-	const { startLoading, stopLoading } = useLoading();
 
 	const signOutHandler = useCallback(async () => {
-		startLoading();
 		await signOut();
-		stopLoading();
 		router.push(AUTH_ROUTES.SIGN_IN.path);
-	}, [router, startLoading, stopLoading]);
+	}, [router]);
 
 	return (
 		<button

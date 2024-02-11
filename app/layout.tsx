@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	const headerList = headers();
-	const theme = headerList.get("theme") || "retro";
+	const theme = headerList.get("theme") || "synthwave";
 
 	return (
 		<html

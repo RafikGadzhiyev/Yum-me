@@ -36,8 +36,6 @@ export const signIn = async (email: string, password: string) => {
 	}
 };
 
-export const signOut = () => {
-	return firebaseSignOut(auth)
-		.then(() => true)
-		.catch(() => false);
+export const signOut = async () => {
+	await firebaseSignOut(auth);
 };

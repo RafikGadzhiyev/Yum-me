@@ -16,7 +16,7 @@ export const ProfilePageWrapper = () => {
 		(store: RootStore) => store.userHealthDataReducer.user,
 	);
 
-	const activeTab = +(searchParams.get("tab") as string) || 0;
+	const activeTab = searchParams.get("tab") as string;
 	const userId = searchParams.get("id");
 
 	if (userId) {

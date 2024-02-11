@@ -1,17 +1,6 @@
 import { FaRegComment } from "react-icons/fa";
 import { FC, FormEvent, useRef, useState } from "react";
 import { RiErrorWarningLine } from "react-icons/ri";
-import {
-	Input,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	useDisclosure,
-} from "@chakra-ui/react";
 import { RootStore } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { v4 as uuid4 } from "uuid";
@@ -34,8 +23,6 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 	const userData = useSelector(
 		(store: RootStore) => store.userHealthDataReducer.user,
 	);
-	const { isOpen, onOpen, onClose } = useDisclosure();
-
 	const [comments, setComments] = useState(commentList);
 
 	const addNewPostComment = async (e: FormEvent<HTMLFormElement>) => {
@@ -78,26 +65,29 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 
 	return (
 		<>
-			<button
+			<label
 				className="flex items-center gap-1"
-				onClick={onOpen}
+				htmlFor="comments_modal"
 			>
 				{/*TODO: RENAME*/}
 				<FaRegComment />
 				<span>{comments.length}</span>
-			</button>
+			</label>
 
-			<Modal
-				isCentered
-				size="3xl"
-				onClose={onClose}
-				isOpen={isOpen}
+			<input
+				type="checkbox"
+				id="comments_modal"
+				className="modal-toggle"
+			/>
+
+			<div
+				className="modal"
+				role="dialog"
 			>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalHeader>Comments</ModalHeader>
-					<ModalCloseButton />
-					<ModalBody className="mt-5 max-h-[75vh] overflow-y-auto">
+				<div className="modal-box">
+					<h3 className="text-lg font-bold">Comments</h3>
+
+					<div className="mt-5 max-h-[75vh] overflow-y-auto">
 						{comments.length ? (
 							<div>
 								{comments.map((comment) => (
@@ -127,23 +117,28 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 								<h1 className="text-xl font-bold text-gray-400">No comments</h1>
 							</div>
 						)}
-					</ModalBody>
-					<ModalFooter>
+					</div>
+
+					<div>
 						<form
 							className="relative flex w-full items-center"
 							onSubmit={addNewPostComment}
 						>
-							<Input
-								backgroundColor="gray.100"
+							<input
 								ref={inputRef}
+								className="input input-bordered w-full bg-base-300"
 							/>
 							<button className="absolute right-3 z-30 cursor-pointer text-gray-400 hover:text-black">
 								Send
 							</button>
 						</form>
-					</ModalFooter>
-				</ModalContent>
-			</Modal>
+					</div>
+				</div>
+				<label
+					htmlFor="comments_modal"
+					className="modal-backdrop"
+				/>
+			</div>
 		</>
 	);
 };

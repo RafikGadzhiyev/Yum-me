@@ -1,10 +1,7 @@
 import { FC } from "react";
 
-import { useTranslation } from "react-i18next";
-
-import { RadioGroup } from "@headlessui/react";
-
-const GENDERS = ["male", "female"];
+import { $Enums } from "@prisma/client";
+import { RadioButtonWithLabel } from "@/components/UI/RadioButtonWithLabel";
 
 interface IGenderRadioGroupProps {
 	initialGender: string;
@@ -15,28 +12,20 @@ export const GenderRadioGroup: FC<IGenderRadioGroupProps> = ({
 	initialGender,
 	updateGender,
 }) => {
-	const { t } = useTranslation();
-
 	return (
-		<RadioGroup
-			value={initialGender}
-			onChange={updateGender}
-			className="flex flex-col items-start"
-		>
-			<RadioGroup.Label className="text-2xl font-bold">
-				{t("GENDER")}
-			</RadioGroup.Label>
-			<div className="flex items-center gap-2">
-				{GENDERS.map((gender) => (
-					<RadioGroup.Option
-						value={gender.toUpperCase()}
-						key={gender}
-						className="my-3 cursor-pointer rounded-md bg-slate-500 p-2 py-1 capitalize text-white ui-checked:bg-green-600"
-					>
-						{t(gender.toUpperCase())}
-					</RadioGroup.Option>
-				))}
-			</div>
-		</RadioGroup>
+		<div>
+			{Object.keys($Enums.Gender).map((gender) => (
+				<div
+					key={gender}
+					className="form-control"
+				>
+					<RadioButtonWithLabel
+						checked={initialGender === gender}
+						update={() => updateGender(gender)}
+						contentKey={gender}
+					/>
+				</div>
+			))}
+		</div>
 	);
 };

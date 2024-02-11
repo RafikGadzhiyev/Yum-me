@@ -1,28 +1,23 @@
-import { UseToastOptions, useToast } from "@chakra-ui/react";
+import { toast, ToastPosition, TypeOptions } from "react-toastify";
 
 interface IShowToastProps {
 	title: string;
 	description: string;
-	status: UseToastOptions["status"];
+	type?: TypeOptions;
 	duration?: number;
 	isClosable?: boolean;
+	position?: ToastPosition;
 }
 
-const DEFAULT_PARAMS = {
-	duration: 2500,
-	isClosable: true,
-};
-
 export const useShowToast = () => {
-	const toast = useToast();
-
 	const show = (props: IShowToastProps) => {
-		const paramsWithDefaultValues = {
-			...DEFAULT_PARAMS,
-			...props,
-		};
-
-		toast(paramsWithDefaultValues);
+		toast(`${props.title}: ${props.description}`, {
+			position: props.position,
+			type: props.type,
+			closeOnClick: true,
+			autoClose: props.duration,
+			pauseOnHover: true,
+		});
 	};
 
 	return {

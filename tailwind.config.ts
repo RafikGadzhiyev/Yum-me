@@ -22,7 +22,7 @@ const config: Config = {
 	],
 
 	daisyui: {
-		themes: ["dark", "light", "retro"], // false = only light and dark
+		themes: ["dark", "light", "synthwave"], // false = only light and dark
 		darkTheme: "dark", // choosing on of the dark themes
 		styled: true,
 		utils: true, // add utils and responsive design

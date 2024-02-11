@@ -1,12 +1,5 @@
 "use client";
 
-import {
-	FormControl,
-	Button,
-	Wrap,
-	InputRightElement,
-	FormHelperText,
-} from "@chakra-ui/react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { useState } from "react";
@@ -22,6 +15,7 @@ import { ROUTES } from "@/consts/routes.const";
 import { SignUpSchema, SignUpSchemaType } from "@/consts/validations.const";
 import { FormInputWithControlProps } from "@/components/UI/FormInputWithControl";
 import { signUp } from "@/api/auth";
+import { Loading } from "@/components/UI/Loading";
 
 const EYE_ICON_SIZE = 20;
 
@@ -47,9 +41,10 @@ export const SignUpForm = () => {
 
 				showToast({
 					title: "Success",
-					status: "success",
+					type: "success",
 					description: "Redirecting to home page",
 					duration: 500,
+					position: "bottom-center",
 				});
 
 				router.push(ROUTES.HOME.path);
@@ -57,8 +52,9 @@ export const SignUpForm = () => {
 			.catch((err) => {
 				showToast({
 					title: err.code,
-					status: "error",
+					type: "error",
 					description: err.message,
+					position: "bottom-center",
 				});
 			});
 	};
@@ -68,7 +64,7 @@ export const SignUpForm = () => {
 			onSubmit={handleSubmit(signUpHandler)}
 			className="w-2xl max-w-2xl p-2"
 		>
-			<Wrap>
+			<div className="mb-5 flex flex-col gap-2">
 				<FormInputWithControlProps
 					isInvalid={!!errors.email}
 					label="Email"
@@ -87,10 +83,9 @@ export const SignUpForm = () => {
 					error={errors.password}
 					type={isPasswordShown ? "text" : "password"}
 					aria-hidden={false}
-				>
-					<InputRightElement>
-						<Button
-							padding={0}
+					RightComponent={() => (
+						<button
+							className="btn btn-ghost"
 							onClick={() =>
 								setIsPasswordShown((prevIsPasswordShown) => !prevIsPasswordShown)
 							}
@@ -101,9 +96,9 @@ export const SignUpForm = () => {
 							) : (
 								<FaEye size={EYE_ICON_SIZE} />
 							)}
-						</Button>
-					</InputRightElement>
-				</FormInputWithControlProps>
+						</button>
+					)}
+				/>
 
 				<FormInputWithControlProps
 					isInvalid={!!errors.confirm_password}
@@ -113,10 +108,9 @@ export const SignUpForm = () => {
 					error={errors.confirm_password}
 					type={isPasswordShown ? "text" : "password"}
 					aria-hidden={false}
-				>
-					<InputRightElement>
-						<Button
-							padding={0}
+					RightComponent={() => (
+						<button
+							className="btn btn-ghost"
 							onClick={() =>
 								setIsPasswordShown((prevIsPasswordShown) => !prevIsPasswordShown)
 							}
@@ -127,29 +121,28 @@ export const SignUpForm = () => {
 							) : (
 								<FaEye size={EYE_ICON_SIZE} />
 							)}
-						</Button>
-					</InputRightElement>
-				</FormInputWithControlProps>
-				<FormControl>
-					<div>
-						<FormHelperText>
-							Password length must be in the range {PASSWORD_RESTRICTION.LENGTH.MIN}-
-							{PASSWORD_RESTRICTION.LENGTH.MAX}
-						</FormHelperText>
-						<FormHelperText>
-							Password shoul contain one or more special characters{" "}
-							{PASSWORD_RESTRICTION.SYMBOLS.join(", ")}
-						</FormHelperText>
-					</div>
-				</FormControl>
-			</Wrap>
-			<Button
+						</button>
+					)}
+				/>
+				<div className="flex flex-col">
+					<span className="text-sm text-neutral-content">
+						Password length must be in the range {PASSWORD_RESTRICTION.LENGTH.MIN}-
+						{PASSWORD_RESTRICTION.LENGTH.MAX}
+					</span>
+					<span className="text-sm text-neutral-content">
+						Password should contain one or more special characters{" "}
+						{PASSWORD_RESTRICTION.SYMBOLS.join(", ")}
+					</span>
+				</div>
+			</div>
+			<button
 				type="submit"
-				className="mt-8 w-full rounded-md bg-green-300 p-2 transition hover:bg-green-200 active:bg-green-400"
-				isLoading={isLoading}
+				className="btn btn-success mt-2 w-full"
 			>
 				{t("SIGN_UP")}
-			</Button>
+			</button>
+
+			{isLoading && <Loading />}
 		</form>
 	);
 };

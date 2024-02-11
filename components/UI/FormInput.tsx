@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-import { Input } from "@chakra-ui/react";
 import { HTMLInputTypeAttribute } from "react";
 
 interface IFormInputProps {
@@ -25,14 +24,10 @@ export function FormInput({
 	return (
 		<div className="flex flex-col items-start gap-2">
 			<label className="text-2xl font-bold">{t(labelValueKey)}</label>
-			<Input
-				variant="filled"
+			<input
+				className="input input-bordered input-sm w-full max-w-xs"
 				type={type}
-				bgColor="white"
-				width="fit-content"
 				placeholder={placeholder}
-				size="sm"
-				rounded={3}
 				value={initialValue}
 				onChange={(e) => updateValue(field, e.target.value, type)}
 			/>

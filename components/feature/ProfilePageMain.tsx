@@ -1,12 +1,10 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import { PROFILE_PAGE_TABS } from "@/consts/tabs.const";
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
-import { useFetch } from "@/hooks/useFetch";
 import { usePathname, useRouter } from "next/navigation";
+import { PROFILE_PAGE_TABS } from "@/consts/tabs.const";
+import { Tabs } from "@/components/feature/Tabs";
 
 interface IProfilePageMainProps {
-	activeTab: number;
+	activeTab: string;
 	user: User;
 }
 
@@ -14,45 +12,21 @@ export const ProfilePageMain: FC<IProfilePageMainProps> = ({ activeTab, user }) 
 	const router = useRouter();
 	const pathname = usePathname();
 
-	// const isEditableTab = useRef(false);
-
-	const { responseStatus } = useFetch();
-	const { t } = useTranslation();
-
 	const availableTabs = PROFILE_PAGE_TABS.filter(
 		(tab) => !tab.roles?.length || tab.roles?.some((role) => user.role === role),
 	);
 
-	const onTabChange = async (chosenTab: number) => {
-		router.push(pathname + `?tab=${chosenTab}`);
+	const onTabChange = async (selectedTabKey: string) => {
+		router.push(pathname + `?tab=${selectedTabKey}`);
 	};
 
 	return (
 		<main>
 			<Tabs
-				defaultIndex={activeTab}
+				tabs={availableTabs}
+				initialCurrentTabKey={activeTab || availableTabs[0].key}
 				onChange={onTabChange}
-				isManual
-				isFitted
-				isLazy
-			>
-				<TabList>
-					{availableTabs.map((tab) => (
-						<Tab key={tab.key}>{t(tab.key)}</Tab>
-					))}
-				</TabList>
-
-				<TabPanels>
-					{availableTabs.map((tab) => (
-						<TabPanel key={tab.key}>
-							<tab.Component
-								state={responseStatus}
-								isEditable={true}
-							/>
-						</TabPanel>
-					))}
-				</TabPanels>
-			</Tabs>
+			/>
 		</main>
 	);
 };

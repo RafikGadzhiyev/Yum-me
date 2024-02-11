@@ -1,12 +1,4 @@
-"use client";
-
 import { FC, PropsWithChildren } from "react";
-import {
-	AccordionItem,
-	AccordionButton,
-	AccordionPanel,
-	AccordionIcon,
-} from "@chakra-ui/react";
 
 interface IAccordionProps extends PropsWithChildren {
 	label: string;
@@ -14,19 +6,16 @@ interface IAccordionProps extends PropsWithChildren {
 
 export const Accordion: FC<IAccordionProps> = ({ children, label }) => {
 	return (
-		<AccordionItem className="overflow-hidden rounded-md border-none bg-neutral">
-			<h2>
-				<AccordionButton className=" p-2 transition">
-					<span className="text-neutral-content">{label}</span>
-					<AccordionIcon />
-				</AccordionButton>
-			</h2>
-			<AccordionPanel
-				padding={5}
-				className="prose max-w-full bg-base-300"
-			>
-				{children}
-			</AccordionPanel>
-		</AccordionItem>
+		<div className="collapse join-item collapse-plus border-2 border-base-300 bg-base-200">
+			<input
+				type="checkbox"
+				id="test"
+				name="my-accordion-1"
+			/>
+			<div className="text-md collapse-title font-medium">
+				<label htmlFor="test">{label}</label>
+			</div>
+			<div className="collapse-content">{children}</div>
+		</div>
 	);
 };

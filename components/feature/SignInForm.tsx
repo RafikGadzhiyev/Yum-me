@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Button, Wrap } from "@chakra-ui/react";
 
 import { useLoading } from "@/hooks/useLoading";
 import { useShowToast } from "@/hooks/useShowToast";
@@ -14,6 +13,7 @@ import { SignInSchema, SignInSchemaType } from "@/consts/validations.const";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormInputWithControlProps } from "@/components/UI/FormInputWithControl";
 import { signIn } from "@/api/auth";
+import { Loading } from "@/components/UI/Loading";
 
 export const SignInForm = () => {
 	const {
@@ -38,7 +38,8 @@ export const SignInForm = () => {
 			showToast({
 				title: "Captcha is required",
 				description: "Please, complete captcha",
-				status: "error",
+				type: "error",
+				position: "bottom-center",
 			});
 			return;
 		}
@@ -53,7 +54,8 @@ export const SignInForm = () => {
 			showToast({
 				title: (signInResult as AuthLiteError).code,
 				description: (signInResult as AuthLiteError).message,
-				status: "error",
+				type: "error",
+				position: "bottom-center",
 			});
 
 			return;
@@ -62,8 +64,9 @@ export const SignInForm = () => {
 		showToast({
 			title: "Success!",
 			description: "Redirecting",
-			status: "success",
+			type: "error",
 			duration: 1000,
+			position: "bottom-center",
 		});
 
 		router.push(ROUTES.HOME.path);
@@ -73,10 +76,7 @@ export const SignInForm = () => {
 
 	return (
 		<form onSubmit={handleSubmit(signInHandler)}>
-			<Wrap
-				spacingY={1}
-				marginBottom={5}
-			>
+			<div className="mb-5 flex flex-col gap-2">
 				<FormInputWithControlProps
 					isInvalid={!!errors.email}
 					label="Email"
@@ -96,18 +96,18 @@ export const SignInForm = () => {
 					placeholder="Password"
 					aria-hidden={false}
 				/>
-			</Wrap>
+			</div>
 			<HCaptcha
 				sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY!}
 				onVerify={(token: string) => setCaptcha(token)}
 			/>
-			<Button
+			<button
 				type="submit"
-				className="mt-2 w-full rounded-md bg-green-300 p-2 transition hover:bg-green-200 active:bg-green-400"
-				isLoading={isLoading}
+				className="btn btn-success mt-2 w-full"
 			>
 				{t("SIGN_IN")}
-			</Button>
+			</button>
+			{isLoading && <Loading />}
 		</form>
 	);
 };

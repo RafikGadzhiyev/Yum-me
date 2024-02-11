@@ -15,7 +15,6 @@ interface IPostCoverageProps {
 	likes: Post["likes"];
 	comments: Post["comments"];
 	savedBy: Post["savedBy"];
-	// coverage: Post["coverage"];
 }
 
 export const PostCoverage: FC<IPostCoverageProps> = ({
