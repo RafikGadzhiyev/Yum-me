@@ -136,7 +136,7 @@ export const SettingsPageWrapper = () => {
 					/>
 				</div>
 
-				<div className="flex flex-col">
+				<div className="mb-6 flex flex-col gap-3">
 					<FormTextarea
 						initialValue={healthConfig?.contraindications}
 						labelValueKey="CONTRAINDICATIONS"

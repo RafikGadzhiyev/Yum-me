@@ -43,7 +43,7 @@ export const ItemPerPageSelect: FC<IITemPerPageSelectProps> = ({
 			<AnimatePresence>
 				{isOpened && (
 					<motion.div
-						className="absolute top-full flex w-full flex-col overflow-hidden rounded-md bg-info-content"
+						className="absolute top-full z-50 flex w-full flex-col overflow-hidden rounded-md bg-info-content"
 						initial={{
 							y: -20,
 							opacity: 0,

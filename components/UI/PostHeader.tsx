@@ -17,7 +17,7 @@ export const PostHeader: FC<IPostHeader> = ({ author, isNew, created_at, role })
 			<div className="flex flex-col">
 				<span>{author}</span>
 				{!isNew && (
-					<div className="text-info- -translate-y-1/4 text-sm text-neutral">
+					<div className="text-info- -translate-y-1/4 text-sm text-base-content text-opacity-40">
 						<span>{role}</span>
 						<span>
 							{" "}

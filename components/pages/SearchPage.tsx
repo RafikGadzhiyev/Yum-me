@@ -70,11 +70,11 @@ export const SearchPageWrapper = () => {
 			</form>
 			<div className="flex h-full justify-center">
 				{searchResults && !searchResults.length && <span>Nothing was found</span>}
-				{searchResults && searchResults.length && (
+				{searchResults && !!searchResults.length && (
 					<ul className="flex w-full flex-wrap items-start justify-between gap-1">
 						{searchResults.map((searchResult) => (
 							<li
-								className="card my-2 border-2 bg-base-200"
+								className="card my-2 border-4 border-base-300 bg-base-200"
 								key={searchResult.id}
 							>
 								<SearchedUser
