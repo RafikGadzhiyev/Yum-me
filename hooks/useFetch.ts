@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import { useLoading } from "./useLoading";
 
+// TODO: restructure fetch object like fetch.patch
 export const useFetch = <T>() => {
 	const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
