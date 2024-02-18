@@ -32,7 +32,6 @@ const userHealthData = createSlice({
 				"generated_foods",
 				"created_at",
 				"updated_at",
-				"",
 			];
 
 			if (!action.payload) {
