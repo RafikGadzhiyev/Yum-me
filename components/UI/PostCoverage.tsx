@@ -37,6 +37,7 @@ export const PostCoverage: FC<IPostCoverageProps> = ({
 			</button>
 
 			<PostCommentsModal
+				key={postId}
 				postId={postId}
 				comments={comments}
 			/>

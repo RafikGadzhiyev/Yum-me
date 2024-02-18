@@ -57,10 +57,7 @@ export const Post: FC<Post & IPostProps> = ({
 	};
 
 	return (
-		<div
-			key={id}
-			className="rounded-md bg-base-300 p-4"
-		>
+		<div className="rounded-md bg-base-300 p-4">
 			<PostHeader
 				author={authorEmail}
 				isNew={isNew}

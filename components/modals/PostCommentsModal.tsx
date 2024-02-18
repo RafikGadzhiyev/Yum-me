@@ -67,7 +67,7 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 		<>
 			<label
 				className="flex items-center gap-1"
-				htmlFor="comments_modal"
+				htmlFor={`${postId}-comments`}
 			>
 				{/*TODO: RENAME*/}
 				<FaRegComment />
@@ -76,7 +76,7 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 
 			<input
 				type="checkbox"
-				id="comments_modal"
+				id={`${postId}-comments`}
 				className="modal-toggle"
 			/>
 
@@ -93,7 +93,7 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 								{comments.map((comment) => (
 									<div
 										key={comment.id}
-										className="my-5 rounded-md bg-slate-200 px-3 py-1"
+										className="my-5 rounded-md bg-base-300 px-3 py-2"
 									>
 										<div className="items center flex justify-between">
 											<h1 className="text-xl font-bold">{comment.author}</h1>
@@ -135,7 +135,7 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 					</div>
 				</div>
 				<label
-					htmlFor="comments_modal"
+					htmlFor={`${postId}-comments`}
 					className="modal-backdrop"
 				/>
 			</div>

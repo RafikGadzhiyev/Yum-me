@@ -121,9 +121,9 @@ export const PostsTab: FC<ITabProps> = ({ isEditable }) => {
 
 				{posts.map((data) => (
 					<Post
+						key={data.id}
 						$userId={user?.id}
 						authorEmail={user?.email}
-						key={data.id}
 						updatePost={updateNewPostField}
 						{...data}
 					/>
