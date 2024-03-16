@@ -7,6 +7,7 @@ import { Loading } from "@/components/UI/Loading";
 import { SearchedUser } from "@/components/feature/SearchedUser";
 import { Models } from "appwrite";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { MdSettings } from "react-icons/md";
 
 export const SearchPageWrapper = () => {
 	const searchInputRef = useRef<HTMLInputElement | null>(null);
@@ -17,6 +18,8 @@ export const SearchPageWrapper = () => {
 
 	const { isLoading, sendRequest } = useFetch();
 	const { t } = useTranslation();
+
+	const [searchBy, setSearchBy] = useState("email");
 	const [searchResults, setSearchResults] = useState<null | Array<Models.Document>>(
 		null,
 	);
@@ -43,7 +46,7 @@ export const SearchPageWrapper = () => {
 
 		const queryResult = await sendRequest(
 			"GET",
-			`/api/user?query=${query}&searchBy=email`, // TODO: give opportunity to choose search field
+			`/api/user?query=${query}&searchBy=${searchBy}`, // TODO: give opportunity to choose search field
 		);
 		setSearchResults(queryResult);
 	};
@@ -57,7 +60,7 @@ export const SearchPageWrapper = () => {
 	return (
 		<>
 			<form
-				className="mb-2 flex gap-1"
+				className="mb-2 flex items-center gap-4"
 				onSubmit={searchHandler}
 			>
 				<input
@@ -65,6 +68,28 @@ export const SearchPageWrapper = () => {
 					className="input input-bordered flex-1 rounded-md p-2 py-1"
 					placeholder="Query"
 				/>
+
+				<div className="dropdown dropdown-end dropdown-bottom">
+					<div
+						className="btn"
+						role="button"
+						tabIndex={0}
+					>
+						<MdSettings size="25" />
+					</div>
+
+					<ul
+						tabIndex={0}
+						className="menu dropdown-content z-[1] w-52 rounded-box bg-base-100 p-2 shadow"
+					>
+						<input
+							className="input input-bordered input-sm w-full max-w-xs"
+							placeholder="Search by"
+							value={searchBy}
+							onChange={(e) => setSearchBy(e.target.value)}
+						/>
+					</ul>
+				</div>
 
 				<button className="btn">{t("SEARCH")}</button>
 			</form>

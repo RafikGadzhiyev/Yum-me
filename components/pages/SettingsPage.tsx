@@ -19,7 +19,7 @@ export const SettingsPageWrapper = () => {
 	const { isLoading, sendRequest } = useFetch();
 
 	const cachedUserHealthConfig = useSelector(
-		(store: RootStore) => store.userHealthDataReducer.user,
+		(store: RootStore) => store.userHealthDataReducer.healthData,
 	);
 
 	const dispatch = useDispatch();
@@ -96,6 +96,24 @@ export const SettingsPageWrapper = () => {
 					initialGender={healthConfig?.gender}
 					updateGender={(gender: string) => updateConfig("gender", gender, "text")}
 				/>
+				<div className="my-4 flex gap-3">
+					<FormInput
+						initialValue={healthConfig?.name}
+						field="name"
+						labelValueKey="NAME"
+						placeholder="Your name"
+						updateValue={updateConfig}
+					/>
+
+					<FormInput
+						initialValue={healthConfig?.lastName}
+						field="lastName"
+						labelValueKey="LAST_NAME"
+						placeholder="Your last name"
+						updateValue={updateConfig}
+					/>
+				</div>
+
 				<div className="my-4 flex gap-3">
 					<FormInput
 						initialValue={healthConfig?.weight}

@@ -70,4 +70,4 @@ export const updatePostSaved = (saved: string[], userId: string) => {
 	return Array.from(uniqueSaved);
 };
 
-export const getUserFullName = (user: User) => user.name + " " + user.last_name;
+export const getUserFullName = (user: User) => user.name + " " + user.lastName;

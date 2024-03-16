@@ -5,7 +5,7 @@ type User = {
 	created_at: number;
 	updated_at: number;
 	name: string;
-	last_name: string;
+	lastName: string;
 	email: string;
 	age: number;
 	weight: number;

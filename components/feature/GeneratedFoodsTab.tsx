@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import { RootStore } from "@/redux/store";
 import { Accordion } from "@/components/UI/Accordion";
 
-export const GeneratedFoodsTab: FC<ITabProps> = ({ state, isEditable }) => {
+export const GeneratedFoodsTab: FC<ITabProps> = ({ state }) => {
 	const userData = useSelector(
 		(store: RootStore) => store.userHealthDataReducer.user,
 	);
@@ -35,16 +35,16 @@ export const GeneratedFoodsTab: FC<ITabProps> = ({ state, isEditable }) => {
 
 	return (
 		<div>
-			{isEditable && (
-				<GenerateNewFoodModal
-					updateGeneratedFoodList={(generatedFood) =>
-						setGeneratedFoods((prevGeneratedFoods) => [
-							...prevGeneratedFoods,
-							generatedFood,
-						])
-					}
-				/>
-			)}
+			{/*{isEditable && (*/}
+			<GenerateNewFoodModal
+				updateGeneratedFoodList={(generatedFood) =>
+					setGeneratedFoods((prevGeneratedFoods) => [
+						...prevGeneratedFoods,
+						generatedFood,
+					])
+				}
+			/>
+			{/*)}*/}
 
 			{generatedFoods.length ? (
 				<ListWithPagination>

@@ -48,6 +48,8 @@ const userHealthData = createSlice({
 
 			state.healthData = {
 				id: state.user.id,
+				name: state.user.name,
+				lastName: state.user.lastName,
 				email: state.user.email,
 				gender: state.user.gender,
 				age: state.user.age,
