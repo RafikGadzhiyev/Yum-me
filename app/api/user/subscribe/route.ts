@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { handleRequest } from "@/utils/handlers.util";
 
-export const PATCH = async (req: NextRequest, res: NextResponse) => {
+export const PATCH = async (req: NextRequest) => {
 	try {
 		const body = await req.json();
 		const { userId, subscriberId } = body;

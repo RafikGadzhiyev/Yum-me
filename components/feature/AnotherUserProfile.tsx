@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ProfilePageHeader } from "@/components/UI/ProfilePageHeader";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
