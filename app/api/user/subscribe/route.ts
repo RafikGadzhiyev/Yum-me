@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { handleRequest } from "@/utils/handlers.util";
 
 export const PATCH = async (req: NextRequest) => {
