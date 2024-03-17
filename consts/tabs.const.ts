@@ -6,17 +6,6 @@ import { PostsTab } from "@/components/feature/PostsTab";
 import { LikesTab } from "@/components/feature/LikesTab";
 import { FC } from "react";
 
-export const HOME_PAGE_TABS = [
-	{
-		key: "POSTS",
-		Component: PostsTab,
-	},
-	{
-		key: "GENERATED_FOODS",
-		Component: GeneratedFoodsTab,
-	},
-];
-
 export const PROFILE_PAGE_TABS: {
 	key: string;
 	Component: FC<any>; // eslint-disable-line

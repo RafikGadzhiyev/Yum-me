@@ -8,8 +8,6 @@ client
 
 export const databases = new Databases(client);
 
-export { ID, Query } from "appwrite";
-
 export type DocumentList = Awaited<ReturnType<typeof databases.listDocuments>>;
 export type Document = Omit<
 	DocumentList["documents"][number],
