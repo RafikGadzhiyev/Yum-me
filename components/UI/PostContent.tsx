@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
 
 interface IPostContentProps {
 	isNew: boolean;
@@ -13,15 +14,35 @@ export const PostContent: FC<IPostContentProps> = ({
 	content,
 	updatePost,
 }) => {
+	const [postContent, setPostContent] = useState(content || "");
+
+	const onPostContentChanging = (e: ContentEditableEvent) => {
+		const newPostContent = e.target.value;
+
+		updatePost("content", newPostContent, isNew, postId);
+		setPostContent(newPostContent);
+	};
+
 	return (
 		<div className="my-2 max-h-[300px] overflow-y-auto rounded-sm  border border-base-content p-2">
 			{isNew ? (
-				<textarea
+				<ContentEditable
 					className="min-h-[200px] w-full border-none bg-transparent outline-none"
-					onChange={(e) => updatePost("content", e.target.value, isNew, postId)}
-				></textarea>
+					html={postContent}
+					disabled={false}
+					onChange={onPostContentChanging}
+				/>
 			) : (
-				content
+				// <textarea
+				// 	className="min-h-[200px] w-full border-none bg-transparent outline-none"
+				// 	onChange={(e) => updatePost("content", e.target.value, isNew, postId)}
+				// ></textarea>
+
+				<ContentEditable
+					html={postContent}
+					disabled={true}
+					onChange={onPostContentChanging}
+				/>
 			)}
 		</div>
 	);
