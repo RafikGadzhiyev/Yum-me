@@ -16,6 +16,9 @@ const userHealthData = createSlice({
 	name: "slice/user_health_data",
 	initialState,
 	reducers: {
+		updateUser(state, action: PayloadAction<Document | null>) {
+			state.user = action.payload;
+		},
 		updateUserHealthData() {
 			//  do some stuff
 		},
@@ -65,5 +68,5 @@ const userHealthData = createSlice({
 	},
 });
 
-export const { readUserHealthData } = userHealthData.actions;
+export const { readUserHealthData, updateUser } = userHealthData.actions;
 export default userHealthData.reducer;
