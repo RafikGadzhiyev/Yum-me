@@ -32,6 +32,10 @@ export const AnotherUserProfile: FC<IAnotherUserProfile> = ({ $id }) => {
 		);
 	}, [$id]);
 
+	if (currentUser?.id === $id) {
+		router.replace("/profile");
+	}
+
 	if (!user) {
 		return <h1>Loading . . .</h1>;
 	}
@@ -113,30 +117,6 @@ export const AnotherUserProfile: FC<IAnotherUserProfile> = ({ $id }) => {
 						)}
 					</button>
 				)}
-				<label
-					className="btn"
-					htmlFor="send_email"
-				>
-					Message
-				</label>
-
-				<input
-					type="checkbox"
-					id="send_email"
-					className="modal-toggle"
-				/>
-
-				<div
-					className="modal"
-					role="dialog"
-				>
-					<div className="modal-box"></div>
-
-					<label
-						className="modal-backdrop"
-						htmlFor="send_email"
-					/>
-				</div>
 			</div>
 		</div>
 	);

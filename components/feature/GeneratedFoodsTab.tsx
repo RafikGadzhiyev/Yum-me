@@ -46,7 +46,7 @@ export const GeneratedFoodsTab: FC<ITabProps> = ({ state }) => {
 			/>
 			{/*)}*/}
 
-			{generatedFoods.length ? (
+			{generatedFoods?.length ? (
 				<ListWithPagination>
 					{generatedFoods.map((generatedFood) => (
 						<Accordion

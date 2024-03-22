@@ -19,7 +19,7 @@ export const SearchedUser: FC<ISearchedUserProps> = ({
 	role,
 }) => {
 	return (
-		<div className="card-body">
+		<div className="card-body w-[300px]">
 			<div className="card-title items-start">
 				<span>{name}</span>
 			</div>
@@ -36,8 +36,6 @@ export const SearchedUser: FC<ISearchedUserProps> = ({
 				>
 					Open
 				</Link>
-				{/*<button className="btn bg-base-100">Open</button>*/}
-				<button className="btn bg-base-100">Message</button>
 			</div>
 		</div>
 	);

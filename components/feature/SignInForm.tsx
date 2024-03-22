@@ -64,7 +64,7 @@ export const SignInForm = () => {
 		showToast({
 			title: "Success!",
 			description: "Redirecting",
-			type: "error",
+			type: "success",
 			duration: 1000,
 			position: "bottom-center",
 		});

@@ -3,7 +3,7 @@
 import { $Enums } from "@prisma/client";
 import { GeneratedFoodsTab } from "@/components/feature/GeneratedFoodsTab";
 import { PostsTab } from "@/components/feature/PostsTab";
-import { LikesTab } from "@/components/feature/LikesTab";
+import { SubscribersTab } from "@/components/feature/SubscribersTab";
 import { FC } from "react";
 
 export const PROFILE_PAGE_TABS: {
@@ -21,7 +21,7 @@ export const PROFILE_PAGE_TABS: {
 		Component: GeneratedFoodsTab,
 	},
 	{
-		key: "LIKES",
-		Component: LikesTab,
+		key: "SUBSCRIBERS",
+		Component: SubscribersTab,
 	},
 ];
