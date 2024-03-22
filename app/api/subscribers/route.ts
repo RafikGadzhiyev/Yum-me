@@ -24,6 +24,8 @@ export const GET = async (req: NextRequest) => {
 
 		return handleRequest({ subscribers }, null, 200);
 	} catch (err) {
+		console.error(err);
+
 		return handleRequest(null, err, 500);
 	}
 };
