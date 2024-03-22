@@ -9,6 +9,7 @@ import { useStreamResponse } from "@/hooks/useStreamResponse";
 import { Loading } from "../UI/Loading";
 
 import { isConfigured } from "@/utils/validation.util";
+import { useTranslation } from "react-i18next";
 
 interface IGenerateNewFoodButtonProps {
 	updateGeneratedFoodList: (generatedFood: GeneratedFood) => void;
@@ -17,6 +18,8 @@ interface IGenerateNewFoodButtonProps {
 export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	updateGeneratedFoodList,
 }) => {
+	const { i18n } = useTranslation();
+
 	const modalStateRef = useRef<HTMLInputElement | null>(null);
 	const healthData = useSelector(
 		(store: RootStore) => store.userHealthDataReducer.healthData,
@@ -35,7 +38,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 		const streamedData = await sendStreamRequest(
 			"POST",
 			`/api/AI/generate_text?email=${healthData.email}`,
-			healthData,
+			{ lang: i18n.language, data: healthData },
 			{
 				"Content-Type": "application/json",
 			},

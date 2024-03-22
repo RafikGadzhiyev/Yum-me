@@ -10,10 +10,10 @@ const MAX_MESSAGE_TOKEN_LENGTH = 4097;
 
 export const POST = async (req: NextRequest) => {
 	try {
-		const data = await req.json();
+		const { lang, data } = await req.json();
 
 		// TODO: Create message with i18n
-		const message = `Нужен рацион питания для следующего случая:\n\n${JSON.stringify(
+		const message = `Язык ответа - ${lang}\nНужен рацион питания для следующего случая:\n\n${JSON.stringify(
 			data,
 		)}\n\nНапиши без лишнего вступления, ни с чем не связывай, так как я это буду отправлять человеку, он должен понять, что ему это адресованно. Язык, на котором нужно написать - Markdown`;
 
