@@ -4,6 +4,7 @@ import { FC, useState } from "react";
 import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
+import { CiExport } from "react-icons/ci";
 
 import { LOCALE_BY_LANGUAGE } from "@/i18n/dictionary";
 
@@ -33,6 +34,15 @@ export const GeneratedFoodsTab: FC<ITabProps> = ({ state }) => {
 		return <span>Something went wrong. Please, try again!</span>;
 	}
 
+	function generateLink(generatedFood: GeneratedFood) {
+		const fileWithContent = new File(
+			[generatedFood.description],
+			`${generatedFood.createdAt}.txt`,
+		);
+
+		return URL.createObjectURL(fileWithContent);
+	}
+
 	return (
 		<div>
 			{/*{isEditable && (*/}
@@ -49,18 +59,30 @@ export const GeneratedFoodsTab: FC<ITabProps> = ({ state }) => {
 			{generatedFoods?.length ? (
 				<ListWithPagination>
 					{generatedFoods.map((generatedFood) => (
-						<Accordion
+						<div
 							key={generatedFood.id}
-							label={format(
-								new Date(generatedFood.createdAt),
-								"dd MMMM yyyy HH:mm:ss",
-								{
-									locale: LOCALE_BY_LANGUAGE[i18n.language],
-								},
-							)}
+							className="flex items-center gap-2"
 						>
-							<ReactMarkdown>{generatedFood.description}</ReactMarkdown>
-						</Accordion>
+							<Accordion
+								label={format(
+									new Date(generatedFood.createdAt),
+									"dd MMMM yyyy HH:mm:ss",
+									{
+										locale: LOCALE_BY_LANGUAGE[i18n.language],
+									},
+								)}
+							>
+								<ReactMarkdown>{generatedFood.description}</ReactMarkdown>
+							</Accordion>
+
+							<a
+								href={generateLink(generatedFood)}
+								className="btn btn-link flex items-center"
+								download
+							>
+								<CiExport size={25} />
+							</a>
+						</div>
 					))}
 				</ListWithPagination>
 			) : (
