@@ -24,7 +24,7 @@ export const PostContent: FC<IPostContentProps> = ({
 	};
 
 	return (
-		<div className="my-2 max-h-[300px] overflow-y-auto rounded-sm  border border-base-content p-2">
+		<div className="my-2 max-h-[300px] overflow-y-auto rounded-sm  border border-neutral p-2">
 			{isNew ? (
 				<ContentEditable
 					className="min-h-[200px] w-full border-none bg-transparent outline-none"
