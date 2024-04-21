@@ -58,6 +58,7 @@
   "MALE": "Male",
   "MESSAGE": "Message",
   "NEW_POST": "New post",
+  "WANT_TO_TRY": "Want to try?",
   "NOTHING_WAS_FOUND": "Nothing was found",
   "NO_COMMENTS": "No comments",
   "OPEN": "Open",
@@ -74,6 +75,8 @@
   "SIGN_OUT": "Sign out",
   "SIGN_UP": "Sign up",
   "SOMETHING_WENT_WRONG": "Something went wrong",
+  "NAME": "Name",
+  "LAST_NAME": "Last name",
   "SUBSCRIBE": "Subscribe",
   "TO_GET_FULLY_ACCESS_HINT": "To get access You need fully configure your food wishes and additional info",
   "TRY_AGAIN": "Try again",
@@ -91,6 +94,7 @@
     "PROFILE": "Profile",
     "SAVED_RECIPES": "Saved recipes",
     "SEARCH": "Search",
-    "SETTINGS": "Settings"
+    "SETTINGS": "Settings",
+    "WHAT_CAN_I_COOK": "What can I cook"
   }
 }
