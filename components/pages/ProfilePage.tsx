@@ -1,7 +1,6 @@
 "use client";
 
 import { Suspense } from "react";
-import { useTranslation } from "react-i18next";
 import { useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 
@@ -12,8 +11,6 @@ import { AnotherUserProfile } from "@/components/feature/AnotherUserProfile";
 import { Loading } from "@/components/UI/Loading";
 
 export const ProfilePageWrapper = () => {
-	const { t } = useTranslation();
-
 	const searchParams = useSearchParams();
 	const userFromStore = useSelector(
 		(store: RootStore) => store.userHealthDataReducer.user,

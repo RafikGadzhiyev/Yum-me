@@ -5,6 +5,7 @@ export const getNewPost = (user: User): Post => {
 		id: uuid4(),
 		updatedAt: new Date(),
 		authorId: user.id,
+		author: user,
 		role: user.role,
 		createdAt: new Date(),
 		showLikes: true,
