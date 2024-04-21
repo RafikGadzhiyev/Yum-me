@@ -95,6 +95,15 @@ export const POST = async (req: NextRequest) => {
 				content,
 				showLikes,
 			},
+			include: {
+				author: {
+					select: {
+						name: true,
+						lastName: true,
+						role: true,
+					},
+				},
+			},
 		});
 
 		return handleRequest(newPost, null, 200);

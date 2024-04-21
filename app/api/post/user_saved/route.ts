@@ -24,6 +24,15 @@ export const GET = async (req: NextRequest) => {
 					hasSome: [userId],
 				},
 			},
+			include: {
+				author: {
+					select: {
+						name: true,
+						lastName: true,
+						role: true,
+					},
+				},
+			},
 		});
 
 		return handleRequest(savedPost, null, 200);

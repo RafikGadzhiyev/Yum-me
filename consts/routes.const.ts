@@ -1,5 +1,5 @@
 import { FaHome, FaUser, FaBookmark, FaSearch } from "react-icons/fa";
-import { FaGear } from "react-icons/fa6";
+import { FaGear, FaBowlFood } from "react-icons/fa6";
 
 export const ROUTES: Record<string, Route> = {
 	HOME: {
@@ -38,6 +38,13 @@ export const ROUTES: Record<string, Route> = {
 		label: "Settings Page",
 		withSearchParams: false,
 		Icon: FaGear,
+	},
+	WHAT_CAN_I_COOK: {
+		path: "/what-can-i-cook",
+		key: "what_can_i_cook",
+		label: "What can I cook",
+		withSearchParams: false,
+		Icon: FaBowlFood,
 	},
 };
 
