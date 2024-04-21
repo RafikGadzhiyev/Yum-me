@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 interface INewPostControlButtonsProps {
 	createNewPost?: () => void;
@@ -12,6 +13,8 @@ export const NewPostControlButtons: FC<INewPostControlButtonsProps> = ({
 	cancelNewPost,
 	content,
 }) => {
+	const { t } = useTranslation();
+
 	return (
 		<div className="flex items-center gap-2">
 			<button
@@ -19,13 +22,13 @@ export const NewPostControlButtons: FC<INewPostControlButtonsProps> = ({
 				onClick={createNewPost}
 				disabled={!content.length}
 			>
-				Save
+				{t("SAVE")}
 			</button>
 			<button
 				className="btn btn-error"
 				onClick={cancelNewPost}
 			>
-				Cancel
+				{t("CANCEL")}
 			</button>
 		</div>
 	);

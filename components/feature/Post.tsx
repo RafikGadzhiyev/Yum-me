@@ -12,6 +12,7 @@ interface IPostProps {
 	createNewPost?: () => void;
 	cancelNewPost?: () => void;
 	authorEmail: string;
+	readOnly?: boolean;
 }
 
 // TODO: REFACTOR
@@ -28,6 +29,7 @@ export const Post: FC<Post & IPostProps> = ({
 	showLikes,
 	authorEmail,
 	isNew = false,
+	readOnly = false,
 
 	createNewPost,
 	cancelNewPost,
@@ -70,7 +72,7 @@ export const Post: FC<Post & IPostProps> = ({
 				content={content}
 				updatePost={updatePost}
 			/>
-			{!isNew ? (
+			{!isNew && !readOnly ? (
 				<PostCoverage
 					$userId={$userId}
 					likes={likes}
@@ -80,13 +82,13 @@ export const Post: FC<Post & IPostProps> = ({
 					show_likes={showLikes}
 					updateCoverage={updateCoverage}
 				/>
-			) : (
+			) : isNew && !readOnly ? (
 				<NewPostControlButtons
 					createNewPost={createNewPost}
 					cancelNewPost={cancelNewPost}
 					content={content}
 				/>
-			)}
+			) : null}
 		</div>
 	);
 };

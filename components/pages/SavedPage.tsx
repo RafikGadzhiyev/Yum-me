@@ -5,6 +5,7 @@ import { RootStore } from "@/redux/store";
 import { useFetch } from "@/hooks/useFetch";
 import { Loading } from "@/components/UI/Loading";
 import { useEffect, useState } from "react";
+import { Post } from "@/components/feature/Post";
 
 export const SavedPage = () => {
 	const userId = useSelector(
@@ -27,24 +28,17 @@ export const SavedPage = () => {
 					{savedPosts.map((savedPost) => (
 						<div
 							key={savedPost.id}
-							className="card my-3"
+							className="mb-3"
 						>
-							<div className="card-body rounded-md bg-base-200">
-								<div className="flex flex-col px-3 text-base-content text-opacity-40">
-									<span>Post id: ${savedPost.id}</span>
-									<span>Author id: ${savedPost.authorId}</span>
-								</div>
-
-								<div className="rounded-sm bg-base-300 px-3 py-2">
-									{savedPost.content}
-								</div>
-
-								<div className="flex gap-5 px-3 text-base-content text-opacity-40">
-									<span>Likes: {savedPost.likes.length}</span>
-									<span>Comments: {savedPost.comments.length}</span>
-									<span>SavedCount: {savedPost.savedBy.length}</span>
-								</div>
-							</div>
+							<Post
+								$userId={savedPost?.authorId}
+								authorEmail={
+									savedPost?.author.name + " " + savedPost?.author.lastName
+								}
+								updatePost={() => {}}
+								readOnly={true}
+								{...savedPost}
+							/>
 						</div>
 					))}
 				</div>

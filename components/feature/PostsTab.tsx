@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootStore } from "@/redux/store";
 import { Post } from "@/components/feature/Post";
@@ -8,6 +9,8 @@ import { useFetch } from "@/hooks/useFetch";
 
 export const PostsTab: FC<ITabProps> = ({ isEditable }) => {
 	const { isLoading, sendRequest } = useFetch();
+	const { t } = useTranslation();
+
 	const [posts, setPosts] = useState<Post[]>([]);
 	const [newPost, setNewPost] = useState<Post | null>(null);
 
@@ -114,7 +117,7 @@ export const PostsTab: FC<ITabProps> = ({ isEditable }) => {
 							className="btn btn-ghost"
 							onClick={createNewPost}
 						>
-							New post
+							{t("NEW_POST")}
 						</button>
 					)
 				)}
@@ -123,7 +126,7 @@ export const PostsTab: FC<ITabProps> = ({ isEditable }) => {
 					<Post
 						key={data.id}
 						$userId={user?.id}
-						authorEmail={user?.email}
+						authorEmail={data?.author.name + " " + data?.author.lastName}
 						updatePost={updateNewPostField}
 						{...data}
 					/>

@@ -1,5 +1,6 @@
-import { FaRegComment } from "react-icons/fa";
 import { FC, FormEvent, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { FaRegComment } from "react-icons/fa";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { RootStore } from "@/redux/store";
 import { useSelector } from "react-redux";
@@ -7,7 +8,6 @@ import { v4 as uuid4 } from "uuid";
 import { getUserFullName } from "@/utils/post.utils";
 import { formatDistanceToNow } from "date-fns";
 import { LOCALE_BY_LANGUAGE } from "@/i18n/dictionary";
-import i18n from "i18next";
 
 interface IPostCommentsModalProps {
 	postId: string;
@@ -18,6 +18,8 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 	postId,
 	comments: commentList,
 }) => {
+	const { i18n, t } = useTranslation();
+
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
 	const userData = useSelector(
@@ -85,7 +87,7 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 				role="dialog"
 			>
 				<div className="modal-box">
-					<h3 className="text-lg font-bold">Comments</h3>
+					<h3 className="text-lg font-bold">{t("COMMENTS")}</h3>
 
 					<div className="mt-5 max-h-[75vh] overflow-y-auto">
 						{comments.length ? (
@@ -114,7 +116,9 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 									size={70}
 									color="gray"
 								/>
-								<h1 className="text-xl font-bold text-gray-400">No comments</h1>
+								<h1 className="text-xl font-bold text-gray-400">
+									{t("NO_COMMENTS")}
+								</h1>
 							</div>
 						)}
 					</div>
@@ -129,7 +133,7 @@ export const PostCommentsModal: FC<IPostCommentsModalProps> = ({
 								className="input input-bordered w-full bg-base-300"
 							/>
 							<button className="absolute right-3 z-30 cursor-pointer text-gray-400 hover:text-black">
-								Send
+								{t("SEND")}
 							</button>
 						</form>
 					</div>

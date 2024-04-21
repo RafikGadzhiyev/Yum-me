@@ -50,7 +50,7 @@ export const IndexPageWrapper = () => {
 				<h1 className="mb-3 text-center text-xl font-bold md:hidden">
 					{t("WELCOME_TEXT")}
 				</h1>
-				<h2 className="text-center text-lg font-bold">Wanna try?</h2>
+				<h2 className="text-center text-lg font-bold">{t("WANT_TO_TRY")}?</h2>
 				<Link
 					href={AUTH_ROUTES.SIGN_IN.path}
 					className="btn btn-info mt-3"

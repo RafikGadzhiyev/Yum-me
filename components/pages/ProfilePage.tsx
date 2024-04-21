@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense } from "react";
-
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 
@@ -9,8 +9,11 @@ import { RootStore } from "@/redux/store";
 import { ProfilePageHeader } from "@/components/UI/ProfilePageHeader";
 import { ProfilePageMain } from "@/components/feature/ProfilePageMain";
 import { AnotherUserProfile } from "@/components/feature/AnotherUserProfile";
+import { Loading } from "@/components/UI/Loading";
 
 export const ProfilePageWrapper = () => {
+	const { t } = useTranslation();
+
 	const searchParams = useSearchParams();
 	const userFromStore = useSelector(
 		(store: RootStore) => store.userHealthDataReducer.user,
@@ -29,7 +32,11 @@ export const ProfilePageWrapper = () => {
 	}
 
 	if (!userFromStore) {
-		return <h1>Wait, it Takes few minutes</h1>;
+		return (
+			<div className="flex h-full w-full items-center justify-center">
+				<Loading />
+			</div>
+		);
 	}
 
 	return (

@@ -1,4 +1,5 @@
 import { FC, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import { useSelector } from "react-redux";
 import { RootStore } from "@/redux/store";
@@ -9,7 +10,6 @@ import { useStreamResponse } from "@/hooks/useStreamResponse";
 import { Loading } from "../UI/Loading";
 
 import { isConfigured } from "@/utils/validation.util";
-import { useTranslation } from "react-i18next";
 
 interface IGenerateNewFoodButtonProps {
 	updateGeneratedFoodList: (generatedFood: GeneratedFood) => void;
@@ -18,7 +18,7 @@ interface IGenerateNewFoodButtonProps {
 export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 	updateGeneratedFoodList,
 }) => {
-	const { i18n } = useTranslation();
+	const { i18n, t } = useTranslation();
 
 	const modalStateRef = useRef<HTMLInputElement | null>(null);
 	const healthData = useSelector(
@@ -83,7 +83,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 				className="btn btn-outline mb-5"
 				htmlFor="generate_modal"
 			>
-				Generate
+				{t("GENERATE")}
 			</label>
 
 			<input
@@ -99,7 +99,9 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 			>
 				<div className="modal-box">
 					{isLoading && <Loading />}
-					<h3 className="text-lg font-bold">Generation by user health data</h3>
+					<h3 className="text-lg font-bold">
+						{t("GENERATION_BY_USER_HEALTH_DATA")}
+					</h3>
 					<pre className="mt-3 whitespace-pre-wrap">
 						{JSON.stringify(healthData, null, 2)}
 					</pre>
@@ -118,7 +120,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 							onClick={addNewFood}
 							disabled={!data || isReading}
 						>
-							Save
+							{t("SAVE")}
 						</button>
 
 						<button
@@ -126,7 +128,7 @@ export const GenerateNewFoodModal: FC<IGenerateNewFoodButtonProps> = ({
 							className="btn btn-error"
 							disabled={!isConfigured(healthData) || isReading}
 						>
-							Generate
+							{t("GENERATE")}
 						</button>
 					</div>
 				</div>
