@@ -42,6 +42,7 @@ type Post = {
 	updatedAt: Date;
 	showLikes: boolean;
 	likes: string[];
+	author: User;
 	comments: PostComment[];
 	savedBy: string[];
 	content: string;
