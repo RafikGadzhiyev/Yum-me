@@ -12,10 +12,9 @@ export const POST = async (req: NextRequest) => {
 	try {
 		const { lang, data } = await req.json();
 
-		// TODO: Create message with i18n
 		const message = `Язык ответа - ${lang}\nНужен рацион питания для следующего случая:\n\n${JSON.stringify(
 			data,
-		)}\n\nНапиши без лишнего вступления, ни с чем не связывай, так как я это буду отправлять человеку, он должен понять, что ему это адресованно. Язык, на котором нужно написать - Markdown`;
+		)} ANSWER_LANGUAGE = MARKDOWN`;
 
 		if (message.length > MAX_MESSAGE_TOKEN_LENGTH) {
 			return handleRequest(
@@ -32,11 +31,16 @@ export const POST = async (req: NextRequest) => {
 			messages: [
 				{
 					role: "system",
-					content: "Act as professional nutritionist and answer the user queries",
+					content: "You are the professional nutritionist",
 				},
 				{
 					role: "user",
 					content: message,
+				},
+				{
+					role: "assistant",
+					content:
+						"[Give detailed answer to user prompt using markdown] + warn that need to take advice from professional doctor",
 				},
 			],
 			model: "gpt-3.5-turbo",
