@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export const useStreamResponse = () => {
 	const [data, setData] = useState("");
@@ -26,10 +26,15 @@ export const useStreamResponse = () => {
 		setIsReading(false);
 	};
 
+	const clearData = useCallback(() => {
+		setData("");
+	}, []);
+
 	return {
 		data,
 		isReading,
 
+		clearData,
 		readData,
 	};
 };

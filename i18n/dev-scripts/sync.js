@@ -3,7 +3,7 @@
 
 const fs = require("fs/promises"); // eslint-disable-line
 
-const LANGUAGES = ["ru", "en"];
+const LANGUAGES = ["ru", "en", "kz", "tr"];
 const SYNC_BY = "en";
 
 const FILE_PATH = "../../i18n/languages";

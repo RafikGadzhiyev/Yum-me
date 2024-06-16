@@ -13,7 +13,6 @@ export const useFetch = <T>() => {
 	});
 	const [responseStatus, setResponseStatus] = useState<ResponseStatus>("success");
 
-	// FIXME: trouble with realtime requests
 	const abortControllers = useRef<Record<string, AbortController>>({});
 
 	const abortPreviousRequestAndSaveNew = (url: string) => {

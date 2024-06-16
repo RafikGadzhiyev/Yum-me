@@ -5,9 +5,9 @@ import { initReactI18next } from "react-i18next";
 import { dictionary } from "./dictionary";
 import resourcesToBackend from "i18next-resources-to-backend";
 
-declare module 'i18next' {
+declare module "i18next" {
 	interface CustomTypeOptions {
-		returnNull: false
+		returnNull: false;
 	}
 }
 
@@ -15,7 +15,7 @@ i18n
 	.use(detect)
 	.use(initReactI18next)
 	.use(
-		resourcesToBackend((language: string) => import(`./languages/${language}.json`))
+		resourcesToBackend((language: string) => import(`./languages/${language}.json`)),
 	)
 	.init({
 		returnNull: false,

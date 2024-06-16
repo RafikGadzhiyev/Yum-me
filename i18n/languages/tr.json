@@ -1,0 +1,100 @@
+{
+  "AGE": "Age (Translate)",
+  "ALREADY_HAVE_ACCOUNT": "Already have an account? (Translate)",
+  "CALORIES_PER_DAY": "Calories per day (Translate)",
+  "CANCEL": "Cancel (Translate)",
+  "CHANGE_LANGUAGE": "Change language (Translate)",
+  "CHOOSE_LANGUAGE": "Choose language (Translate)",
+  "CLOSE": "Close (Translate)",
+  "COMMENT": "Comment (Translate)",
+  "COMMENTS": "Comments (Translate)",
+  "CONFIGURE": "Configure (Translate)",
+  "CONTINUE": "Continue (Translate)",
+  "CONTRAINDICATIONS": "Contraindications (Translate)",
+  "DAY_OF_WEEK": {
+    "MONDAY": {
+      "LONG": "Monday (Translate)",
+      "SHORT": "Mn (Translate)"
+    },
+    "TUESDAY": {
+      "LONG": "Tuesday (Translate)",
+      "SHORT": "Tu (Translate)"
+    },
+    "WEDNESDAY": {
+      "LONG": "Wednesday (Translate)",
+      "SHORT": "We (Translate)"
+    },
+    "THURSDAY": {
+      "LONG": "Thursday (Translate)",
+      "SHORT": "Th (Translate)"
+    },
+    "FRIDAY": {
+      "LONG": "Friday (Translate)",
+      "SHORT": "Fr (Translate)"
+    },
+    "SATURDAY": {
+      "LONG": "Saturday (Translate)",
+      "SHORT": "St (Translate)"
+    },
+    "SUNDAY": {
+      "LONG": "Sunday (Translate)",
+      "SHORT": "Su (Translate)"
+    }
+  },
+  "DONT_HAVE_ACCOUNT": "Don't have an account? (Translate)",
+  "EMAIL": "Email (Translate)",
+  "FEMALE": "Female (Translate)",
+  "GENDER": "Gender (Translate)",
+  "GENERATE": "Generate (Translate)",
+  "GENERATED_FOOD": "Generated food (Translate)",
+  "GENERATED_FOODS": "Generated foods (Translate)",
+  "GENERATION_BY_USER_HEALTH_DATA": "Generation by user health data (Translate)",
+  "GO_BACK": "Go back (Translate)",
+  "HEIGHT": "Height (Translate)",
+  "LAST_NAME": "Last name (Translate)",
+  "LIKES": "Likes (Translate)",
+  "LIST_IS_EMPTY": "List is empty (Translate)",
+  "LOADING": "Loading (Translate)",
+  "MALE": "Male (Translate)",
+  "MESSAGE": "Message (Translate)",
+  "NAME": "Name (Translate)",
+  "NEW_POST": "New post (Translate)",
+  "NOTHING_WAS_FOUND": "Nothing was found (Translate)",
+  "NO_COMMENTS": "No comments (Translate)",
+  "OPEN": "Open (Translate)",
+  "PER_PAGE": "Per Page (Translate)",
+  "POST": "Post (Translate)",
+  "POSTS": "Posts (Translate)",
+  "RESET": "Reset (Translate)",
+  "ROLE": "Role (Translate)",
+  "SAVE": "Save (Translate)",
+  "SEARCH": "Search (Translate)",
+  "SEND": "Send (Translate)",
+  "SHOW_CONFIG": "Show config (Translate)",
+  "SIGN_IN": "Sign in (Translate)",
+  "SIGN_OUT": "Sign out (Translate)",
+  "SIGN_UP": "Sign up (Translate)",
+  "SOMETHING_WENT_WRONG": "Something went wrong (Translate)",
+  "SUBSCRIBE": "Subscribe (Translate)",
+  "SUBSCRIBERS": "Subscribers (Translate)",
+  "TO_GET_FULLY_ACCESS_HINT": "To get access You need fully configure your food wishes and additional info (Translate)",
+  "TRY_AGAIN": "Try again (Translate)",
+  "USER_HEALTH_CONFIG": "User health configuration (Translate)",
+  "USER_INFO": "User info (Translate)",
+  "WAIT_HINT": "Wait, it Takes few minutes (Translate)",
+  "WANT_TO_TRY": "Want to try? (Translate)",
+  "WEIGHT": "Weight (Translate)",
+  "WELCOME_TEXT": "Welcome to Yum-me. This is helpful web-application that helps with food (Translate)",
+  "WISHES": "Wishes (Translate)",
+  "INDEX_PAGE": {
+    "AUTH_FORM_TITLE": "Sign up to your app! It is very simple! (Translate)"
+  },
+  "NAVIGATION": {
+    "HOME": "Home (Translate)",
+    "PROFILE": "Profile (Translate)",
+    "SAVED_RECIPES": "Saved recipes (Translate)",
+    "SEARCH": "Search (Translate)",
+    "SETTINGS": "Settings (Translate)",
+    "WHAT_CAN_I_COOK": "What can I cook (Translate)"
+  }
+}
